@@ -1,0 +1,3 @@
+define t (10000*10/3600)
+echo $t
+quit

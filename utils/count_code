@@ -1,0 +1,1 @@
+find . -name "*.c" -print | xargs wc -l $1 /dev/null

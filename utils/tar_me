@@ -1,0 +1,9 @@
+find $1 -name "*.c" | grep -vi old | grep -vi temp | grep -v runable  > tar_file_list.txt
+find $1 -name "*.f" | grep -vi old | grep -vi temp | grep -v runable >> tar_file_list.txt
+find $1 -name "*.h" | grep -vi old | grep -vi temp | grep -v runable >> tar_file_list.txt
+find $1 -name "Makefile*" >> tar_file_list.txt
+find $1/docs -name "*.*" >> tar_file_list.txt
+find $1/utils -name "*_*" >> tar_file_list.txt
+#find $1/runable/SI8_rlh "*" >> tar_file_list.txt
+
+tar -cvf piny_PARA_VER_3_JULY_03.tar `cat tar_file_list.txt`

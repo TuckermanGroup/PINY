@@ -1,0 +1,4 @@
+find . -name "*.c" -print |xargs grep -i $1 /dev/null
+find . -name "*.h" -print |xargs grep -i $1 /dev/null
+find . -name "*.f" -print |xargs grep -i $1 /dev/null
+

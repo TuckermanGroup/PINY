@@ -1,0 +1,61 @@
+Users Guide to PME
+------------------
+
+Intro
+-----
+   The particle mesh ewald method (PME) generates an approximation to the 
+structure factor and hence the reciprocal space part of the ewald summation
+energy using a spline interpolation and an FFT.  There are two
+parameters that determine the accuracy of the approximation,
+the order of the spline interpolation and grid spacing of the FFT.
+These two parameters must be adjusted to achieve the highest accuracy
+for the least cpu time. The order of the interpolation must be an
+even number greater than or equal to 4.
+ 
+a) Standard parameters
+ \ewald_pme_on{on}       Turn on PME
+ \ewald_kmax_pme{7}      Determines the PME grid spacing ( >=\ewald_kmax{})
+ \ewald_interp_pme{4}    The order of the PME interpolation (>=4 and even).
+
+b) Respa parameters
+ \ewald_respa_pme_on{on}     Turn on RESPA PME
+ \ewald_respa_kmax_pme{7}    Determines the RESPA PME grid spacing 
+                                          ( >=\ewald_respa_kmax{}
+ \ewald_respa_interp_pme{4}  The order of the RESPA PME interpolation 
+                                           (>=4 and even).
+
+Using PME without respa (respa_steps_lrf = 1)
+---------------------------------------------
+
+  1) Choose an \ewald_alpha{} and \ewald_kmax{} (see optimization manual)
+                (\ewald_alpha{} = \ewald_kmax{} is a good choice).
+  2) Use the debug option with ewald_pme{off}:
+      a) Get the timing for the standard ewald routine and record vrecip. 
+      b) Check the accuracy of vrecip by doubling ewald_kmax and
+         running the code again.
+  3) Use the debug option with ewald_pme{on} and the desired
+     \ewald_alpha{} and \ewald_kmax{}.
+     a) Adjust kmax_pme and interp_pme to obtain the same accuracy
+        as the standard ewald routine for vrecip. kmax_pme is greater or equal
+        to kmax_ewald and interp_pme >=4.
+  4) Use the faster of the two methods, standard ewald or PME in your
+     calculations.
+   
+Using PME without respa (respa_steps_lrf > 1)
+---------------------------------------------
+
+   1) If \ewald_respa_pme_on{off} is chosen, this is equivalent
+      to choosing ewald_respa_kmax = ewald_kmax. The full reciprocal
+      space energy is calculated respa_steps_lrf times per time step.
+   2) If \ewald_respa_pme_on{on} is chosen with ewald_respa_kmax=0,
+      the full reciprocal space energy is calculated once per time step.
+   3) Adjust the parameters \respa_steps_lrf{}
+                            \ewald_respa_kmax_pme{}
+                            \ewald_respa_interp_pme{}
+                            \ewald_respa_kmax{})
+      to achieve the desired level of energy conservation with
+      the smallest cpu time. (See the optimization guide).
+      I am not sure what is going to work the best here.
+      However, it looks like the PME is pretty fast 
+      and just like keeping \ewald_respa_pme_on{off} should work fairly well.
+      

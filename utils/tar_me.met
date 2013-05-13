@@ -1,0 +1,9 @@
+tar -cvf para3.tar analysis include main energy integrate mathlib utils \
+communicate friend_lib interface output compile/make_defs \
+compile/sgi_vec_10k/Makefile compile/sgi_vec_10k/*.h  \
+compile/sgi_vec_parallel/Makefile compile/sgi_vec_parallel/*.h  \
+compile/ibm/Makefile compile/ibm/*.h \
+compile/ibm_par/Makefile compile/ibm_par/*.h \
+compile/sun_E10000_parallel/Makefile compile/sun_E10000_parallel/*.h \
+compile/pentium/Makefile compile/pentium/*.h \
+gzip para3.tar

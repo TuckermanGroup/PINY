@@ -1,0 +1,3 @@
+find . -name "*.c" -print |xargs touch /dev/null
+find . -name "*.h" -print |xargs touch /dev/null
+find . -name "*.f" -print |xargs touch /dev/null

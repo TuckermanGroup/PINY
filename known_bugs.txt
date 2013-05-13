@@ -1,0 +1,19 @@
+=======================================================================
+
+1) Full-g parallel PME will not work for when the procssors divided
+   by the number of points along a side is not a whole number.
+   Check it once and if it works, use it.  If not, oh well ...
+
+2) Particle 0_ewald hasn't been checked in parallel and probably does 
+   not work. However, 0 perdiodicity itself is fine.
+ 
+3) Branch root list for systems with wierd connectivities is broken.
+   Check it once and if it works, use it.  If not, oh well ...
+
+4) Binary coefficient read/write does not work in parallel
+
+5) Problems making S local and P and/or D nonlocal.
+
+
+
+=======================================================================

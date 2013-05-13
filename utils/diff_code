@@ -1,0 +1,2001 @@
+#==============================================================================
+#
+#                     Script to diff code versions:
+#                    ==============================
+#         <prompt> code_diff code_ver1 code_ver2 output_file
+#
+#==============================================================================
+#
+/bin/rm $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/analysis/analysis_cp.c" >> $3
+echo  "/analysis/analysis_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/analysis/analysis_cp.c  $2/analysis/analysis_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/analysis/analysis_cp_pimd.c" >> $3
+echo  "/analysis/analysis_cp_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/analysis/analysis_cp_pimd.c $2/analysis/analysis_cp_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/analysis/analysis_md.c" >> $3
+echo  "/analysis/analysis_md.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/analysis/analysis_md.c $2/analysis/analysis_md.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/analysis/analysis_pimd.c" >> $3
+echo  "/analysis/analysis_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/analysis/analysis_pimd.c $2/analysis/analysis_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/communicate/build_communicate_groups.c" >> $3
+echo  "/communicate/build_communicate_groups.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/communicate/build_communicate_groups.c $2/communicate/build_communicate_groups.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/communicate/com_interface.c" >> $3
+echo  "/communicate/com_interface.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/communicate/com_interface.c $2/communicate/com_interface.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/communicate/comm_bond_data.c" >> $3
+echo  "/communicate/comm_bond_data.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/communicate/comm_bond_data.c $2/communicate/comm_bond_data.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/communicate/comm_bond_info.c" >> $3
+echo  "/communicate/comm_bond_info.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/communicate/comm_bond_info.c $2/communicate/comm_bond_info.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/communicate/comm_class_data.c" >> $3
+echo  "/communicate/comm_class_data.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/communicate/comm_class_data.c $2/communicate/comm_class_data.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/communicate/comm_class_info.c" >> $3
+echo  "/communicate/comm_class_info.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/communicate/comm_class_info.c $2/communicate/comm_class_info.c >> $3
+#echo  " " >>$3
+
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/communicate/comm_class_list.c" >> $3
+echo  "/communicate/comm_class_list.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/communicate/comm_class_list.c $2/communicate/comm_class_list.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/communicate/comm_cp_data.c" >> $3
+echo  "/communicate/comm_cp_data.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/communicate/comm_cp_data.c $2/communicate/comm_cp_data.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/communicate/comm_cp_info.c" >> $3
+echo  "/communicate/comm_cp_info.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/communicate/comm_cp_info.c $2/communicate/comm_cp_info.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/communicate/communicate_options.c" >> $3
+echo  "/communicate/communicate_options.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/communicate/communicate_options.c $2/communicate/communicate_options.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/communicate/control_group_communicators.c" >> $3
+echo  "/communicate/control_group_communicators.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/communicate/control_group_communicators.c $2/communicate/control_group_communicators.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/communicate/mall_bond.c" >> $3
+echo  "/communicate/mall_bond.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/communicate/mall_bond.c $2/communicate/mall_bond.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/communicate/mall_class.c" >> $3
+echo  "/communicate/mall_class.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/communicate/mall_class.c $2/communicate/mall_class.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/control/communicate_test_energy_pimd.c" >> $3
+echo  "/energy/control/communicate_test_energy_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/control/communicate_test_energy_pimd.c $2/energy/control/communicate_test_energy_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/control/energy_control.c" >> $3
+echo  "/energy/control/energy_control.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/control/energy_control.c $2/energy/control/energy_control.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/control/energy_control_final.c" >> $3
+echo  "/energy/control/energy_control_final.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/control/energy_control_final.c $2/energy/control/energy_control_final.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/control/energy_control_initial.c" >> $3
+echo  "/energy/control/energy_control_initial.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/control/energy_control_initial.c $2/energy/control/energy_control_initial.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/control/energy_control_inter_real.c" >> $3
+echo  "/energy/control/energy_control_inter_real.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/control/energy_control_inter_real.c $2/energy/control/energy_control_inter_real.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/control/energy_control_inter_recip.c" >> $3
+echo  "/energy/control/energy_control_inter_recip.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/control/energy_control_inter_recip.c $2/energy/control/energy_control_inter_recip.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/control/energy_control_intra.c" >> $3
+echo  "/energy/control/energy_control_intra.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/control/energy_control_intra.c $2/energy/control/energy_control_intra.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/control/energy_control_pimd.c" >> $3
+echo  "/energy/control/energy_control_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/control/energy_control_pimd.c $2/energy/control/energy_control_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/control/period.c" >> $3
+echo  "/energy/control/period.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/control/period.c $2/energy/control/period.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/control/test_energy.c" >> $3
+echo  "/energy/control/test_energy.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/control/test_energy.c $2/energy/control/test_energy.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/control/test_energy_pimd.c" >> $3
+echo  "/energy/control/test_energy_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/control/test_energy_pimd.c $2/energy/control/test_energy_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/control_cp/communicate_test_energy_cp_pimd.c" >> $3
+echo  "/energy/control_cp/communicate_test_energy_cp_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/control_cp/communicate_test_energy_cp_pimd.c $2/energy/control_cp/communicate_test_energy_cp_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/control_cp/cp_energy_control.c" >> $3
+echo  "/energy/control_cp/cp_energy_control.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/control_cp/cp_energy_control.c $2/energy/control_cp/cp_energy_control.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/control_cp/cp_energy_control_pimd.c" >> $3
+echo  "/energy/control_cp/cp_energy_control_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/control_cp/cp_energy_control_pimd.c $2/energy/control_cp/cp_energy_control_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/control_cp/energy_control_elec.c" >> $3
+echo  "/energy/control_cp/energy_control_elec.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/control_cp/energy_control_elec.c $2/energy/control_cp/energy_control_elec.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/control_cp/test_energy_cp.c" >> $3
+echo  "/energy/control_cp/test_energy_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/control_cp/test_energy_cp.c $2/energy/control_cp/test_energy_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/control_cp/test_energy_cp_pimd.c" >> $3
+echo  "/energy/control_cp/test_energy_cp_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/control_cp/test_energy_cp_pimd.c $2/energy/control_cp/test_energy_cp_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/cp/cp_energy_control_pimd.c" >> $3
+echo  "/energy/cp/cp_energy_control_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/cp/cp_energy_control_pimd.c $2/energy/cp/cp_energy_control_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/cp/cp_energy_ee_grad_rho.c" >> $3
+echo  "/energy/cp/cp_energy_ee_grad_rho.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/cp/cp_energy_ee_grad_rho.c $2/energy/cp/cp_energy_ee_grad_rho.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/cp/cp_energy_ee_rho.c" >> $3
+echo  "/energy/cp/cp_energy_ee_rho.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/cp/cp_energy_ee_rho.c $2/energy/cp/cp_energy_ee_rho.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/cp/cp_energy_eext.c" >> $3
+echo  "/energy/cp/cp_energy_eext.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/cp/cp_energy_eext.c $2/energy/cp/cp_energy_eext.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/cp/cp_energy_eext_nonloc.c" >> $3
+echo  "/energy/cp/cp_energy_eext_nonloc.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/cp/cp_energy_eext_nonloc.c $2/energy/cp/cp_energy_eext_nonloc.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/cp/cp_ks_energy.c" >> $3
+echo  "/energy/cp/cp_ks_energy.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/cp/cp_ks_energy.c $2/energy/cp/cp_ks_energy.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/cp/xc_functionals.c" >> $3
+echo  "/energy/cp/xc_functionals.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/cp/xc_functionals.c $2/energy/cp/xc_functionals.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/cp_con/constraint_control_cp.c" >> $3
+echo  "/energy/cp_con/constraint_control_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/cp_con/constraint_control_cp.c $2/energy/cp_con/constraint_control_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/cp_con/cp_con.c" >> $3
+echo  "/energy/cp_con/cp_con.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/cp_con/cp_con.c $2/energy/cp_con/cp_con.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/cp_con/cp_con_utils.c" >> $3
+echo  "/energy/cp_con/cp_con_utils.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/cp_con/cp_con_utils.c $2/energy/cp_con/cp_con_utils.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/cp_con/cp_orth_rot_utils.c" >> $3
+echo  "/energy/cp_con/cp_orth_rot_utils.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/cp_con/cp_orth_rot_utils.c $2/energy/cp_con/cp_orth_rot_utils.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/cp_con/cp_transpose.c" >> $3
+echo  "/energy/cp_con/cp_transpose.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/cp_con/cp_transpose.c $2/energy/cp_con/cp_transpose.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/cp_con/orth_rot_control_cp.c" >> $3
+echo  "/energy/cp_con/orth_rot_control_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/cp_con/orth_rot_control_cp.c $2/energy/cp_con/orth_rot_control_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/inter/real_space/force_control.c" >> $3
+echo  "/energy/inter/real_space/force_control.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/inter/real_space/force_control.c $2/energy/inter/real_space/force_control.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/inter/real_space/force_lnklst.c" >> $3
+echo  "/energy/inter/real_space/force_lnklst.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/inter/real_space/force_lnklst.c $2/energy/inter/real_space/force_lnklst.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/inter/real_space/force_nolst.c" >> $3
+echo  "/energy/inter/real_space/force_nolst.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/inter/real_space/force_nolst.c $2/energy/inter/real_space/force_nolst.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/inter/real_space/force_npol.c" >> $3
+echo  "/energy/inter/real_space/force_npol.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/inter/real_space/force_npol.c $2/energy/inter/real_space/force_npol.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/inter/real_space/force_verlst.c" >> $3
+echo  "/energy/inter/real_space/force_verlst.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/inter/real_space/force_verlst.c $2/energy/inter/real_space/force_verlst.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/inter/real_space/lnk_lst_dis.c" >> $3
+echo  "/energy/inter/real_space/lnk_lst_dis.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/inter/real_space/lnk_lst_dis.c $2/energy/inter/real_space/lnk_lst_dis.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/inter/real_space/make_lnk_lst.c" >> $3
+echo  "/energy/inter/real_space/make_lnk_lst.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/inter/real_space/make_lnk_lst.c $2/energy/inter/real_space/make_lnk_lst.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/inter/real_space/make_lnk_map.c" >> $3
+echo  "/energy/inter/real_space/make_lnk_map.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/inter/real_space/make_lnk_map.c $2/energy/inter/real_space/make_lnk_map.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/inter/real_space/nbr_list_control.c" >> $3
+echo  "/energy/inter/real_space/nbr_list_control.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/inter/real_space/nbr_list_control.c $2/energy/inter/real_space/nbr_list_control.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/inter/real_space/verlist_control.c" >> $3
+echo  "/energy/inter/real_space/verlist_control.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/inter/real_space/verlist_control.c $2/energy/inter/real_space/verlist_control.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/inter/real_space/verlist_create.c" >> $3
+echo  "/energy/inter/real_space/verlist_create.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/inter/real_space/verlist_create.c $2/energy/inter/real_space/verlist_create.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/inter/recip3d/ewald3d.c" >> $3
+echo  "/energy/inter/recip3d/ewald3d.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/inter/recip3d/ewald3d.c $2/energy/inter/recip3d/ewald3d.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/inter/recip3d/ewald3d_both.c" >> $3
+echo  "/energy/inter/recip3d/ewald3d_both.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/inter/recip3d/ewald3d_both.c $2/energy/inter/recip3d/ewald3d_both.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/inter/recip3d/ewald3d_pme.c" >> $3
+echo  "/energy/inter/recip3d/ewald3d_pme.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/inter/recip3d/ewald3d_pme.c $2/energy/inter/recip3d/ewald3d_pme.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/inter/recip3d/ewald3d_self_bgr.c" >> $3
+echo  "/energy/inter/recip3d/ewald3d_self_bgr.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/inter/recip3d/ewald3d_self_bgr.c $2/energy/inter/recip3d/ewald3d_self_bgr.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra/bend.c" >> $3
+echo  "/energy/intra/bend.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra/bend.c $2/energy/intra/bend.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra/bend_bnd.c" >> $3
+echo  "/energy/intra/bend_bnd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra/bend_bnd.c $2/energy/intra/bend_bnd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra/bond.c" >> $3
+echo  "/energy/intra/bond.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra/bond.c $2/energy/intra/bond.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra/bond_both.c" >> $3
+echo  "/energy/intra/bond_both.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra/bond_both.c $2/energy/intra/bond_both.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra/ecorr.c" >> $3
+echo  "/energy/intra/ecorr.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra/ecorr.c $2/energy/intra/ecorr.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra/onefour.c" >> $3
+echo  "/energy/intra/onefour.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra/onefour.c $2/energy/intra/onefour.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra/tors.c" >> $3
+echo  "/energy/intra/tors.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra/tors.c $2/energy/intra/tors.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra_con/bond_con.c" >> $3
+echo  "/energy/intra_con/bond_con.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra_con/bond_con.c $2/energy/intra_con/bond_con.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra_con/bond_con_rollf.c" >> $3
+echo  "/energy/intra_con/bond_con_rollf.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra_con/bond_con_rollf.c $2/energy/intra_con/bond_con_rollf.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra_con/bond_con_rolli.c" >> $3
+echo  "/energy/intra_con/bond_con_rolli.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra_con/bond_con_rolli.c $2/energy/intra_con/bond_con_rolli.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra_con/constraint_control.c" >> $3
+echo  "/energy/intra_con/constraint_control.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra_con/constraint_control.c $2/energy/intra_con/constraint_control.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra_con/ghost_control.c" >> $3
+echo  "/energy/intra_con/ghost_control.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra_con/ghost_control.c $2/energy/intra_con/ghost_control.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra_con/group_bond_con.c" >> $3
+echo  "/energy/intra_con/group_bond_con.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra_con/group_bond_con.c $2/energy/intra_con/group_bond_con.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra_con/group_bond_con_21.c" >> $3
+echo  "/energy/intra_con/group_bond_con_21.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra_con/group_bond_con_21.c $2/energy/intra_con/group_bond_con_21.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra_con/group_bond_con_43.c" >> $3
+echo  "/energy/intra_con/group_bond_con_43.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra_con/group_bond_con_43.c $2/energy/intra_con/group_bond_con_43.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra_con/group_bond_con_rollf.c" >> $3
+echo  "/energy/intra_con/group_bond_con_rollf.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra_con/group_bond_con_rollf.c $2/energy/intra_con/group_bond_con_rollf.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra_con/group_bond_con_rollf_21.c" >> $3
+echo  "/energy/intra_con/group_bond_con_rollf_21.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra_con/group_bond_con_rollf_21.c $2/energy/intra_con/group_bond_con_rollf_21.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra_con/group_bond_con_rollf_43.c" >> $3
+echo  "/energy/intra_con/group_bond_con_rollf_43.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra_con/group_bond_con_rollf_43.c $2/energy/intra_con/group_bond_con_rollf_43.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra_con/group_bond_con_rolli.c" >> $3
+echo  "/energy/intra_con/group_bond_con_rolli.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra_con/group_bond_con_rolli.c $2/energy/intra_con/group_bond_con_rolli.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra_con/group_bond_con_rolli_21.c" >> $3
+echo  "/energy/intra_con/group_bond_con_rolli_21.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra_con/group_bond_con_rolli_21.c $2/energy/intra_con/group_bond_con_rolli_21.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/intra_con/group_bond_con_rolli_43.c" >> $3
+echo  "/energy/intra_con/group_bond_con_rolli_43.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/intra_con/group_bond_con_rolli_43.c $2/energy/intra_con/group_bond_con_rolli_43.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/pimd/control_pimd_trans.c" >> $3
+echo  "/energy/pimd/control_pimd_trans.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/pimd/control_pimd_trans.c $2/energy/pimd/control_pimd_trans.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/pimd/pimd_estimators.c" >> $3
+echo  "/energy/pimd/pimd_estimators.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/pimd/pimd_estimators.c $2/energy/pimd/pimd_estimators.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/pimd/pimd_trans_comm.c" >> $3
+echo  "/energy/pimd/pimd_trans_comm.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/pimd/pimd_trans_comm.c $2/energy/pimd/pimd_trans_comm.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/pimd/transform_cnt.c" >> $3
+echo  "/energy/pimd/transform_cnt.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/pimd/transform_cnt.c $2/energy/pimd/transform_cnt.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/pimd/transform_cnt_par.c" >> $3
+echo  "/energy/pimd/transform_cnt_par.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/pimd/transform_cnt_par.c $2/energy/pimd/transform_cnt_par.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/pimd/transform_stg.c" >> $3
+echo  "/energy/pimd/transform_stg.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/pimd/transform_stg.c $2/energy/pimd/transform_stg.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/energy/pimd/transform_stg_par.c" >> $3
+echo  "/energy/pimd/transform_stg_par.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/energy/pimd/transform_stg_par.c $2/energy/pimd/transform_stg_par.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/friend_lib/cmalloc.c" >> $3
+echo  "/friend_lib/cmalloc.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/friend_lib/cmalloc.c $2/friend_lib/cmalloc.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/friend_lib/friend_lib.c" >> $3
+echo  "/friend_lib/friend_lib.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/friend_lib/friend_lib.c $2/friend_lib/friend_lib.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/friend_lib/mal_verify.c" >> $3
+echo  "/friend_lib/mal_verify.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/friend_lib/mal_verify.c $2/friend_lib/mal_verify.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/cp/cp_gauss.c" >> $3
+echo  "/integrate/cp/cp_gauss.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/cp/cp_gauss.c $2/integrate/cp/cp_gauss.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/cp/int_0_to_dt2_cp.c" >> $3
+echo  "/integrate/cp/int_0_to_dt2_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/cp/int_0_to_dt2_cp.c $2/integrate/cp/int_0_to_dt2_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/cp/int_NPTF_cp.c" >> $3
+echo  "/integrate/cp/int_NPTF_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/cp/int_NPTF_cp.c $2/integrate/cp/int_NPTF_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/cp/int_NPTI_cp.c" >> $3
+echo  "/integrate/cp/int_NPTI_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/cp/int_NPTI_cp.c $2/integrate/cp/int_NPTI_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/cp/int_NVE_cp.c" >> $3
+echo  "/integrate/cp/int_NVE_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/cp/int_NVE_cp.c $2/integrate/cp/int_NVE_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/cp/int_NVT_cp.c" >> $3
+echo  "/integrate/cp/int_NVT_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/cp/int_NVT_cp.c $2/integrate/cp/int_NVT_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/cp/int_dt2_to_dt_cp.c" >> $3
+echo  "/integrate/cp/int_dt2_to_dt_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/cp/int_dt2_to_dt_cp.c $2/integrate/cp/int_dt2_to_dt_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/cp/int_utils_cp.c" >> $3
+echo  "/integrate/cp/int_utils_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/cp/int_utils_cp.c $2/integrate/cp/int_utils_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/cpmin/min_CG_cp.c" >> $3
+echo  "/integrate/cpmin/min_CG_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/cpmin/min_CG_cp.c $2/integrate/cpmin/min_CG_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/cpmin/min_DIIS_cp.c" >> $3
+echo  "/integrate/cpmin/min_DIIS_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/cpmin/min_DIIS_cp.c $2/integrate/cpmin/min_DIIS_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/cpmin/min_STD_cp.c" >> $3
+echo  "/integrate/cpmin/min_STD_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/cpmin/min_STD_cp.c $2/integrate/cpmin/min_STD_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/cpmin/move_atm.c" >> $3
+echo  "/integrate/cpmin/move_atm.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/cpmin/move_atm.c $2/integrate/cpmin/move_atm.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/cpmin/shuffle_states.c" >> $3
+echo  "/integrate/cpmin/shuffle_states.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/cpmin/shuffle_states.c $2/integrate/cpmin/shuffle_states.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/cppimd/int_NPTF_cp_pimd.c" >> $3
+echo  "/integrate/cppimd/int_NPTF_cp_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/cppimd/int_NPTF_cp_pimd.c $2/integrate/cppimd/int_NPTF_cp_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/cppimd/int_utils_cp_pimd.c" >> $3
+echo  "/integrate/cppimd/int_utils_cp_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/cppimd/int_utils_cp_pimd.c $2/integrate/cppimd/int_utils_cp_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/cppimd/int_NPTI_cp_pimd.c" >> $3
+echo  "/integrate/cppimd/int_NPTI_cp_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/cppimd/int_NPTI_cp_pimd.c $2/integrate/cppimd/int_NPTI_cp_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/cppimd/int_NVT_cp_pimd.c" >> $3
+echo  "/integrate/cppimd/int_NVT_cp_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/cppimd/int_NVT_cp_pimd.c $2/integrate/cppimd/int_NVT_cp_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/int_0_to_dt2.c" >> $3
+echo  "/integrate/int_0_to_dt2.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/int_0_to_dt2.c $2/integrate/int_0_to_dt2.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/int_0_to_dt2_pimd.c" >> $3
+echo  "/integrate/int_0_to_dt2_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/int_0_to_dt2_pimd.c $2/integrate/int_0_to_dt2_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/int_dt2_to_dt.c" >> $3
+echo  "/integrate/int_dt2_to_dt.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/int_dt2_to_dt.c $2/integrate/int_dt2_to_dt.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/int_dt2_to_dt_pimd.c" >> $3
+echo  "/integrate/int_dt2_to_dt_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/int_dt2_to_dt_pimd.c $2/integrate/int_dt2_to_dt_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/md/int_NPTF.c" >> $3
+echo  "/integrate/md/int_NPTF.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/md/int_NPTF.c $2/integrate/md/int_NPTF.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/md/int_NPTF_res.c" >> $3
+echo  "/integrate/md/int_NPTF_res.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/md/int_NPTF_res.c $2/integrate/md/int_NPTF_res.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/md/int_NPTI.c" >> $3
+echo  "/integrate/md/int_NPTI.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/md/int_NPTI.c $2/integrate/md/int_NPTI.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/md/int_NPTI_res.c" >> $3
+echo  "/integrate/md/int_NPTI_res.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/md/int_NPTI_res.c $2/integrate/md/int_NPTI_res.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/md/int_NVE.c" >> $3
+echo  "/integrate/md/int_NVE.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/md/int_NVE.c $2/integrate/md/int_NVE.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/md/int_NVE_res.c" >> $3
+echo  "/integrate/md/int_NVE_res.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/md/int_NVE_res.c $2/integrate/md/int_NVE_res.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/md/int_NVT.c" >> $3
+echo  "/integrate/md/int_NVT.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/md/int_NVT.c $2/integrate/md/int_NVT.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/md/int_NVT_res.c" >> $3
+echo  "/integrate/md/int_NVT_res.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/md/int_NVT_res.c $2/integrate/md/int_NVT_res.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/md/int_utils.c" >> $3
+echo  "/integrate/md/int_utils.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/md/int_utils.c $2/integrate/md/int_utils.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/min/min_CG.c" >> $3
+echo  "/integrate/min/min_CG.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/min/min_CG.c $2/integrate/min/min_CG.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/min/min_STD.c" >> $3
+echo  "/integrate/min/min_STD.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/min/min_STD.c $2/integrate/min/min_STD.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/pimd/communicate_utils_pimd.c" >> $3
+echo  "/integrate/pimd/communicate_utils_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/pimd/communicate_utils_pimd.c $2/integrate/pimd/communicate_utils_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/pimd/int_NPTF_pimd.c" >> $3
+echo  "/integrate/pimd/int_NPTF_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/pimd/int_NPTF_pimd.c $2/integrate/pimd/int_NPTF_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/pimd/int_NPTI_pimd.c" >> $3
+echo  "/integrate/pimd/int_NPTI_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/pimd/int_NPTI_pimd.c $2/integrate/pimd/int_NPTI_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/pimd/int_NVT_pimd.c" >> $3
+echo  "/integrate/pimd/int_NVT_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/pimd/int_NVT_pimd.c $2/integrate/pimd/int_NVT_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/integrate/pimd/int_utils_pimd.c" >> $3
+echo  "/integrate/pimd/int_utils_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/integrate/pimd/int_utils_pimd.c $2/integrate/pimd/int_utils_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/coords/communicate_coord.c" >> $3
+echo  "/interface/coords/communicate_coord.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/coords/communicate_coord.c $2/interface/coords/communicate_coord.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/coords/cp_communicate_coord_class.c" >> $3
+echo  "/interface/coords/cp_communicate_coord_class.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/coords/cp_communicate_coord_class.c $2/interface/coords/cp_communicate_coord_class.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/coords/mall_coord.c" >> $3
+echo  "/interface/coords/mall_coord.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/coords/mall_coord.c $2/interface/coords/mall_coord.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/coords/mall_pressure.c" >> $3
+echo  "/interface/coords/mall_pressure.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/coords/mall_pressure.c $2/interface/coords/mall_pressure.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/coords/read_coord.c" >> $3
+echo  "/interface/coords/read_coord.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/coords/read_coord.c $2/interface/coords/read_coord.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/coords/read_hmat.c" >> $3
+echo  "/interface/coords/read_hmat.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/coords/read_hmat.c $2/interface/coords/read_hmat.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/coords/set_atm_NHC.c" >> $3
+echo  "/interface/coords/set_atm_NHC.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/coords/set_atm_NHC.c $2/interface/coords/set_atm_NHC.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/coords_cp/mall_coef.c" >> $3
+echo  "/interface/coords_cp/mall_coef.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/coords_cp/mall_coef.c $2/interface/coords_cp/mall_coef.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/coords_cp/read_coef.c" >> $3
+echo  "/interface/coords_cp/read_coef.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/coords_cp/read_coef.c $2/interface/coords_cp/read_coef.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/coords_cp/set_coef_NHC.c" >> $3
+echo  "/interface/coords_cp/set_coef_NHC.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/coords_cp/set_coef_NHC.c $2/interface/coords_cp/set_coef_NHC.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/cp_ewald/control_set_cp_ewald.c" >> $3
+echo  "/interface/cp_ewald/control_set_cp_ewald.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/cp_ewald/control_set_cp_ewald.c $2/interface/cp_ewald/control_set_cp_ewald.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/cp_ewald/set_cp.c" >> $3
+echo  "/interface/cp_ewald/set_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/cp_ewald/set_cp.c $2/interface/cp_ewald/set_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/cp_ewald/set_recip.c" >> $3
+echo  "/interface/cp_ewald/set_recip.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/cp_ewald/set_recip.c $2/interface/cp_ewald/set_recip.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/handle/interface_hand.c" >> $3
+echo  "/interface/handle/interface_hand.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/handle/interface_hand.c $2/interface/handle/interface_hand.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/inter_params/control_inter_params.c" >> $3
+echo  "/interface/inter_params/control_inter_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/inter_params/control_inter_params.c $2/interface/inter_params/control_inter_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/inter_params/get_clong.c" >> $3
+echo  "/interface/inter_params/get_clong.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/inter_params/get_clong.c $2/interface/inter_params/get_clong.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/inter_params/set_inter_dict.c" >> $3
+echo  "/interface/inter_params/set_inter_dict.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/inter_params/set_inter_dict.c $2/interface/inter_params/set_inter_dict.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/inter_params/spline_fit.c" >> $3
+echo  "/interface/inter_params/spline_fit.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/inter_params/spline_fit.c $2/interface/inter_params/spline_fit.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/close_intra_params.c" >> $3
+echo  "/interface/intra_params/close_intra_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/close_intra_params.c $2/interface/intra_params/close_intra_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/control_intra_params.c" >> $3
+echo  "/interface/intra_params/control_intra_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/control_intra_params.c $2/interface/intra_params/control_intra_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/control_res_params.c" >> $3
+echo  "/interface/intra_params/control_res_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/control_res_params.c $2/interface/intra_params/control_res_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/fetch_free_energy_index.c" >> $3
+echo  "/interface/intra_params/fetch_free_energy_index.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/fetch_free_energy_index.c $2/interface/intra_params/fetch_free_energy_index.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/fetch_freeze.c" >> $3
+echo  "/interface/intra_params/fetch_freeze.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/fetch_freeze.c $2/interface/intra_params/fetch_freeze.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/fetch_hydrog_mass.c" >> $3
+echo  "/interface/intra_params/fetch_hydrog_mass.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/fetch_hydrog_mass.c $2/interface/intra_params/fetch_hydrog_mass.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/fetch_resbond_prm.c" >> $3
+echo  "/interface/intra_params/fetch_resbond_prm.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/fetch_resbond_prm.c $2/interface/intra_params/fetch_resbond_prm.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/fetch_residue.c" >> $3
+echo  "/interface/intra_params/fetch_residue.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/fetch_residue.c $2/interface/intra_params/fetch_residue.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/init_intra_params.c" >> $3
+echo  "/interface/intra_params/init_intra_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/init_intra_params.c $2/interface/intra_params/init_intra_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/intra_coefs.c" >> $3
+echo  "/interface/intra_params/intra_coefs.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/intra_coefs.c $2/interface/intra_params/intra_coefs.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/manipulate_res_bonds.c" >> $3
+echo  "/interface/intra_params/manipulate_res_bonds.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/manipulate_res_bonds.c $2/interface/intra_params/manipulate_res_bonds.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/replicate_mol.c" >> $3
+echo  "/interface/intra_params/replicate_mol.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/replicate_mol.c $2/interface/intra_params/replicate_mol.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/residue_bond.c" >> $3
+echo  "/interface/intra_params/residue_bond.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/residue_bond.c $2/interface/intra_params/residue_bond.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/set_intra_potent.c" >> $3
+echo  "/interface/intra_params/set_intra_potent.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/set_intra_potent.c $2/interface/intra_params/set_intra_potent.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/set_params/set_atm_mask.c" >> $3
+echo  "/interface/intra_params/set_params/set_atm_mask.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/set_params/set_atm_mask.c $2/interface/intra_params/set_params/set_atm_mask.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/set_params/set_atm_morph.c" >> $3
+echo  "/interface/intra_params/set_params/set_atm_morph.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/set_params/set_atm_morph.c $2/interface/intra_params/set_params/set_atm_morph.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/set_params/set_atm_params.c" >> $3
+echo  "/interface/intra_params/set_params/set_atm_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/set_params/set_atm_params.c $2/interface/intra_params/set_params/set_atm_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/set_params/set_bend_bnd_params.c" >> $3
+echo  "/interface/intra_params/set_params/set_bend_bnd_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/set_params/set_bend_bnd_params.c $2/interface/intra_params/set_params/set_bend_bnd_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/set_params/set_bend_params.c" >> $3
+echo  "/interface/intra_params/set_params/set_bend_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/set_params/set_bend_params.c $2/interface/intra_params/set_params/set_bend_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/set_params/set_bond_params.c" >> $3
+echo  "/interface/intra_params/set_params/set_bond_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/set_params/set_bond_params.c $2/interface/intra_params/set_params/set_bond_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/set_params/set_grp_con_params.c" >> $3
+echo  "/interface/intra_params/set_params/set_grp_con_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/set_params/set_grp_con_params.c $2/interface/intra_params/set_params/set_grp_con_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/set_params/set_intra_dict.c" >> $3
+echo  "/interface/intra_params/set_params/set_intra_dict.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/set_params/set_intra_dict.c $2/interface/intra_params/set_params/set_intra_dict.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/set_params/set_intra_dict_pot.c" >> $3
+echo  "/interface/intra_params/set_params/set_intra_dict_pot.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/set_params/set_intra_dict_pot.c $2/interface/intra_params/set_params/set_intra_dict_pot.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/set_params/set_mol_name_params.c" >> $3
+echo  "/interface/intra_params/set_params/set_mol_name_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/set_params/set_mol_name_params.c $2/interface/intra_params/set_params/set_mol_name_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/set_params/set_onfo_params.c" >> $3
+echo  "/interface/intra_params/set_params/set_onfo_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/set_params/set_onfo_params.c $2/interface/intra_params/set_params/set_onfo_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/set_params/set_res_bond_params.c" >> $3
+echo  "/interface/intra_params/set_params/set_res_bond_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/set_params/set_res_bond_params.c $2/interface/intra_params/set_params/set_res_bond_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/set_params/set_res_def_params.c" >> $3
+echo  "/interface/intra_params/set_params/set_res_def_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/set_params/set_res_def_params.c $2/interface/intra_params/set_params/set_res_def_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/set_params/set_res_morph_params.c" >> $3
+echo  "/interface/intra_params/set_params/set_res_morph_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/set_params/set_res_morph_params.c $2/interface/intra_params/set_params/set_res_morph_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/set_params/set_res_name_params.c" >> $3
+echo  "/interface/intra_params/set_params/set_res_name_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/set_params/set_res_name_params.c $2/interface/intra_params/set_params/set_res_name_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/intra_params/set_params/set_tors_params.c" >> $3
+echo  "/interface/intra_params/set_params/set_tors_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/intra_params/set_params/set_tors_params.c $2/interface/intra_params/set_params/set_tors_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/lists/block_intra_lists.c" >> $3
+echo  "/interface/lists/block_intra_lists.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/lists/block_intra_lists.c $2/interface/lists/block_intra_lists.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/lists/control_brnch_root_list.c" >> $3
+echo  "/interface/lists/control_brnch_root_list.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/lists/control_brnch_root_list.c $2/interface/lists/control_brnch_root_list.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/lists/exl_sort.c" >> $3
+echo  "/interface/lists/exl_sort.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/lists/exl_sort.c $2/interface/lists/exl_sort.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/lists/mall_lists.c" >> $3
+echo  "/interface/lists/mall_lists.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/lists/mall_lists.c $2/interface/lists/mall_lists.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/lists/set_exclude.c" >> $3
+echo  "/interface/lists/set_exclude.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/lists/set_exclude.c $2/interface/lists/set_exclude.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/mol_params/control_mol_params.c" >> $3
+echo  "/interface/mol_params/control_mol_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/mol_params/control_mol_params.c $2/interface/mol_params/control_mol_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/mol_params/set_params/control_set_mol_params.c" >> $3
+echo  "/interface/mol_params/set_params/control_set_mol_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/mol_params/set_params/control_set_mol_params.c $2/interface/mol_params/set_params/control_set_mol_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/mol_params/set_params/set_def_base_params.c" >> $3
+echo  "/interface/mol_params/set_params/set_def_base_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/mol_params/set_params/set_def_base_params.c $2/interface/mol_params/set_params/set_def_base_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/mol_params/set_params/set_free_params.c" >> $3
+echo  "/interface/mol_params/set_params/set_free_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/mol_params/set_params/set_free_params.c $2/interface/mol_params/set_params/set_free_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/mol_params/set_params/set_mol_dict.c" >> $3
+echo  "/interface/mol_params/set_params/set_mol_dict.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/mol_params/set_params/set_mol_dict.c $2/interface/mol_params/set_params/set_mol_dict.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/mol_params/set_params/set_mol_params.c" >> $3
+echo  "/interface/mol_params/set_params/set_mol_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/mol_params/set_params/set_mol_params.c $2/interface/mol_params/set_params/set_mol_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/mol_params/set_params/set_user_base_params.c" >> $3
+echo  "/interface/mol_params/set_params/set_user_base_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/mol_params/set_params/set_user_base_params.c $2/interface/mol_params/set_params/set_user_base_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/mol_params/set_params/set_wave_params.c" >> $3
+echo  "/interface/mol_params/set_params/set_wave_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/mol_params/set_params/set_wave_params.c $2/interface/mol_params/set_params/set_wave_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/parse/parse.c" >> $3
+echo  "/interface/parse/parse.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/parse/parse.c $2/interface/parse/parse.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/parse/zero_bnd.c" >> $3
+echo  "/interface/parse/zero_bnd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/parse/zero_bnd.c $2/interface/parse/zero_bnd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/parse/zero_class.c" >> $3
+echo  "/interface/parse/zero_class.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/parse/zero_class.c $2/interface/parse/zero_class.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/parse/zero_cp.c" >> $3
+echo  "/interface/parse/zero_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/parse/zero_cp.c $2/interface/parse/zero_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/parse/zero_par.c" >> $3
+echo  "/interface/parse/zero_par.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/parse/zero_par.c $2/interface/parse/zero_par.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/scratch/mall_scratch.c" >> $3
+echo  "/interface/scratch/mall_scratch.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/scratch/mall_scratch.c $2/interface/scratch/mall_scratch.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/search_base/data_base_handle.c" >> $3
+echo  "/interface/search_base/data_base_handle.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/search_base/data_base_handle.c $2/interface/search_base/data_base_handle.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/search_base/search_base_class.c" >> $3
+echo  "/interface/search_base/search_base_class.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/search_base/search_base_class.c $2/interface/search_base/search_base_class.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/search_base/search_base_cp.c" >> $3
+echo  "/interface/search_base/search_base_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/search_base/search_base_cp.c $2/interface/search_base/search_base_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/sim_params/control_sim_params.c" >> $3
+echo  "/interface/sim_params/control_sim_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/sim_params/control_sim_params.c $2/interface/sim_params/control_sim_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/sim_params/set_sim_dict.c" >> $3
+echo  "/interface/sim_params/set_sim_dict.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/sim_params/set_sim_dict.c $2/interface/sim_params/set_sim_dict.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/sim_params/set_sim_params.c" >> $3
+echo  "/interface/sim_params/set_sim_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/sim_params/set_sim_params.c $2/interface/sim_params/set_sim_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/vel_sampl_class/control_scale_class.c" >> $3
+echo  "/interface/vel_sampl_class/control_scale_class.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/vel_sampl_class/control_scale_class.c $2/interface/vel_sampl_class/control_scale_class.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/vel_sampl_class/control_vnhc_smpl.c" >> $3
+echo  "/interface/vel_sampl_class/control_vnhc_smpl.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/vel_sampl_class/control_vnhc_smpl.c $2/interface/vel_sampl_class/control_vnhc_smpl.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/vel_sampl_class/control_vx_smpl.c" >> $3
+echo  "/interface/vel_sampl_class/control_vx_smpl.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/vel_sampl_class/control_vx_smpl.c $2/interface/vel_sampl_class/control_vx_smpl.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/vel_sampl_class/proj_vel_class.c" >> $3
+echo  "/interface/vel_sampl_class/proj_vel_class.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/vel_sampl_class/proj_vel_class.c $2/interface/vel_sampl_class/proj_vel_class.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/vel_sampl_class/samp_vel_class.c" >> $3
+echo  "/interface/vel_sampl_class/samp_vel_class.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/vel_sampl_class/samp_vel_class.c $2/interface/vel_sampl_class/samp_vel_class.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/vel_sampl_cp/control_scale_cp.c" >> $3
+echo  "/interface/vel_sampl_cp/control_scale_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/vel_sampl_cp/control_scale_cp.c $2/interface/vel_sampl_cp/control_scale_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/vel_sampl_cp/control_vc_smpl.c" >> $3
+echo  "/interface/vel_sampl_cp/control_vc_smpl.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/vel_sampl_cp/control_vc_smpl.c $2/interface/vel_sampl_cp/control_vc_smpl.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/vel_sampl_cp/control_vcnhc_smpl.c" >> $3
+echo  "/interface/vel_sampl_cp/control_vcnhc_smpl.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/vel_sampl_cp/control_vcnhc_smpl.c $2/interface/vel_sampl_cp/control_vcnhc_smpl.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/vel_sampl_cp/proj_vel_cp.c" >> $3
+echo  "/interface/vel_sampl_cp/proj_vel_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/vel_sampl_cp/proj_vel_cp.c $2/interface/vel_sampl_cp/proj_vel_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/vel_sampl_cp/samp_vel_cp.c" >> $3
+echo  "/interface/vel_sampl_cp/samp_vel_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/vel_sampl_cp/samp_vel_cp.c $2/interface/vel_sampl_cp/samp_vel_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/vps_params/control_vps_params.c" >> $3
+echo  "/interface/vps_params/control_vps_params.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/vps_params/control_vps_params.c $2/interface/vps_params/control_vps_params.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/interface/vps_params/set_vps_dict.c" >> $3
+echo  "/interface/vps_params/set_vps_dict.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/interface/vps_params/set_vps_dict.c $2/interface/vps_params/set_vps_dict.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/main/cp/control_cp.c" >> $3
+echo  "/main/cp/control_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/main/cp/control_cp.c $2/main/cp/control_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/main/cp/control_cp_min.c" >> $3
+echo  "/main/cp/control_cp_min.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/main/cp/control_cp_min.c $2/main/cp/control_cp_min.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/main/cp/control_cp_pimd.c" >> $3
+echo  "/main/cp/control_cp_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/main/cp/control_cp_pimd.c $2/main/cp/control_cp_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/main/cp/control_cp_pimd_min.c" >> $3
+echo  "/main/cp/control_cp_pimd_min.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/main/cp/control_cp_pimd_min.c $2/main/cp/control_cp_pimd_min.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/main/debug/control_debug.c" >> $3
+echo  "/main/debug/control_debug.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/main/debug/control_debug.c $2/main/debug/control_debug.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/main/debug/control_debug_cp.c" >> $3
+echo  "/main/debug/control_debug_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/main/debug/control_debug_cp.c $2/main/debug/control_debug_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/main/debug/control_debug_cp_pimd.c" >> $3
+echo  "/main/debug/control_debug_cp_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/main/debug/control_debug_cp_pimd.c $2/main/debug/control_debug_cp_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/main/debug/control_debug_pimd.c" >> $3
+echo  "/main/debug/control_debug_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/main/debug/control_debug_pimd.c $2/main/debug/control_debug_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/main/main.c" >> $3
+echo  "/main/main.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/main/main.c $2/main/main.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/main/md/control_md.c" >> $3
+echo  "/main/md/control_md.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/main/md/control_md.c $2/main/md/control_md.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/main/md/control_min.c" >> $3
+echo  "/main/md/control_min.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/main/md/control_min.c $2/main/md/control_min.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/main/md/output_min.c" >> $3
+echo  "/main/md/output_min.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/main/md/output_min.c $2/main/md/output_min.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/main/pimd/control_pimd.c" >> $3
+echo  "/main/pimd/control_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/main/pimd/control_pimd.c $2/main/pimd/control_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/mathlib/math_matrix.c" >> $3
+echo  "/mathlib/math_matrix.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/mathlib/math_matrix.c $2/mathlib/math_matrix.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/mathlib/mathlib.c" >> $3
+echo  "/mathlib/mathlib.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/mathlib/mathlib.c $2/mathlib/mathlib.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/mathlib/ranlib.c" >> $3
+echo  "/mathlib/ranlib.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/mathlib/ranlib.c $2/mathlib/ranlib.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/mathlib/timing.c" >> $3
+echo  "/mathlib/timing.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/mathlib/timing.c $2/mathlib/timing.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/output/cp/output_cp.c" >> $3
+echo  "/output/cp/output_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/output/cp/output_cp.c $2/output/cp/output_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/output/cp/output_cp_min.c" >> $3
+echo  "/output/cp/output_cp_min.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/output/cp/output_cp_min.c $2/output/cp/output_cp_min.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/output/cp/simpavg_cp.c" >> $3
+echo  "/output/cp/simpavg_cp.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/output/cp/simpavg_cp.c $2/output/cp/simpavg_cp.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/output/cp/simpavg_cp_communicate.c" >> $3
+echo  "/output/cp/simpavg_cp_communicate.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/output/cp/simpavg_cp_communicate.c $2/output/cp/simpavg_cp_communicate.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/output/cppimd/communicate_output_cp_pimd.c" >> $3
+echo  "/output/cppimd/communicate_output_cp_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/output/cppimd/communicate_output_cp_pimd.c $2/output/cppimd/communicate_output_cp_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/output/cppimd/communicate_simpavg_cp_pimd.c" >> $3
+echo  "/output/cppimd/communicate_simpavg_cp_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/output/cppimd/communicate_simpavg_cp_pimd.c $2/output/cppimd/communicate_simpavg_cp_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/output/cppimd/output_cp_pimd.c" >> $3
+echo  "/output/cppimd/output_cp_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/output/cppimd/output_cp_pimd.c $2/output/cppimd/output_cp_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/output/cppimd/simpavg_cp_pimd.c" >> $3
+echo  "/output/cppimd/simpavg_cp_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/output/cppimd/simpavg_cp_pimd.c $2/output/cppimd/simpavg_cp_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/output/md/get_cell.c" >> $3
+echo  "/output/md/get_cell.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/output/md/get_cell.c $2/output/md/get_cell.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/output/md/output_md.c" >> $3
+echo  "/output/md/output_md.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/output/md/output_md.c $2/output/md/output_md.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/output/md/simpavg_md.c" >> $3
+echo  "/output/md/simpavg_md.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/output/md/simpavg_md.c $2/output/md/simpavg_md.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/output/pimd/communicate_output_pimd.c" >> $3
+echo  "/output/pimd/communicate_output_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/output/pimd/communicate_output_pimd.c $2/output/pimd/communicate_output_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/output/pimd/output_pimd.c" >> $3
+echo  "/output/pimd/output_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/output/pimd/output_pimd.c $2/output/pimd/output_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/output/pimd/simpavg_pimd.c" >> $3
+echo  "/output/pimd/simpavg_pimd.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/output/pimd/simpavg_pimd.c $2/output/pimd/simpavg_pimd.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/output/pimd/simpavg_pimd_communicate.c" >> $3
+echo  "/output/pimd/simpavg_pimd_communicate.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/output/pimd/simpavg_pimd_communicate.c $2/output/pimd/simpavg_pimd_communicate.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/output/read_gen_header.c" >> $3
+echo  "/output/read_gen_header.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/output/read_gen_header.c $2/output/read_gen_header.c >> $3
+#
+echo  " " >>$3
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  "/output/write_gen_header.c" >> $3
+echo  "/output/write_gen_header.c" 
+echo  "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" >>$3
+echo  " " >>$3
+diff $1/output/write_gen_header.c $2/output/write_gen_header.c >> $3
