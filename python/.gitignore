@@ -1,0 +1,4 @@
+build
+piny/*.so
+piny/*.c
+piny/*.pyc

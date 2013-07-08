@@ -1,0 +1,239 @@
+#! /usr/bin/python
+
+"""
+Convert PINY trajectory output ("conf") to XYZ or GRO format.
+
+author: Ondrej Marsalek
+        ondrej.marsalek@gmail.com
+
+"""
+
+
+import sys
+import re
+import argparse
+
+import numpy as np
+
+from piny.tools import read_conf_header
+from piny.tools import read_conf_frame
+from piny.tools import write_XYZ_frame
+from piny.tools import write_XST_frame
+from piny.tools import write_GRO_frame
+
+
+#
+# constants
+#
+
+B2A = 0.52917721092         # Bohr in Angstrom
+B2nm = B2A * 0.1            # Bohr in nanometer
+au2ps = 2.418884326505e-5   # time a.u. in ps
+
+
+#
+# command line arguments and options
+#
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--conf', dest='fns_in', nargs='+', type=str,
+                    help='Input file names - PINY output conf files.')
+
+parser.add_argument('--out', dest='fn_out', type=str,
+                    help='Output trajectory file name - XYZ or GRO format.')
+
+parser.add_argument('--h-matrix', dest='fn_out_h', type=str,
+                    help='Output file name - h matrix in XST format.')
+
+parser.add_argument('--atom-info', dest='atom_info', action='store_true',
+                    help='Print information on all atoms.')
+
+parser.add_argument('--decimal', dest='dec', type=int, default=3,
+                    help='Number of decimal places in GRO file.')
+
+# run the option parser and get results
+args = parser.parse_args()
+
+# detect output file type from extension
+ext = args.fn_out.split('.')[-1]
+if ext == 'xyz':
+    file_format = 'xyz'
+elif ext == 'gro':
+    file_format = 'gro'
+else:
+    raise StandardError('Unknown extension: %s' % ext)
+
+#
+# open input files
+#
+
+fs_in = []
+for fn_in in args.fns_in:
+    fs_in.append(open(fn_in, 'r'))
+    header = read_conf_header(fs_in[-1])
+
+file_type, Dt, period, P, n_atoms, atom_info, types = header
+molecule_types, residue_types, atom_types = types
+atom_names, atom_residue_nums_global, atom_residue_types = atom_info
+
+
+#
+# open output files
+#
+
+try:
+    if P > 1:
+        fns_out = [args.fn_out % i for i in range(P)]
+    else:
+        fns_out = [args.fn_out]
+except TypeError:
+    raise StandardError('Output file name must contain one formatting field if P>1.')
+
+fs_out = [open(fns_out[i] , 'w') for i in range(P)]
+
+if args.fn_out_h is not None:
+    f_out_h = open(args.fn_out_h , 'w')
+
+
+#
+# print header
+#
+
+print
+print '============'
+print 'conf-to-traj'
+print '============'
+print
+print '         File type:', file_type
+print '   Number of atoms:', n_atoms
+print '   Number of beads:', P
+print '  Input file names: ' + '\n                    '.join(args.fns_in)
+print ' Output file names: ' + '\n                    '.join(fns_out)
+if args.fn_out_h is not None:
+    print 'H-matrix file name:',
+    print args.fn_out_h
+print
+print 'Molecule types'
+print '--------------'
+print
+for m in molecule_types:
+    print m
+print
+print 'Residue types'
+print '-------------'
+print
+for r in residue_types:
+    print r
+print
+print 'Atom types'
+print '----------'
+print
+for a in atom_types:
+    print a
+print
+
+if args.atom_info:
+    print 'Atom information'
+    print '----------------'
+    print
+    for i in range(n_atoms):
+        data = (i, atom_names[i], atom_residue_nums_global[i], atom_residue_types[i])
+        print '%4i %3s %4i %5s' % data
+    print
+
+
+#
+# process all frames
+#
+
+i_frame = 1
+fmt_item_xyz = '%' + '%i' % (args.dec+8) + '.' + str(args.dec) + 'f'
+
+for f_in in fs_in:
+
+    done = False
+
+    while True:
+
+        #
+        # read all data for one frame
+        #
+
+        # read atom positions of all replicas
+        pos_all = []
+        for i in range(P):
+            pos = read_conf_frame(f_in, n_atoms)
+            if pos is None:
+                done = True
+                break
+            if np.any(np.isnan(pos)):
+                print 'NaN encountered, aborting.'
+                done = True
+                break
+            pos_all.append(pos)
+
+        if done:
+            break
+
+        # centroid file contains velocities of first bead here, skip
+        if file_type == 'cen_file':
+            read_conf_frame(f_in, n_atoms)
+
+        # read h matrix
+        # box vectors are columns in PINY
+        h = read_conf_frame(f_in, 3)
+        if h is None:
+            raise StandardError('Incomplete frame, h matrix not found.')
+
+
+        #
+        # write all data for this frame
+        #
+
+        # write all coordinates
+        for i in range(P):
+
+            # put frame number and time in comment line
+            comment = 'i=%i, t=%.6f ps' % (i_frame, i_frame * Dt * period * au2ps)
+
+            if file_type == 'cen_file':
+                comment += ', centroid'
+            else:
+                comment += ', P = %i' % P
+
+            if file_format == 'xyz':
+
+                pos = pos_all[i] * B2A
+                write_XYZ_frame(fs_out[i], atom_names, pos, comment=comment, fmt_item=fmt_item_xyz)
+
+            elif file_format == 'gro':
+
+                write_GRO_frame(fs_out[i],
+                                atom_residue_nums_global,
+                                atom_residue_types,
+                                atom_names,
+                                pos_all[i] * B2nm,
+                                h=h * B2nm,
+                                comment=comment,
+                                dec=args.dec)
+
+            else:
+                raise StandardError('Unexpected file format: %s' % file_format)
+
+        # write h matrix if requested
+        if args.fn_out_h is not None:
+            write_XST_frame(f_out_h, h*B2A, i_frame)
+
+
+        #
+        # report progress and go to next frame
+        #
+
+        print 'Frame %6i done.\r' % i_frame,
+        sys.stdout.flush()
+
+        i_frame += 1
+
+print
+print
