@@ -218,7 +218,7 @@ void int_0_to_dt2_nvt(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
      }/*endif*/
      if(class->therm_info_class.therm_typ == 2 
        && class->therm_info_class.len_nhc == 3){
-       apply_GGMT2_par(&(class->clatoms_info),&(class->clatoms_pos[1]),
+       apply_GGMT3_par(&(class->clatoms_info),&(class->clatoms_pos[1]),
                    &(class->therm_info_class),&(class->therm_class),
                    &(class->int_scr),iflag_mass,&(class->class_comm_forc_pkg));
      }/*endif*/
