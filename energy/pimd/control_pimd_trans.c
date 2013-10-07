@@ -21,11 +21,49 @@
 #include "../proto_defs/proto_communicate_wrappers.h"
 
 
+#ifdef DEBUG
+void debug_print_pos(CLATOMS_POS *pos, int pi_beads, int ipart) {
+  int ip;
+  for(ip=1; ip<=pi_beads; ip++) {
+    printf("ipart=%03i ip=%03i %10.6f %10.6f %10.6f\n",
+           ipart,
+           ip,
+           pos[ip].x[1],
+           pos[ip].y[1],
+           pos[ip].z[1]);
+  }
+}
+
+void debug_print_force(CLATOMS_POS *pos, int pi_beads, int ipart) {
+  int ip;
+  for(ip=1; ip<=pi_beads; ip++) {
+    printf("ipart=%03i ip=%03i %10.6f %10.6f %10.6f\n",
+           ipart,
+           ip,
+           pos[ip].fx[1],
+           pos[ip].fy[1],
+           pos[ip].fz[1]);
+  }
+}
+
+void user_wait() {
+  printf("Press enter to continue.\n");
+  while(getchar() != '\n');
+}
+#endif
+
+
 /*==========================================================================*/
 void control_pimd_trans_force(CLASS *class, GENERAL_DATA *general_data) {
 /*==========================================================================*/
 
   if (class->communicate.np_beads == 1) {
+
+    #ifdef DEBUG
+    printf("DEBUG | serial foce transformation start\n");
+    debug_print_force(class->clatoms_pos, class->clatoms_info.pi_beads, 1);
+    user_wait();
+    #endif
 
     if (general_data->simopts.pi_md_typ == 1) {
       convert_pimd_force_stag(&(class->clatoms_info),
@@ -36,6 +74,12 @@ void control_pimd_trans_force(CLASS *class, GENERAL_DATA *general_data) {
                               class->clatoms_pos,
                               &(class->clatoms_tran));
     }
+
+    #ifdef DEBUG
+    printf("DEBUG | serial foce transformation end\n");
+    debug_print_force(class->clatoms_pos, class->clatoms_info.pi_beads, 1);
+    user_wait();
+    #endif
 
   } else {
 
@@ -63,6 +107,12 @@ void control_pimd_trans_mode(CLASS *class, GENERAL_DATA *general_data) {
 
   if (class->communicate.np_beads == 1) {
 
+    #ifdef DEBUG
+    printf("DEBUG | serial mode transformation start\n");
+    debug_print_pos(class->clatoms_pos, class->clatoms_info.pi_beads, 1);
+    user_wait();
+    #endif
+
     if (general_data->simopts.pi_md_typ == 1) {
       convert_pimd_mode_stag(&class->clatoms_info,
                              class->clatoms_pos,
@@ -73,8 +123,13 @@ void control_pimd_trans_mode(CLASS *class, GENERAL_DATA *general_data) {
                              &class->clatoms_tran);
     }
 
-  } else {
+    #ifdef DEBUG
+    printf("DEBUG | serial mode transformation end\n");
+    debug_print_pos(class->clatoms_pos, class->clatoms_info.pi_beads, 1);
+    user_wait();
+    #endif
 
+  } else {
     if (general_data->simopts.pi_md_typ == 1) {
       convert_pimd_mode_stag_par(&class->clatoms_info,
                                  class->clatoms_pos,
@@ -86,7 +141,6 @@ void control_pimd_trans_mode(CLASS *class, GENERAL_DATA *general_data) {
                                  &class->clatoms_tran,
                                  &class->communicate);
     }
-
   }
 
 }
@@ -155,6 +209,12 @@ void control_pimd_trans_pos(CLASS *class, GENERAL_DATA *general_data) {
 
   if (class->communicate.np_beads == 1) {
 
+    #ifdef DEBUG
+    printf("DEBUG | serial position transformation start\n");
+    debug_print_pos(class->clatoms_pos, class->clatoms_info.pi_beads, 1);
+    user_wait();
+    #endif
+
     if (general_data->simopts.pi_md_typ == 1) {
       convert_pimd_pos_stag(&class->clatoms_info,
                             class->clatoms_pos,
@@ -164,6 +224,12 @@ void control_pimd_trans_pos(CLASS *class, GENERAL_DATA *general_data) {
                             class->clatoms_pos,
                             &class->clatoms_tran);
     }
+
+    #ifdef DEBUG
+    printf("DEBUG | serial position transformation end\n");
+    debug_print_pos(class->clatoms_pos, class->clatoms_info.pi_beads, 1);
+    user_wait();
+    #endif
 
   } else {
 
@@ -177,7 +243,6 @@ void control_pimd_trans_pos(CLASS *class, GENERAL_DATA *general_data) {
                                 class->clatoms_pos,
                                 &class->clatoms_tran,
                                 &class->communicate);
-
     }
 
   }
