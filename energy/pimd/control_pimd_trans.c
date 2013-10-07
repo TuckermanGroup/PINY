@@ -54,54 +54,6 @@ void user_wait() {
 
 
 /*==========================================================================*/
-void control_pimd_trans_force(CLASS *class, GENERAL_DATA *general_data) {
-/*==========================================================================*/
-
-  if (class->communicate.np_beads == 1) {
-
-    #ifdef DEBUG
-    printf("DEBUG | serial foce transformation start\n");
-    debug_print_force(class->clatoms_pos, class->clatoms_info.pi_beads, 1);
-    user_wait();
-    #endif
-
-    if (general_data->simopts.pi_md_typ == 1) {
-      convert_pimd_force_stag(&(class->clatoms_info),
-                              class->clatoms_pos,
-                              &(class->clatoms_tran));
-    } else if (general_data->simopts.pi_md_typ == 2) {
-      convert_pimd_force_cent(&(class->clatoms_info),
-                              class->clatoms_pos,
-                              &(class->clatoms_tran));
-    }
-
-    #ifdef DEBUG
-    printf("DEBUG | serial foce transformation end\n");
-    debug_print_force(class->clatoms_pos, class->clatoms_info.pi_beads, 1);
-    user_wait();
-    #endif
-
-  } else {
-
-    if (general_data->simopts.pi_md_typ == 1) {
-      convert_pimd_force_stag_par(&(class->clatoms_info),
-                                  class->clatoms_pos,
-                                  &(class->clatoms_tran),
-                                  &(class->communicate));
-    } else if (general_data->simopts.pi_md_typ == 2) {
-      convert_pimd_force_cent_par(&(class->clatoms_info),
-                                  class->clatoms_pos,
-                                  &(class->clatoms_tran),
-                                  &(class->communicate));
-    }
-
-  }
-
-}
-/*--------------------------------------------------------------------------*/
-
-
-/*==========================================================================*/
 void control_pimd_trans_mode(CLASS *class, GENERAL_DATA *general_data) {
 /*==========================================================================*/
 
@@ -155,7 +107,7 @@ void control_pimd_trans_mode(CLASS *class, GENERAL_DATA *general_data) {
     Dbx_Barrier(comm_beads);
     for(iproc=0; iproc<num_proc; iproc++) {
       if(myid == iproc) {
-        for(ip=1;ip<=pi_beads_proc;ip++){
+        for(ip=1; ip<=pi_beads_proc; ip++) {
           printf("pos[%d].x[1]=%g\n", ip, class->clatoms_pos[ip].x[1]);
           printf("pos[%d].y[1]=%g\n", ip, class->clatoms_pos[ip].y[1]);
           printf("pos[%d].z[1]=%g\n", ip, class->clatoms_pos[ip].z[1]);
@@ -282,6 +234,54 @@ void control_pimd_trans_pos(CLASS *class, GENERAL_DATA *general_data) {
                                 class->clatoms_pos,
                                 &class->clatoms_tran,
                                 &class->communicate);
+    }
+
+  }
+
+}
+/*--------------------------------------------------------------------------*/
+
+
+/*==========================================================================*/
+void control_pimd_trans_force(CLASS *class, GENERAL_DATA *general_data) {
+/*==========================================================================*/
+
+  if (class->communicate.np_beads == 1) {
+
+    #ifdef DEBUG
+    printf("DEBUG | serial foce transformation start\n");
+    debug_print_force(class->clatoms_pos, class->clatoms_info.pi_beads, 1);
+    user_wait();
+    #endif
+
+    if (general_data->simopts.pi_md_typ == 1) {
+      convert_pimd_force_stag(&(class->clatoms_info),
+                              class->clatoms_pos,
+                              &(class->clatoms_tran));
+    } else if (general_data->simopts.pi_md_typ == 2) {
+      convert_pimd_force_cent(&(class->clatoms_info),
+                              class->clatoms_pos,
+                              &(class->clatoms_tran));
+    }
+
+    #ifdef DEBUG
+    printf("DEBUG | serial foce transformation end\n");
+    debug_print_force(class->clatoms_pos, class->clatoms_info.pi_beads, 1);
+    user_wait();
+    #endif
+
+  } else {
+
+    if (general_data->simopts.pi_md_typ == 1) {
+      convert_pimd_force_stag_par(&(class->clatoms_info),
+                                  class->clatoms_pos,
+                                  &(class->clatoms_tran),
+                                  &(class->communicate));
+    } else if (general_data->simopts.pi_md_typ == 2) {
+      convert_pimd_force_cent_par(&(class->clatoms_info),
+                                  class->clatoms_pos,
+                                  &(class->clatoms_tran),
+                                  &(class->communicate));
     }
 
   }
