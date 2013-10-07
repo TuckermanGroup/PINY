@@ -130,6 +130,7 @@ void control_pimd_trans_mode(CLASS *class, GENERAL_DATA *general_data) {
     #endif
 
   } else {
+
     if (general_data->simopts.pi_md_typ == 1) {
       convert_pimd_mode_stag_par(&class->clatoms_info,
                                  class->clatoms_pos,
@@ -141,6 +142,44 @@ void control_pimd_trans_mode(CLASS *class, GENERAL_DATA *general_data) {
                                  &class->clatoms_tran,
                                  &class->communicate);
     }
+
+    #ifdef DEBUG
+    int iproc, ip;
+    int myid = class->communicate.myid_bead;
+    int num_proc = class->communicate.np;
+    MPI_Comm comm_beads = class->communicate.comm_beads;
+    int natm_tot = class->clatoms_info.natm_tot;
+    int pi_beads_proc = class->clatoms_info.pi_beads_proc;
+
+    if (myid == 0) printf("DEBUG | parallel mode transformation end\n");
+    Dbx_Barrier(comm_beads);
+    for(iproc=0; iproc<num_proc; iproc++) {
+      if(myid == iproc) {
+        for(ip=1;ip<=pi_beads_proc;ip++){
+          printf("pos[%d].x[1]=%g\n", ip, class->clatoms_pos[ip].x[1]);
+          printf("pos[%d].y[1]=%g\n", ip, class->clatoms_pos[ip].y[1]);
+          printf("pos[%d].z[1]=%g\n", ip, class->clatoms_pos[ip].z[1]);
+        }
+      }
+      Dbx_Barrier(comm_beads);
+      if (myid == 0) user_wait();
+      Dbx_Barrier(comm_beads);
+    }
+
+    for(iproc=0; iproc<num_proc; iproc++) {
+      if(myid == iproc) {
+        for(ip=1; ip<=pi_beads_proc; ip++) {
+          printf("pos[%d].x[%d]=%g\n", ip, natm_tot, class->clatoms_pos[ip].x[natm_tot]);
+          printf("pos[%d].y[%d]=%g\n", ip, natm_tot, class->clatoms_pos[ip].y[natm_tot]);
+          printf("pos[%d].z[%d]=%g\n", ip, natm_tot, class->clatoms_pos[ip].z[natm_tot]);
+        }
+      }
+      Dbx_Barrier(comm_beads);
+      if (myid == 0) user_wait();
+      Dbx_Barrier(comm_beads);
+    }
+    #endif
+
   }
 
 }
