@@ -49,12 +49,13 @@ void control_md(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
 
   int itime,iii;        
 
-  int ntime         = general_data->timeinfo.ntime;
+  int ntime            = general_data->timeinfo.ntime;
 
-  int ensopts_nve   = general_data->ensopts.nve;
-  int ensopts_nvt   = general_data->ensopts.nvt;
-  int ensopts_npt_i = general_data->ensopts.npt_i;
-  int ensopts_npt_f = general_data->ensopts.npt_f;
+  int ensopts_nve      = general_data->ensopts.nve;
+  int ensopts_nvt      = general_data->ensopts.nvt;
+  int ensopts_nvt_isok = general_data->ensopts.nvt_isok;
+  int ensopts_npt_i    = general_data->ensopts.npt_i;
+  int ensopts_npt_f    = general_data->ensopts.npt_f;
 
   int int_res_tra   = general_data->timeinfo.int_res_tra;
   int int_res_ter   = general_data->timeinfo.int_res_ter;
@@ -120,8 +121,19 @@ void control_md(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
       }/*endif*/
     }/*endif*/
 
+  /*----------------------------------------------------------------------*/
+  /*   3) Do isokinetic NVT dynamics:                                                 */
+
+    if(ensopts_nvt_isok==1){
+      if((int_res_tra==0) && (int_res_ter==0)){
+        int_NVT_ISOK(class,bonded,general_data);
+      }else{
+        int_NVT_ISOK_res(class,bonded,general_data);
+      }/*endif*/
+    }/*endif*/
+
   /*---------------------------------------------------------------------*/
-  /*   3)Do isotropic npt dynamics:                                      */
+  /*   4)Do isotropic npt dynamics:                                      */
 
     if(ensopts_npt_i==1){
       if((int_res_ter==0) && (int_res_tra==0)){
@@ -132,7 +144,7 @@ void control_md(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
     }/*endif*/
 
   /*---------------------------------------------------------------------*/
-  /*   4)Do flexible npt dynamics:                                       */
+  /*   5)Do flexible npt dynamics:                                       */
     
     if(ensopts_npt_f==1){
       if((int_res_ter==0) && (int_res_tra==0)){
@@ -143,12 +155,12 @@ void control_md(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
     }/*endif*/
 
   /*----------------------------------------------------------------------*/
-  /*   5)Do analysis md:                                                 */
+  /*   6)Do analysis md:                                                 */
 
     analysis_md(class,general_data,bonded,analysis); 
 
   /*----------------------------------------------------------------------*/
-  /*   6)Calculate some simple averages                                   */
+  /*   7)Calculate some simple averages                                   */
 
     cputime(&(general_data->stat_avg.cpu2)); 
     (general_data->stat_avg.cpu_now)=(general_data->stat_avg.cpu2)-
@@ -163,7 +175,7 @@ void control_md(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
                &(class->nbr_list.verlist),&(class->energy_ctrl));
 
   /*-----------------------------------------------------------------------*/
-  /*   7)Produce the output specified by the user                          */
+  /*   8)Produce the output specified by the user                          */
 
     if(myid == 0) check_auto_exit(&(general_data->timeinfo.exit_flag));
     if(num_proc > 1) Bcast(&(general_data->timeinfo.exit_flag),1,MPI_INT,0,world);
@@ -180,7 +192,7 @@ void control_md(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
     }/*endif*/
 
   /*---------------------------------------------------------------------*/
-  /*   8)Resample the particle velocities if desired                     */
+  /*   9)Resample the particle velocities if desired                     */
 
     if( (ivel_smpl_on==1) && (nvx_smpl!=0) ){
       if( (itime % nvx_smpl)==0){
@@ -194,7 +206,7 @@ void control_md(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
     }/*endif*/
 
   /*---------------------------------------------------------------------*/
-  /*   9) Resample the extended class velocities if desired             */
+  /*   10) Resample the extended class velocities if desired             */
 
     if( (ivel_smpl_on==1) && (nvnhc_smpl!=0) ){
       if((itime % nvnhc_smpl)==0){
@@ -203,7 +215,7 @@ void control_md(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
     }/*endif*/
 
   /*---------------------------------------------------------------------*/
-  /*   10) Check for exit condition                                      */
+  /*   11) Check for exit condition                                      */
 
     if(general_data->timeinfo.exit_flag == 1) itime = ntime;
 
@@ -327,6 +339,16 @@ void prelim_md(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
 		   &(general_data->stat_avg), 
                    &(general_data->statepoint),iflag,
                      class->class_comm_forc_pkg.myid);
+  }/*endif*/
+  if((general_data->ensopts.nvt_isok)==1){
+	  init_NH_ISOK_par(&general_data,&(class->clatoms_info),&(class->clatoms_pos[1]),
+              &(class->therm_info_class),&(class->therm_class),
+              &(class->int_scr),iflag_mass,&(class->class_comm_forc_pkg),&(class->vel_samp_class));
+    iflag = 0;
+	nhc_vol_potkin_isok(&(class->clatoms_info),&(class->clatoms_pos[1]),&(class->therm_info_class),&(class->therm_class),
+            &(general_data->baro),&(general_data->par_rahman),
+            &(general_data->stat_avg),&(general_data->statepoint),
+            iflag,class->communicate.myid_forc,general_data->timeinfo.itime);
   }/*endif*/
   if((general_data->ensopts.npt_i)==1){
      init_NHCPI_par(&(class->clatoms_info),&(class->clatoms_pos[1]),

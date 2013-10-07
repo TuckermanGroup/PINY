@@ -41,6 +41,7 @@ void control_molec_decomp(CLASS *class,BONDED *bonded,
 /*               Local variable declarations                            */
      int i,iii;
      int nvt              = general_data->ensopts.nvt;
+     int nvt_isok         = general_data->ensopts.nvt_isok;
      int npt_i            = general_data->ensopts.npt_i;
      int npt_f            = general_data->ensopts.npt_f;
      int pimd_on; 
@@ -84,7 +85,7 @@ void control_molec_decomp(CLASS *class,BONDED *bonded,
 
 
 if(class->clatoms_info.pi_beads_proc_st==1){
- if(nvt + npt_i + npt_f > 0){
+ if(nvt + npt_i + npt_f +nvt_isok > 0){
   if(class->communicate.np_forc>1){  
      assign_thermo_forc(class);
   }else{
@@ -109,7 +110,7 @@ if(class->clatoms_info.pi_beads_proc_st==1){
 }/*endif*/
 
 if(pimd_on==1){
- if(nvt + npt_i + npt_f > 0){
+ if(nvt + npt_i + npt_f + nvt_isok > 0){
   if(class->communicate.np_forc>1){  
      assign_bead_thermo_forc(class);
   }else{

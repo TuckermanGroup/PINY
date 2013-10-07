@@ -361,7 +361,7 @@ void parse(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,CP *cp,
 
   if( (myid_state==0) || (np_forc > 1) ){
     if((general_data->ensopts.nvt+general_data->ensopts.npt_i
-       +general_data->ensopts.npt_f)==1){
+       +general_data->ensopts.npt_f+general_data->ensopts.nvt_isok)==1){
       set_atm_NHC(&(general_data->ensopts),&(general_data->statepoint), 
                   &(general_data->simopts),
                   &(class->clatoms_info),&(class->ghost_atoms),
@@ -713,7 +713,7 @@ void control_init_class_vsmpl(CLASS *class,CLASS_PARSE *class_parse,
 /* II) Extended system                                                    */
 
    if((general_data->ensopts.nvt+general_data->ensopts.npt_i
-     +general_data->ensopts.npt_f+general_data->ensopts.nst)==1){
+     +general_data->ensopts.npt_f+general_data->ensopts.nst+general_data->ensopts.nvt_isok)==1){
 
      if((class_parse->istart <= 3)||(class_parse->ivnhc_smpl == 1)){
         control_vnhc_smpl(class,general_data);

@@ -91,9 +91,22 @@ void control_vx_smpl(CLASS *class,BONDED *bonded,ENSOPTS *ensopts,
 
   if(myid_bead<np_beads){
 
-   sampl_vx(&(class->clatoms_info),(class->clatoms_pos),&(general_data->simopts),
+	  if(ensopts->nvt_isok==0){
+   sampl_vx(&(class->clatoms_info),(class->clatoms_pos),&(class->therm_info_class),&(class->therm_class),
+		   &(class->int_scr),&(general_data->simopts),&(general_data->ensopts),
 	   &(class->vel_samp_class.iseed),&(class->vel_samp_class.iseed2),
            &(class->vel_samp_class.qseed));
+
+	  }/*endif not nvt_isok*/
+	  else{
+		  sampl_vx_vnhc_isok(&(class->clatoms_info),(class->clatoms_pos),&(class->therm_info_class),&(class->therm_class),
+				   &(class->int_scr),&(general_data->simopts),&(general_data->ensopts),
+			   &(class->vel_samp_class.iseed),&(class->vel_samp_class.iseed2),
+		           &(class->vel_samp_class.qseed));
+	  }/*endelse -- i.e. ensemble is nvt_isok*/
+
+
+
 
   }/*endif*/
 

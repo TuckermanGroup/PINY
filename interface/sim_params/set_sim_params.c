@@ -835,18 +835,21 @@ void set_sim_params_gen(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
   if(ifound != 1) keyarg_barf(dict,filename_parse->input_name,fun_key,index);
 
   /*-----------------------------------------------------------------------*/ 
-  /*  2)\ensemble_typ{nve,nvt,npt_i,npt_f,nst} */
+  /*  2)\ensemble_typ{nve,nvt,nvt_isok,npt_i,npt_f,nst} */
         ifound = 0;
-        general_data->ensopts.nve = 0;
-        general_data->ensopts.nvt = 0;
-        general_data->ensopts.npt_i = 0;
-        general_data->ensopts.npt_f = 0;
-        general_data->ensopts.nst = 0;
+        general_data->ensopts.nve      = 0;
+        general_data->ensopts.nvt      = 0;
+        general_data->ensopts.nvt_isok = 0;
+        general_data->ensopts.npt_i    = 0;
+        general_data->ensopts.npt_f    = 0;
+        general_data->ensopts.nst      = 0;
 
         if(strcasecmp(dict[2].keyarg,"nve")==0)  {
            general_data->ensopts.nve = 1;ifound++;}
         if(strcasecmp(dict[2].keyarg,"nvt")==0)  {
            general_data->ensopts.nvt = 1;ifound++;}
+        if(strcasecmp(dict[2].keyarg,"nvt_isok")==0)  {
+           general_data->ensopts.nvt_isok = 1;ifound++;}
         if(strcasecmp(dict[2].keyarg,"npt_i")==0){
            general_data->ensopts.npt_i = 1;ifound++;}
         if(strcasecmp(dict[2].keyarg,"npt_f")==0){

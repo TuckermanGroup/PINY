@@ -516,6 +516,7 @@ double nshare;
     stat_avg->vpotnhc = vpotnhc;
     stat_avg->kinet_nhc = kinet_nhc;
 
+
 /*==========================================================================*/
 /* II) vol stuff */
 
@@ -539,6 +540,86 @@ double nshare;
 /*end routine*/}
 /*========================================================================*/
 
+/*==========================================================================*/
+/*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
+/*==========================================================================*/
+
+void nhc_vol_potkin_isok(CLATOMS_INFO *clatoms_info, CLATOMS_POS *clatoms_pos, THERM_INFO *therm_info_class,
+                    THERM_POS *therm_class,
+                    BARO *baro, PAR_RAHMAN *par_rahman,
+                    STAT_AVG *stat_avg, STATEPOINT *statepoint, int iflag,
+                    int myid_forc,int timeinfo)
+
+/*========================================================================*/
+{/*begin routine*/
+/*========================================================================*/
+/*             Local variable declarations                                */
+
+int ipart,i,inhc,iii;
+int len_nhc,num_nhc;
+double kinet_nhc,vpotnhc,kinet;
+double cst,temp;
+double *class_clatoms_vx  = clatoms_pos->vx;
+double *class_clatoms_vy  = clatoms_pos->vy;
+double *class_clatoms_vz  = clatoms_pos->vz;
+double *class_mass        = clatoms_info->mass;
+int *therm_inhc_x		   = therm_info_class->inhc_x;
+int *therm_inhc_y		   = therm_info_class->inhc_y;
+int *therm_inhc_z		   = therm_info_class->inhc_z;
+double **therm_v1_nhc = therm_class->x_nhc;
+double **therm_v2_nhc = therm_class->v_nhc;
+double **therm_mass_nhc = therm_info_class->mass_nhc;
+int mytherm_start = therm_info_class->mytherm_start;
+int mytherm_end = therm_info_class->mytherm_end;
+int *itherm_nshare = therm_info_class->itherm_nshare;
+double nshare;
+
+kinet     = 0.0;
+vpotnhc   = 0.0;
+kinet_nhc = 0.0;
+len_nhc   = therm_info_class->len_nhc;
+num_nhc   = therm_info_class->num_nhc;
+int natm_tot  = clatoms_info->natm_tot;
+double lennhc	      	   = (double)len_nhc;
+double L_L1				   = lennhc/(lennhc+1.0);
+
+for(ipart=1;ipart<=natm_tot;ipart++){
+	  kinet += class_mass[ipart]*class_clatoms_vx[ipart]*class_clatoms_vx[ipart];
+	  kinet += class_mass[ipart]*class_clatoms_vy[ipart]*class_clatoms_vy[ipart];
+	  kinet += class_mass[ipart]*class_clatoms_vz[ipart]*class_clatoms_vz[ipart];
+  for(inhc=1;inhc<=len_nhc;inhc++){
+	  vpotnhc += (therm_mass_nhc[inhc][therm_inhc_x[ipart]]
+                   *therm_v1_nhc[inhc][therm_inhc_x[ipart]]*therm_v1_nhc[inhc][therm_inhc_x[ipart]]);
+	  vpotnhc += (therm_mass_nhc[inhc][therm_inhc_y[ipart]]
+                   *therm_v1_nhc[inhc][therm_inhc_y[ipart]]*therm_v1_nhc[inhc][therm_inhc_y[ipart]]);
+	  vpotnhc += (therm_mass_nhc[inhc][therm_inhc_z[ipart]]
+                   *therm_v1_nhc[inhc][therm_inhc_z[ipart]]*therm_v1_nhc[inhc][therm_inhc_z[ipart]]);
+	  kinet_nhc += (therm_mass_nhc[inhc][therm_inhc_x[ipart]]
+	                 *therm_v2_nhc[inhc][therm_inhc_x[ipart]]*therm_v2_nhc[inhc][therm_inhc_x[ipart]]);
+	  kinet_nhc += (therm_mass_nhc[inhc][therm_inhc_y[ipart]]
+	                 *therm_v2_nhc[inhc][therm_inhc_y[ipart]]*therm_v2_nhc[inhc][therm_inhc_y[ipart]]);
+	  kinet_nhc += (therm_mass_nhc[inhc][therm_inhc_z[ipart]]
+	                 *therm_v2_nhc[inhc][therm_inhc_z[ipart]]*therm_v2_nhc[inhc][therm_inhc_z[ipart]]);
+  }
+}
 
 
+
+stat_avg->vpotnhc = kinet + (L_L1*vpotnhc);
+if((timeinfo)==1){
+	stat_avg->isok0 = stat_avg->vpotnhc;
+	stat_avg->isokconv = 0.0;
+}
+	cst = fabs(((stat_avg->vpotnhc)-(stat_avg->isok0))/(stat_avg->isok0));
+	stat_avg->isokconv	     = stat_avg->isokconv + cst;
+	stat_avg->isokconv_now   = cst;
+
+stat_avg->kinet_nhc = BOLTZ*kinet_nhc/(natm_tot*3.0*lennhc);
+
+
+
+
+/*------------------------------------------------------------------------*/
+/*end routine*/}
+/*========================================================================*/
 

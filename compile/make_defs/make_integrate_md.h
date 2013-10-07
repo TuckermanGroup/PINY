@@ -60,6 +60,24 @@ int_NVT_res.o    :       $(STANDARD) $(DEFINES) \
 	$(COBJ) $(CODE)/integrate/md/int_NVT_res.c
 
 #------------------------------------------------------------------
+int_NVT_ISOK.o     :     $(STANDARD) $(DEFINES) \
+                         $(TYP_CLASS) $(TYP_BND) $(TYP_GEN) \
+                         $(INT_MD_ENT) $(INT_MD_LOC) $(INTRA_CON_ENT) \
+                         $(ENR_CTRL_ENT) $(COMM_WRAP) \
+                         $(CODE)/integrate/md/int_NVT_ISOK.c
+	$(ECHO) $@
+	$(COBJ) $(CODE)/integrate/md/int_NVT_ISOK.c
+
+#------------------------------------------------------------------
+int_NVT_ISOK_res.o    :  $(STANDARD) $(DEFINES) \
+                         $(TYP_CLASS) $(TYP_BND) $(TYP_GEN) \
+                         $(INT_MD_ENT) $(INT_MD_LOC) $(INTRA_CON_ENT) \
+                         $(ENR_CTRL_ENT) \
+                         $(CODE)/integrate/md/int_NVT_ISOK_res.c
+	$(ECHO) $@
+	$(COBJ) $(CODE)/integrate/md/int_NVT_ISOK_res.c
+
+#------------------------------------------------------------------
 int_NPTI.o     :         $(STANDARD) $(DEFINES) \
                          $(TYP_CLASS) $(TYP_BND) $(TYP_GEN) \
                          $(INT_MD_ENT) $(INT_MD_LOC) $(INTRA_CON_ENT) \

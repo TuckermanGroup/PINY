@@ -219,8 +219,9 @@ typedef struct stat_avg {
   double fatm_max,fatm_mag;          /* Num: Max mag of atm  force     */
   double count_diag_srot;            /* Num: Number of rotations to 
                                              diagonal ovlap basis      */
-  double econv_now;                       /* Num: The conserved quantity    */
-  
+  double econv_now;                  /* Num: The conserved quantity    */
+  double isokconv,isokconv_now, isok0;
+                                     /* Num: Inst Isokinetic Cosntraint */
 } STAT_AVG;
 
 /*==========================================================================*/
@@ -317,7 +318,7 @@ typedef struct minopts {
 /*             {Variables needed for mem allocation:}                       */
 
 typedef struct ensopts{
-  int nve,nvt,npt_i,npt_f,nst; /* Opt: Stat mech ensembles            */
+  int nve,nvt,nvt_isok,npt_i,npt_f,nst;    /* Opt: Stat mech ensembles      */
 } ENSOPTS;
 
 /*==========================================================================*/

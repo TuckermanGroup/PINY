@@ -25,10 +25,279 @@
 /*===================================================================*/
 /*ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
 /*===================================================================*/
-/* Particle Velocities */
+
+
+
 /*===================================================================*/
-void sampl_vx(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
-              SIMOPTS *simopts,int *iseed,int *iseed2,double *qseed)
+void sampl_vx_vnhc_isok(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,THERM_INFO *therm_info_class,THERM_POS *therm_class,
+		INT_SCR *int_scr,SIMOPTS *simopts,ENSOPTS *ensopts,int *iseed,int *iseed2,double *qseed)
+{/*begin routine*/
+/* ==================================================================*/
+/*               Local variable declarations                         */
+    int ipart,inhc,ichain,ip;   /* Num: for loop counters */
+    int natm_tot=clatoms_info->natm_tot;;
+    int num_nhc,iii;
+    double cst1,cst2,cst3,arg;
+    int *therm_inhc_x		   = therm_info_class->inhc_x;
+    int *therm_inhc_y		   = therm_info_class->inhc_y;
+    int *therm_inhc_z		   = therm_info_class->inhc_z;
+    int len_nhc 			   = therm_info_class->len_nhc;	  /* Length of Nose-like chain */
+    double lennhc	      	   = (double)len_nhc;		  /* For when I need LkT    */
+    double L_L1				   = lennhc/(lennhc+1.0);
+    double *class_clatoms_mass = clatoms_info->mass;
+    double *int_scr_atm_kin    = int_scr->atm_kin;
+    double **therm_v1_nhc      = therm_class->x_nhc;
+    double **therm_v2_nhc      = therm_class->v_nhc;
+    double **therm_mass_nhc    = therm_info_class->mass_nhc;
+    double **therm_gkt         = therm_info_class->gkt;
+    double *class_clatoms_vx, *class_clatoms_vy, *class_clatoms_vz;
+    int myatm_start 		   = clatoms_info->myatm_start;
+    int myatm_end 			   = clatoms_info->myatm_end;
+    int mytherm_start 		   = therm_info_class->mytherm_start;
+    int mytherm_end 		   = therm_info_class->mytherm_end;
+    int num_nhc_share 		   = therm_info_class->num_nhc_share;
+    int *map_share   		   = therm_info_class->map_share;
+    int pi_beads = clatoms_info->pi_beads;
+    int pi_beads_proc = clatoms_info->pi_beads_proc;
+
+    double kin_tot=0.0;
+    double nhckin=0.0;
+
+
+
+/*--------------------------------------------------------------------------*/
+/* I) Randomly Assign {v_{2j}}  */
+
+       for(ipart=myatm_start;ipart<=myatm_end;ipart++){
+
+        	  gaussran(len_nhc,iseed,iseed2,qseed,int_scr_atm_kin);
+        	  for(ichain=1;ichain<=len_nhc;ichain++){
+        		  therm_v2_nhc[ichain][therm_inhc_x[ipart]]
+        		    =sqrt(therm_gkt[ichain][therm_inhc_x[ipart]]/therm_mass_nhc[ichain][therm_inhc_x[ipart]])
+        		    *int_scr_atm_kin[ichain];
+        	  }
+
+
+        	  gaussran(len_nhc,iseed,iseed2,qseed,int_scr_atm_kin);
+        	  for(ichain=1;ichain<=len_nhc;ichain++){
+        		  therm_v2_nhc[ichain][therm_inhc_y[ipart]]
+        		    =sqrt(therm_gkt[ichain][therm_inhc_y[ipart]]/therm_mass_nhc[ichain][therm_inhc_y[ipart]])
+        		    *int_scr_atm_kin[ichain];
+        	  }
+
+
+        	  gaussran(len_nhc,iseed,iseed2,qseed,int_scr_atm_kin);
+        	  for(ichain=1;ichain<=len_nhc;ichain++){
+        		  therm_v2_nhc[ichain][therm_inhc_z[ipart]]
+        		    =sqrt(therm_gkt[ichain][therm_inhc_z[ipart]]/therm_mass_nhc[ichain][therm_inhc_z[ipart]])
+        		    *int_scr_atm_kin[ichain];
+        	  }
+        }
+
+/*--------------------------------------------------------------------------*/
+/* II) Assign {v and v_{1j}} to Satisfy Isokinetic Constraint  */
+
+    for(ip=1;ip<=pi_beads_proc;ip++){
+         class_clatoms_vx = clatoms_pos[ip].vx;
+         class_clatoms_vy = clatoms_pos[ip].vy;
+         class_clatoms_vz = clatoms_pos[ip].vz;
+
+          for(ipart=myatm_start;ipart<=myatm_end;ipart++){
+
+      	      gaussran(1,iseed,iseed2,qseed,int_scr_atm_kin);
+              class_clatoms_vx[ipart]=int_scr_atm_kin[1];
+              gaussran(len_nhc,iseed,iseed2,qseed,int_scr_atm_kin);
+
+        	for(ichain=1;ichain<=len_nhc;ichain++){
+        		therm_v1_nhc[ichain][therm_inhc_x[ipart]]=int_scr_atm_kin[ichain];
+        	}
+        	cst1=class_clatoms_vx[ipart]*class_clatoms_vx[ipart];
+        	for(ichain=1;ichain<=len_nhc;ichain++){
+        		cst1+=therm_v1_nhc[ichain][therm_inhc_x[ipart]]*therm_v1_nhc[ichain][therm_inhc_x[ipart]];
+        	}
+        	cst1=sqrt(cst1);
+        	class_clatoms_vx[ipart]/=cst1;
+        	for(ichain=1;ichain<=len_nhc;ichain++){
+        		therm_v1_nhc[ichain][therm_inhc_x[ipart]]/=cst1;
+        	}
+
+        	class_clatoms_vx[ipart] /= sqrt(class_clatoms_mass[ipart]/(lennhc*therm_gkt[1][therm_inhc_x[ipart]]));
+        	for(ichain=1;ichain<=len_nhc;ichain++){
+        		therm_v1_nhc[ichain][therm_inhc_x[ipart]] /= sqrt(therm_mass_nhc[ichain][therm_inhc_x[ipart]]
+                                                                   /((lennhc+1.0)*therm_gkt[1][therm_inhc_x[ipart]]));
+        	}
+        	cst1=class_clatoms_mass[ipart]*class_clatoms_vx[ipart]*class_clatoms_vx[ipart];
+        	for(ichain=1;ichain<=len_nhc;ichain++){
+        		cst1+=L_L1*therm_mass_nhc[ichain][therm_inhc_x[ipart]]
+                             *therm_v1_nhc[ichain][therm_inhc_x[ipart]]*therm_v1_nhc[ichain][therm_inhc_x[ipart]];
+        	}
+
+      	      gaussran(1,iseed,iseed2,qseed,int_scr_atm_kin);
+              class_clatoms_vy[ipart]=int_scr_atm_kin[1];
+              gaussran(len_nhc,iseed,iseed2,qseed,int_scr_atm_kin);
+
+        	for(ichain=1;ichain<=len_nhc;ichain++){
+        		therm_v1_nhc[ichain][therm_inhc_y[ipart]]=int_scr_atm_kin[ichain];
+        	}
+        	cst1=class_clatoms_vy[ipart]*class_clatoms_vy[ipart];
+        	for(ichain=1;ichain<=len_nhc;ichain++){
+        		cst1+=therm_v1_nhc[ichain][therm_inhc_y[ipart]]*therm_v1_nhc[ichain][therm_inhc_y[ipart]];
+        	}
+        	cst1=sqrt(cst1);
+        	class_clatoms_vy[ipart]/=cst1;
+        	for(ichain=1;ichain<=len_nhc;ichain++){
+        		therm_v1_nhc[ichain][therm_inhc_y[ipart]]/=cst1;
+        	}
+
+        	class_clatoms_vy[ipart] /= sqrt(class_clatoms_mass[ipart]/(lennhc*therm_gkt[1][therm_inhc_y[ipart]]));
+        	for(ichain=1;ichain<=len_nhc;ichain++){
+        		therm_v1_nhc[ichain][therm_inhc_y[ipart]] /= sqrt(therm_mass_nhc[ichain][therm_inhc_y[ipart]]
+                                                                   /((lennhc+1.0)*therm_gkt[1][therm_inhc_y[ipart]]));
+        	}
+        	cst1=class_clatoms_mass[ipart]*class_clatoms_vy[ipart]*class_clatoms_vy[ipart];
+        	for(ichain=1;ichain<=len_nhc;ichain++){
+        		cst1+=L_L1*therm_mass_nhc[ichain][therm_inhc_y[ipart]]
+                             *therm_v1_nhc[ichain][therm_inhc_y[ipart]]*therm_v1_nhc[ichain][therm_inhc_y[ipart]];
+        	}
+
+      	      gaussran(1,iseed,iseed2,qseed,int_scr_atm_kin);
+              class_clatoms_vz[ipart]=int_scr_atm_kin[1];
+              gaussran(len_nhc,iseed,iseed2,qseed,int_scr_atm_kin);
+
+        	for(ichain=1;ichain<=len_nhc;ichain++){
+        		therm_v1_nhc[ichain][therm_inhc_z[ipart]]=int_scr_atm_kin[ichain];
+        	}
+        	cst1=class_clatoms_vz[ipart]*class_clatoms_vz[ipart];
+        	for(ichain=1;ichain<=len_nhc;ichain++){
+        		cst1+=therm_v1_nhc[ichain][therm_inhc_z[ipart]]*therm_v1_nhc[ichain][therm_inhc_z[ipart]];
+        	}
+        	cst1=sqrt(cst1);
+        	class_clatoms_vz[ipart]/=cst1;
+        	for(ichain=1;ichain<=len_nhc;ichain++){
+        		therm_v1_nhc[ichain][therm_inhc_z[ipart]]/=cst1;
+        	}
+
+        	class_clatoms_vz[ipart] /= sqrt(class_clatoms_mass[ipart]/(lennhc*therm_gkt[1][therm_inhc_z[ipart]]));
+        	for(ichain=1;ichain<=len_nhc;ichain++){
+        		therm_v1_nhc[ichain][therm_inhc_z[ipart]] /= sqrt(therm_mass_nhc[ichain][therm_inhc_z[ipart]]
+                                                                   /((lennhc+1.0)*therm_gkt[1][therm_inhc_z[ipart]]));
+        	}
+        	cst1=class_clatoms_mass[ipart]*class_clatoms_vz[ipart]*class_clatoms_vz[ipart];
+        	for(ichain=1;ichain<=len_nhc;ichain++){
+        		cst1+=L_L1*therm_mass_nhc[ichain][therm_inhc_z[ipart]]
+                             *therm_v1_nhc[ichain][therm_inhc_z[ipart]]*therm_v1_nhc[ichain][therm_inhc_z[ipart]];
+        	}
+
+
+
+	  } /* endfor particle loop */
+    }/* endfor ip */
+
+    for(ip=1;ip<=pi_beads_proc;ip++){
+         class_clatoms_vx = clatoms_pos[ip].vx;
+         class_clatoms_vy = clatoms_pos[ip].vy;
+         class_clatoms_vz = clatoms_pos[ip].vz;
+
+          for(ipart=1;ipart<=natm_tot;ipart++){
+            kin_tot += class_clatoms_mass[ipart]*class_clatoms_vx[ipart]*class_clatoms_vx[ipart];
+            kin_tot += class_clatoms_mass[ipart]*class_clatoms_vy[ipart]*class_clatoms_vy[ipart];
+            kin_tot += class_clatoms_mass[ipart]*class_clatoms_vz[ipart]*class_clatoms_vz[ipart];
+            for(ichain=1;ichain<=len_nhc;ichain++){
+                nhckin += therm_mass_nhc[ichain][therm_inhc_x[ipart]]
+                                *therm_v1_nhc[ichain][therm_inhc_x[ipart]]*therm_v1_nhc[ichain][therm_inhc_x[ipart]];
+                nhckin += therm_mass_nhc[ichain][therm_inhc_y[ipart]]
+                                *therm_v1_nhc[ichain][therm_inhc_y[ipart]]*therm_v1_nhc[ichain][therm_inhc_y[ipart]];
+                nhckin += therm_mass_nhc[ichain][therm_inhc_z[ipart]]
+                                *therm_v1_nhc[ichain][therm_inhc_z[ipart]]*therm_v1_nhc[ichain][therm_inhc_z[ipart]];
+            }
+
+          }
+   }
+
+
+
+}/*end routine*/
+/*===================================================================*/
+
+/*===================================================================*/
+/* Isokinetic Restart */
+
+void sampl_isok_restart(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,THERM_INFO *therm_info_class,THERM_POS *therm_class)
+{/*begin routine*/
+/* ==================================================================*/
+/*               Local variable declarations                         */
+    int ipart,inhc,ichain,ip;   /* Num: for loop counters */
+    int natm_tot=clatoms_info->natm_tot;;
+    int num_nhc,iii;
+    double cst1,cst2,cst3,arg;
+    int *therm_inhc_x		   = therm_info_class->inhc_x;
+    int *therm_inhc_y		   = therm_info_class->inhc_y;
+    int *therm_inhc_z		   = therm_info_class->inhc_z;
+    int len_nhc 			   = therm_info_class->len_nhc;	  /* Length of Nose-like chain */
+    double lennhc	      	   = (double)len_nhc;		  /* For when I need LkT    */
+    double L_L1				   = lennhc/(lennhc+1.0);
+    double *class_clatoms_mass = clatoms_info->mass;
+    double **therm_v1_nhc      = therm_class->x_nhc;
+    double **therm_v2_nhc      = therm_class->v_nhc;
+    double **therm_mass_nhc    = therm_info_class->mass_nhc;
+    double **therm_gkt         = therm_info_class->gkt;
+    double *class_clatoms_vx   = clatoms_pos[1].vx;
+    double *class_clatoms_vy   = clatoms_pos[1].vy;
+    double *class_clatoms_vz   = clatoms_pos[1].vz;
+    int myatm_start 		   = clatoms_info->myatm_start;
+    int myatm_end 			   = clatoms_info->myatm_end;
+    int mytherm_start 		   = therm_info_class->mytherm_start;
+    int mytherm_end 		   = therm_info_class->mytherm_end;
+    int num_nhc_share 		   = therm_info_class->num_nhc_share;
+    int *map_share   		   = therm_info_class->map_share;
+    int pi_beads 		       = clatoms_info->pi_beads;
+    int pi_beads_proc 	       = clatoms_info->pi_beads_proc;
+
+/*-------------------------------------------------------------------*/
+/* I) Assign {v_{1j}} to Satisfy Isokinetic Constraint  */
+
+
+	   for(ipart=1;ipart<=natm_tot;ipart++){
+		   if( (class_clatoms_mass[ipart]*class_clatoms_vx[ipart]*class_clatoms_vx[ipart]) >= (lennhc*therm_gkt[1][1]) ){
+			   class_clatoms_vx[ipart]=0.0;
+		   }
+		   for(ichain=1;ichain<=len_nhc;ichain++){
+			   cst1 = (lennhc*therm_gkt[1][1]) - (class_clatoms_mass[ipart]*class_clatoms_vx[ipart]*class_clatoms_vx[ipart]);
+			   cst1/= (lennhc*L_L1*therm_mass_nhc[ichain][therm_inhc_x[ipart]]);
+			   therm_v1_nhc[ichain][therm_inhc_x[ipart]] = sqrt(cst1);
+		   }
+
+		   if( (class_clatoms_mass[ipart]*class_clatoms_vy[ipart]*class_clatoms_vy[ipart]) >= (lennhc*therm_gkt[1][1]) ){
+			   class_clatoms_vy[ipart]=0.0;
+		   }
+		   for(ichain=1;ichain<=len_nhc;ichain++){
+			   cst1 = (lennhc*therm_gkt[1][1]) - (class_clatoms_mass[ipart]*class_clatoms_vy[ipart]*class_clatoms_vy[ipart]);
+			   cst1/= (lennhc*L_L1*therm_mass_nhc[ichain][therm_inhc_y[ipart]]);
+			   therm_v1_nhc[ichain][therm_inhc_y[ipart]] = sqrt(cst1);
+		   }
+
+		   if( (class_clatoms_mass[ipart]*class_clatoms_vz[ipart]*class_clatoms_vz[ipart]) >= (lennhc*therm_gkt[1][1]) ){
+			   class_clatoms_vz[ipart]=0.0;
+		   }
+		   for(ichain=1;ichain<=len_nhc;ichain++){
+			   cst1 = (lennhc*therm_gkt[1][1]) - (class_clatoms_mass[ipart]*class_clatoms_vz[ipart]*class_clatoms_vz[ipart]);
+			   cst1/= (lennhc*L_L1*therm_mass_nhc[ichain][therm_inhc_z[ipart]]);
+			   therm_v1_nhc[ichain][therm_inhc_z[ipart]] = sqrt(cst1);
+		   }
+
+
+	   } /* endfor particle loop */
+printf("Isokinetic Restart Complete");
+
+}/*end routine */
+
+/*===================================================================*/
+/*ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
+/* Particle Velocities */
+
+
+void sampl_vx(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,THERM_INFO *therm_info_class,THERM_POS *therm_class,
+				INT_SCR *int_scr,SIMOPTS *simopts,ENSOPTS *ensopts,int *iseed,int *iseed2,double *qseed)
 
 {/*begin routine*/
 /* ==================================================================*/
@@ -39,6 +308,10 @@ void sampl_vx(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
     int anneal_opt = simopts->anneal_opt;
     double ann_start_temp = simopts->ann_start_temp;
     double width,*vx,*vy,*vz,*text_atm,*mass,start_temp;
+
+
+
+
 /*-------------------------------------------------------------------*/
    for(ip=1;ip<=pi_beads_proc;ip++){
      vx = clatoms_pos[ip].vx;
@@ -78,6 +351,9 @@ void sampl_vx(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
        }/*endfor*/
      }/*endfor*/
    }/*endif*/
+
+
+
 }/*end routine*/
 /*===================================================================*/
 
@@ -98,6 +374,7 @@ void sampl_vnhc(THERM_INFO *therm_info_bead,THERM_POS *therm_bead,
 /*==================================================================*/
 /*            Begin routine*/
       {/*begin routine*/
+
 /*==================================================================*/
 /*                Local variable declarations                        */
 

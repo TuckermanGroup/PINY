@@ -111,6 +111,7 @@ void read_coord(CLASS *class,GENERAL_DATA *general_data,
   int initial_spread_opt = general_data->simopts.initial_spread_opt;
 
   int nvt             = general_data->ensopts.nvt;
+  int nvt_isok	      = general_data->ensopts.nvt_isok;
   int npt_i           = general_data->ensopts.npt_i;
   int npt_f           = general_data->ensopts.npt_f;
 
@@ -926,7 +927,14 @@ void read_coord(CLASS *class,GENERAL_DATA *general_data,
   }/*endif*/
 
 /*========================================================================*/
-/*  IX) Calculate the spread                                          */
+/*  IX) Isokinetic restart_posvel/restart_all */
+
+  if((nvt_isok==1) && (istart>=3)){
+	  sampl_isok_restart(&(class->clatoms_info),&(class->clatoms_pos),&(class->therm_info_class),&(class->therm_class));
+  }
+
+/*========================================================================*/
+/*  X) Calculate the spread                                          */
 
   class->interact.spread     = 0.0;
   class->interact.spread_now = 0.0;
@@ -937,7 +945,7 @@ void read_coord(CLASS *class,GENERAL_DATA *general_data,
   }/*endif*/
 
 /*========================================================================*/
-/*  X) Close file, free arrays                                            */ 
+/*  XI) Close file, free arrays                                            */
   
   cfree(&x_tmp[1]);
   cfree(&y_tmp[1]);
@@ -950,7 +958,7 @@ void read_coord(CLASS *class,GENERAL_DATA *general_data,
   }/*endif*/
 
 /*========================================================================*/
-/*  XI) Output to the screen                                              */ 
+/*  XII) Output to the screen                                              */
 
   if(myid==0){
 
