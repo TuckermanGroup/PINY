@@ -126,21 +126,6 @@ void int_NVT_ISOK(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
 
    int_final_class(class,bonded,general_data,iflag);
 
-/*==========================================================================*/
-
-#ifdef DEBUG_GLENN
-    for(iproc=0;iproc<np_forc;iproc++){
-      Barrier(comm_forc);
-      if(myid_forc==iproc){
-       printf("1 %.12g %.12g %.12g %.12g %.12g %.12g %.12g %.12g %.12g\n",
-                  x[1],y[1],z[1],vx[1],vy[1],vz[1],fx[1],fy[1],fz[1]);
-       printf("n %.12g %.12g %.12g %.12g %.12g %.12g %.12g %.12g %.12g\n",
-                  x[n],y[n],z[n],vx[n],vy[n],vz[n],fx[n],fy[n],fz[n]);
-      }
-    }
-    if(myid_forc==0){scanf("%d",&iii);}
-    Barrier(comm_forc);
-#endif
 /*--------------------------------------------------------------------------*/
 /*end routine*/}
 /*==========================================================================*/
@@ -179,16 +164,16 @@ void apply_NH_ISOK_par(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
       double **therm_v2         = therm_class->v_nhc;
       double **therm_v1         = therm_class->x_nhc;
       double **therm_gkt      	= therm_info_class->gkt;
-      double **therm_mass 	    = therm_info_class->mass_nhc;
+      double **therm_mass 	= therm_info_class->mass_nhc;
       double *clatoms_vx        = clatoms_pos->vx;
       double *clatoms_vy        = clatoms_pos->vy;
       double *clatoms_vz        = clatoms_pos->vz;
-      double *therm_wdti2    	  = therm_info_class->wdti2;
-      double *therm_wdti4    	  = therm_info_class->wdti4;
+      double *therm_wdti2    	= therm_info_class->wdti2;
+      double *therm_wdti4    	= therm_info_class->wdti4;
       double *therm_wdti8     	= therm_info_class->wdti8;
-      int len_nhc				        = therm_info_class->len_nhc; 
-      double lennhc	          	= (double)len_nhc;	     
-      double *clatoms_mass		  = clatoms_info->mass;
+      int len_nhc	        = therm_info_class->len_nhc; 
+      double lennhc	        = (double)len_nhc;	     
+      double *clatoms_mass      = clatoms_info->mass;
       int natm_tot              = clatoms_info->natm_tot;;
       int *map_share            = therm_info_class->map_share;
       int num_nhc_share         = therm_info_class->num_nhc_share;

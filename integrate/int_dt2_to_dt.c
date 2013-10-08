@@ -285,7 +285,7 @@ void int_dt2_to_dt_nvt_isok(CLASS *class,BONDED *bonded,GENERAL_DATA *general_da
    double *clatoms_fz         = class->clatoms_pos[1].fz;
    double *clatoms_mass       = class->clatoms_info.mass;
    double **therm_v1          = class->therm_class.x_nhc;
-   double **therm_gkt		      = class->therm_info_class.gkt;
+   double **therm_gkt	      = class->therm_info_class.gkt;
    int ix_respa               = general_data->timeinfo.ix_respa;
    int int_res_tra            = general_data->timeinfo.int_res_tra;
    int int_res_ter            = general_data->timeinfo.int_res_ter;
@@ -358,15 +358,6 @@ void int_dt2_to_dt_nvt_isok(CLASS *class,BONDED *bonded,GENERAL_DATA *general_da
 			  therm_v1[ichain][inhc_z[ipart]]/=sdot;
 		  }
 	  }
-	  /*kinetic=0.0;
-	      for(ipart=myatm_start;ipart<=myatm_end;ipart++){
-	    	  kinetic+=clatoms_mass[ipart]*clatoms_vx[ipart]*clatoms_vx[ipart];
-	    	  kinetic+=clatoms_mass[ipart]*clatoms_vy[ipart]*clatoms_vy[ipart];
-	    	  kinetic+=clatoms_mass[ipart]*clatoms_vz[ipart]*clatoms_vz[ipart];
-	      }
-        printf("after second v-v1 forces,dti4 %g dti2 %g dti %g ATM KE %g \n",class->therm_info_class.wdti4[1],
-                class->therm_info_class.wdti2[1],class->therm_info_class.dti_nhc,
-                kinetic);*/
 /*==========================================================================*/
 
 /*==========================================================================*/
@@ -377,15 +368,6 @@ void int_dt2_to_dt_nvt_isok(CLASS *class,BONDED *bonded,GENERAL_DATA *general_da
        apply_NH_ISOK_par(&(class->clatoms_info),&(class->clatoms_pos[1]),
                           &(class->therm_info_class),&(class->therm_class),
                           &(class->int_scr),iflag_mass,&(class->class_comm_forc_pkg));
-          /*kinetic=0.0;
-        for(ipart=myatm_start;ipart<=myatm_end;ipart++){
-          kinetic+=clatoms_mass[ipart]*clatoms_vx[ipart]*clatoms_vx[ipart];
-          kinetic+=clatoms_mass[ipart]*clatoms_vy[ipart]*clatoms_vy[ipart];
-          kinetic+=clatoms_mass[ipart]*clatoms_vz[ipart]*clatoms_vz[ipart];
-        }
-        printf("after nhc update,dti4 %g dti2 %g dti %g ATM KE %g \n",class->therm_info_class.wdti4[1],
-                class->therm_info_class.wdti2[1],class->therm_info_class.dti_nhc,
-                kinetic);   */
       }else{
        ix_now = 4;
        if((ir_tra==1)){ix_now=3;}
@@ -395,15 +377,6 @@ void int_dt2_to_dt_nvt_isok(CLASS *class,BONDED *bonded,GENERAL_DATA *general_da
            apply_NH_ISOK_par(&(class->clatoms_info),&(class->clatoms_pos[1]),
                               &(class->therm_info_class),&(class->therm_class),
                               &(class->int_scr),iflag_mass,&(class->class_comm_forc_pkg));
-             /* kinetic=0.0;
-        for(ipart=myatm_start;ipart<=myatm_end;ipart++){
-          kinetic+=clatoms_mass[ipart]*clatoms_vx[ipart]*clatoms_vx[ipart];
-          kinetic+=clatoms_mass[ipart]*clatoms_vy[ipart]*clatoms_vy[ipart];
-          kinetic+=clatoms_mass[ipart]*clatoms_vz[ipart]*clatoms_vz[ipart];
-        }
-        printf("after nhc update,dti4 %g dti2 %g dti %g ATM KE %g \n",class->therm_info_class.wdti4[1],
-                class->therm_info_class.wdti2[1],class->therm_info_class.dti_nhc,
-                kinetic);   */  
       }
    }
 

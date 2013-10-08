@@ -41,18 +41,19 @@ void sampl_vx_vnhc_isok(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,THER
     int *therm_inhc_x		   = therm_info_class->inhc_x;
     int *therm_inhc_y		   = therm_info_class->inhc_y;
     int *therm_inhc_z		   = therm_info_class->inhc_z;
-    int len_nhc 			   = therm_info_class->len_nhc;	  /* Length of Nose-like chain */
+    int len_nhc 	           = therm_info_class->len_nhc;	  /* Length of Nose-like chain */
     double lennhc	      	   = (double)len_nhc;		  /* For when I need LkT    */
-    double L_L1				   = lennhc/(lennhc+1.0);
-    double *class_clatoms_mass = clatoms_info->mass;
-    double *int_scr_atm_kin    = int_scr->atm_kin;
-    double **therm_v1_nhc      = therm_class->x_nhc;
-    double **therm_v2_nhc      = therm_class->v_nhc;
-    double **therm_mass_nhc    = therm_info_class->mass_nhc;
-    double **therm_gkt         = therm_info_class->gkt;
+    double L_L1			   = lennhc/(lennhc+1.0);
+    double *class_clatoms_mass     = clatoms_info->mass;
+    double *int_scr_atm_kin        = int_scr->atm_kin;
+    double **therm_v1_nhc          = therm_class->x_nhc;
+    double **therm_v2_nhc          = therm_class->v_nhc;
+    double **therm_mass_nhc        = therm_info_class->mass_nhc;
+    double **therm_gkt             = therm_info_class->gkt;
     double *class_clatoms_vx, *class_clatoms_vy, *class_clatoms_vz;
+
     int myatm_start 		   = clatoms_info->myatm_start;
-    int myatm_end 			   = clatoms_info->myatm_end;
+    int myatm_end 	           = clatoms_info->myatm_end;
     int mytherm_start 		   = therm_info_class->mytherm_start;
     int mytherm_end 		   = therm_info_class->mytherm_end;
     int num_nhc_share 		   = therm_info_class->num_nhc_share;

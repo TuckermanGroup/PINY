@@ -158,28 +158,6 @@ void int_NVT_ISOK_res(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
 
    int_final_class(class,bonded,general_data,iflag);
 
-/*==========================================================================*/
-/*
-      printf("x(1),y(1),z(1) %.13g %.13g %.13g\n",
-                                         class->clatoms_pos[1].x[1],
-                                         class->clatoms_pos[1].y[1],
-                                         class->clatoms_pos[1].z[1]); 
-      printf("vx(1),vy(1),vz(1) %.13g %.13g %.13g\n",
-                                         class->clatoms_pos[1].vx[1],
-                                         class->clatoms_pos[1].vy[1],
-                                         class->clatoms_pos[1].vz[1]); 
-      printf("fx(1),fy(1),fz(1) %.13g %.13g %.13g\n",
-                                         class->clatoms_pos[1].fx[1],
-                                         class->clatoms_pos[1].fy[1],
-                                         class->clatoms_pos[1].fz[1]); 
-      printf("v_nhc[1][1],v_nhc[2,1] %.13g %.13g\n",
-                                         class->therm_class.v_nhc[1][1],
-                                         class->therm_class.v_nhc[2][1]); 
-      printf("x_nhc[1][1],x_nhc[2][1] %.13g %.13g\n",
-                                         class->therm_class.x_nhc[1][1],
-                                         class->therm_class.x_nhc[2][1]); 
-      scanf("%d",&iii);
-*/ 
 /*-------------------------------------------------------------------------*/
 /*end routine*/}
 /*==========================================================================*/
