@@ -30,6 +30,7 @@ void fetch_freeze(CLASS_PARSE *class_parse, ATOMMAPS *atommaps,
   /* local variables */
   int i, iii, nfreeze_now, iresidue_off, nresidue, count;
   int count_atm,ires;
+  double cut_heavy;
   double *mass = clatoms_info->mass;
 
 
@@ -141,13 +142,15 @@ void fetch_freeze(CLASS_PARSE *class_parse, ATOMMAPS *atommaps,
   /*========================*/
   /* All Heavy atoms frozen */
 
+  cut_heavy = 3.5;
+
   if (class_parse->mol_freeze_opt[jmol_typ] == 3) {
 
     /* Count the freeze map and fill the freeze_flag list */
     nfreeze_now = atommaps->nfreeze;
 
     for(i=start_index->natm+1; i<=clatoms_info->natm_tot; i++) {
-      if(mass[i] > 1.5) {
+      if(mass[i] > cut_heavy) {
         nfreeze_now++;
         atommaps->freeze_flag[i] = i;
       }
@@ -174,7 +177,7 @@ void fetch_freeze(CLASS_PARSE *class_parse, ATOMMAPS *atommaps,
         count_atm = 1;
         ires++;
       }
-      if(mass[i] > 1.5) {
+      if(mass[i] > cut_heavy) {
         count++;
         atommaps->freeze_map[(atommaps->nfreeze+count)] = i;
         atommaps->nfree_1mol_jmol_typ[jmol_typ] -= 3;
