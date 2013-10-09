@@ -22,25 +22,24 @@
 #include "../proto_defs/proto_intra_params_local.h"
 #include "../proto_defs/proto_friend_lib_entry.h"
 
-/*==========================================================================*/
-/*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
-/*==========================================================================*/
 
-void close_intra_params(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
+/*==========================================================================*/
+void close_intra_params(CLATOMS_INFO *clatoms_info,
+                        CLATOMS_POS *clatoms_pos,
                         GHOST_ATOMS *ghost_atoms,
                         ATOMMAPS *atommaps,
                         BUILD_INTRA *build_intra,
                         BONDED *bonded,
                         NULL_INTER_PARSE *null_inter_parse,
-                        double *tot_memory,SIMOPTS *simopts,int np_forc)
-
+                        double *tot_memory,
+                        SIMOPTS *simopts,
+                        int np_forc) {
 /*=======================================================================*/
-/*        Begin routine                                                 */
-{/*begin routine*/
-/*=======================================================================*/
-/*           Local Variables                                             */
 
-  int i,ntyp_pow,iii,nsec,inow,know;
+  /*=================*/
+  /* local variables */
+
+  int i, ntyp_pow, nsec;
   double now_memory;
   int natm_typ_mall;
   int natm_mall;
@@ -77,12 +76,16 @@ void close_intra_params(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
   int nonfo_mall;
   int nonfo_typ_mall;
   int pimd_on;
-  int nghost_old,nfreeze_old,ncomp_old;
-  int pi_beads = clatoms_info->pi_beads; 
+  int nghost_old, nfreeze_old, ncomp_old;
+  int pi_beads = clatoms_info->pi_beads;
   int pimd_freez_typ = atommaps->pimd_freez_typ;
+  int n_atom_ghost;
+  int n_atom_free;
+  int n_atom_frozen;
 
-/*======================================================================*/
-/* 0) Make the length of each vector an odd number                      */
+
+  /*==============================================*/
+  /* Make the length of each vector an odd number */
 
   nghost_old          = build_intra->nghost_tot_max;
   nfreeze_old         = build_intra->nfreeze_max;
@@ -189,57 +192,76 @@ void close_intra_params(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
     &&(nonfo_typ_mall     !=0)){nonfo_typ_mall    += 1;}
 
 
-/*======================================================================*/
-/* I) Atm stuff: Note constrain flag set here                           */
-/*               and charged atoms are counted                          */
+  /*================================================================*/
+  /* Atm stuff: constraint flag set here, charged atoms are counted */
 
-  bonded->constrnt.iconstrnt=0;
-  if(bonded->bond.ncon > 0) bonded->constrnt.iconstrnt=1;
-  if(bonded->grp_bond_con.num_21 > 0) bonded->constrnt.iconstrnt=1;
-  if(bonded->grp_bond_con.num_23 > 0) bonded->constrnt.iconstrnt=1;
-  if(bonded->grp_bond_con.num_33 > 0) bonded->constrnt.iconstrnt=1;
-  if(bonded->grp_bond_watts.num_33 > 0) bonded->constrnt.iconstrnt=1;
-  if(bonded->grp_bond_con.num_43 > 0) bonded->constrnt.iconstrnt=1;
-  if(bonded->grp_bond_con.num_46 > 0) bonded->constrnt.iconstrnt=1;
-  if(bonded->bend.ncon > 0) bonded->constrnt.iconstrnt=1;
-  if(bonded->tors.ncon > 0) bonded->constrnt.iconstrnt=1;
+  bonded->constrnt.iconstrnt = 0;
+  if (bonded->bond.ncon > 0) bonded->constrnt.iconstrnt = 1;
+  if (bonded->grp_bond_con.num_21 > 0) bonded->constrnt.iconstrnt = 1;
+  if (bonded->grp_bond_con.num_23 > 0) bonded->constrnt.iconstrnt = 1;
+  if (bonded->grp_bond_con.num_33 > 0) bonded->constrnt.iconstrnt = 1;
+  if (bonded->grp_bond_watts.num_33 > 0) bonded->constrnt.iconstrnt = 1;
+  if (bonded->grp_bond_con.num_43 > 0) bonded->constrnt.iconstrnt = 1;
+  if (bonded->grp_bond_con.num_46 > 0) bonded->constrnt.iconstrnt = 1;
+  if (bonded->bend.ncon > 0) bonded->constrnt.iconstrnt = 1;
+  if (bonded->tors.ncon > 0) bonded->constrnt.iconstrnt = 1;
 
-
-  clatoms_info->ichrg      = (int *)cmalloc(natm_mall*sizeof(int))-1;
-  clatoms_info->nfree      = 0;
-  clatoms_info->nfree_pimd = 0;
-  for(i=1;i<=atommaps->nmol_typ;i++){
-    inow                 = atommaps->nfree_1mol_jmol_typ[i]
-                          *atommaps->nmol_jmol_typ[i];
-    know                 = 3*atommaps->natm_1mol_jmol_typ[i]
-                            *atommaps->nmol_jmol_typ[i];
-    clatoms_info->nfree += inow;
-    if(pimd_freez_typ==2){
-      clatoms_info->nfree_pimd += inow*pi_beads;
-    }else{
-      clatoms_info->nfree_pimd += (inow + know*(pi_beads-1));
-    }/*endif*/
-  }/*endfor*/
-
+  /* number of charged atoms */
+  clatoms_info->ichrg = (int *)cmalloc(natm_mall*sizeof(int)) - 1;
   clatoms_info->nchrg = 0;
-  for(i=1;i<=clatoms_info->natm_tot;i++){
+  for(i=1; i<=clatoms_info->natm_tot; i++) {
     clatoms_info->mass[i] *= PROT_MASS;
     if(clatoms_info->q[i] != 0) {
-     clatoms_info->nchrg++;
-     clatoms_info->ichrg[(clatoms_info->nchrg)] = i;
-   }
+      clatoms_info->nchrg++;
+      clatoms_info->ichrg[(clatoms_info->nchrg)] = i;
+    }
   }
   nchrg_mall = clatoms_info->nchrg;
-  if((nchrg_mall % 2)==0){nchrg_mall += 1;}
+  if ((nchrg_mall % 2) == 0) {nchrg_mall += 1;}
 
+  /* count the number of free, frozen and ghost atoms */
+  n_atom_ghost = 0;
+  n_atom_free = 0;
+  n_atom_frozen = 0;
+  for(i=1; i<=clatoms_info->natm_tot; i++) {
+    if (atommaps->ighost_flag[i] > 0) {
+      n_atom_ghost++;
+    } else {
+      if (atommaps->freeze_flag[i] > 0) {
+        n_atom_frozen++;
+      } else {
+        n_atom_free++;
+      }
+    }
+  }
+  #ifdef DEBUG
+  printf("  free atoms: % 5i\n", n_atom_free);
+  printf("frozen atoms: % 5i\n", n_atom_frozen);
+  printf(" ghost atoms: % 5i\n", n_atom_ghost);
+  #endif
+
+  /* use the above to determine the number of DOFs, both classical and PIMD */
+  clatoms_info->nfree = 3 * n_atom_free;
+  if (pimd_freez_typ == 2) {
+    /* freezing of all modes */
+    clatoms_info->nfree_pimd = 3 * n_atom_free * pi_beads;
+  } else {
+    /* freezing of centroid only */
+    clatoms_info->nfree_pimd = 3 * (n_atom_free * pi_beads +
+                                    n_atom_frozen * (pi_beads-1));
+  }
+  printf("number of atomic degrees of freedom: % 6i\n", clatoms_info->nfree);
+  printf("  number of PIMD degrees of freedom: % 6i\n", clatoms_info->nfree_pimd);
+  printf("\n");
 
   now_memory = ((double)(((natm_mall)*sizeof(double)*13+sizeof(int)*4)+
 			 natm_typ_mall*(sizeof(double)*0+sizeof(int)*25))
 		*1.e-06);
   *tot_memory += now_memory;
 
-  printf("Atom allocation: %g Mbytes; Total memory: %g Mbytes\n",
-          now_memory,*tot_memory);
+  printf("          Atom allocation: %g Mbytes\n", now_memory);
+  printf("             Total memory: %g Mbytes\n", *tot_memory);
+  printf("\n");
 
   atommaps->atm_typ = (NAME *)crealloc(&(atommaps->atm_typ)[1],
 				       natm_typ_mall*sizeof(NAME))-1;
@@ -271,52 +293,54 @@ void close_intra_params(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
 					    natm_mall*sizeof(int))-1;
   atommaps->iatm_res_num  = (int *)crealloc(&(atommaps->iatm_res_num)[1],
 					    natm_mall*sizeof(int))-1;
-  pimd_on = simopts->pimd + simopts->cp_pimd 
-          + simopts->cp_wave_pimd + simopts->cp_wave_min_pimd 
+  pimd_on = simopts->pimd + simopts->cp_pimd
+          + simopts->cp_wave_pimd + simopts->cp_wave_min_pimd
           + simopts->debug_pimd + simopts->debug_cp_pimd;
 
-  clatoms_info->xold= (double *)cmalloc(natm_mall*sizeof(double))-1;
-  clatoms_info->yold= (double *)cmalloc(natm_mall*sizeof(double))-1;
-  clatoms_info->zold= (double *)cmalloc(natm_mall*sizeof(double))-1;
-  if(pi_beads>1||pimd_on==1){
-   clatoms_info->xmod = (double *)cmalloc(natm_mall*sizeof(double))-1;
-   clatoms_info->ymod = (double *)cmalloc(natm_mall*sizeof(double))-1;
-   clatoms_info->zmod = (double *)cmalloc(natm_mall*sizeof(double))-1;
-  }/*endif*/
-  if(clatoms_info->pi_beads>1||pimd_on==1){
-   clatoms_info->prekf = (double *)cmalloc(natm_mall*sizeof(double))-1;
+  clatoms_info->xold = (double *)cmalloc(natm_mall*sizeof(double))-1;
+  clatoms_info->yold = (double *)cmalloc(natm_mall*sizeof(double))-1;
+  clatoms_info->zold = (double *)cmalloc(natm_mall*sizeof(double))-1;
+  if (pi_beads>1 || pimd_on == 1) {
+    clatoms_info->xmod = (double *)cmalloc(natm_mall*sizeof(double))-1;
+    clatoms_info->ymod = (double *)cmalloc(natm_mall*sizeof(double))-1;
+    clatoms_info->zmod = (double *)cmalloc(natm_mall*sizeof(double))-1;
+    clatoms_info->prekf = (double *)cmalloc(natm_mall*sizeof(double))-1;
   }
   clatoms_info->roll_sc   = (double *)cmalloc(natm_mall*sizeof(double))-1;
-/*========================================================================*/
-/* I) Ghost_atm stuff */
 
-  ghost_atoms->ighost_map     = (int *) crealloc(&(ghost_atoms->ighost_map)[1],
-                                                 nghost_mall*sizeof(int))-1;
-  ghost_atoms->natm_comp      = (int *) crealloc(&(ghost_atoms->natm_comp)[1],
-                                                 nghost_mall*sizeof(int))-1;
-  atommaps->ighost_flag       = (int *)   crealloc(&(atommaps->ighost_flag)[1],
-						 natm_mall*sizeof(int))-1;
+
+  /*==================*/
+  /* ghost atom stuff */
+
+  ghost_atoms->ighost_map = (int *)crealloc(&(ghost_atoms->ighost_map)[1],
+                                            nghost_mall*sizeof(int))-1;
+  ghost_atoms->natm_comp = (int *)crealloc(&(ghost_atoms->natm_comp)[1],
+                                           nghost_mall*sizeof(int))-1;
+  atommaps->ighost_flag = (int *)crealloc(&(atommaps->ighost_flag)[1],
+                                          natm_mall*sizeof(int))-1;
 
   /* need to set up reallocate matrix */
-  ghost_atoms->iatm_comp      = creall_int_mat(ghost_atoms->iatm_comp,
-                                               1,ncomp_old ,1,nghost_old,
-                                               1,ncomp_mall,1,nghost_mall);
-  ghost_atoms->coef           = creall_mat(ghost_atoms->coef,
-                                           1,ncomp_old ,1,nghost_old,
-                                           1,ncomp_mall,1,nghost_mall);
-/*========================================================================*/
-/* I) Freeze_atm stuff */
-
-  atommaps->freeze_map     = (int *) crealloc(&(atommaps->freeze_map)[1],
-                                                 nfreeze_mall*sizeof(int))-1;
-  atommaps->freeze_flag       = (int *)   crealloc(&(atommaps->freeze_flag)[1],
-						 natm_mall*sizeof(int))-1;
-  atommaps->atom_label       = (int *)   crealloc(&(atommaps->atom_label)[1],
-						 natm_mall*sizeof(int))-1;
-/*========================================================================*/
-/* II) Grp constrnts */
+  ghost_atoms->iatm_comp = creall_int_mat(ghost_atoms->iatm_comp,
+                                          1, ncomp_old, 1, nghost_old,
+                                          1, ncomp_mall, 1, nghost_mall);
+  ghost_atoms->coef = creall_mat(ghost_atoms->coef,
+                                 1, ncomp_old, 1, nghost_old,
+                                 1, ncomp_mall, 1, nghost_mall);
 
 
+  /*==============*/
+  /* freeze stuff */
+
+  atommaps->freeze_map = (int *)crealloc(&(atommaps->freeze_map)[1],
+                                           nfreeze_mall*sizeof(int))-1;
+  atommaps->freeze_flag = (int *)crealloc(&(atommaps->freeze_flag)[1],
+                                          natm_mall*sizeof(int))-1;
+  atommaps->atom_label = (int *)crealloc(&(atommaps->atom_label)[1],
+                                         natm_mall*sizeof(int))-1;
+
+
+  /*===============*/
+  /* Grp constrnts */
 
   bonded->grp_bond_con.j1_21 = 
                     (int *)crealloc(&(bonded->grp_bond_con.j1_21)[1],
@@ -405,27 +429,28 @@ void close_intra_params(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
   bonded->grp_bond_con.eq_23   = cmall_mat(1,2,1,ngrp_typ_23_mall);
   bonded->grp_bond_con.eq_46   = cmall_mat(1,6,1,ngrp_typ_46_mall);
 
-  bonded->grp_bond_watts.cos_thet0_2   = 
+  bonded->grp_bond_watts.cos_thet0_2   =
                 (double *)malloc(ngrp_typ_watt_33_mall*sizeof(int))-1;
-  bonded->grp_bond_watts.sin_thet0_2   = 
+  bonded->grp_bond_watts.sin_thet0_2   =
                 (double *)malloc(ngrp_typ_watt_33_mall*sizeof(int))-1;
-  bonded->grp_bond_watts.c_0_33    = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
-  bonded->grp_bond_watts.c_1_33    = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
-  bonded->grp_bond_watts.c_2_33    = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
-  bonded->grp_bond_watts.c_3_33    = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
-  bonded->grp_bond_watts.c_4_33    = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
-  bonded->grp_bond_watts.c_5_33    = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
-  bonded->grp_bond_watts.c_6_33    = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
-  bonded->grp_bond_watts.dc_0_33   = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
-  bonded->grp_bond_watts.dc_1_33   = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
-  bonded->grp_bond_watts.dc_2_33   = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
-  bonded->grp_bond_watts.dc_3_33   = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
-  bonded->grp_bond_watts.dc_4_33   = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
-  bonded->grp_bond_watts.dc_5_33   = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
-  bonded->grp_bond_watts.dc_6_33   = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
+  bonded->grp_bond_watts.c_0_33  = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
+  bonded->grp_bond_watts.c_1_33  = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
+  bonded->grp_bond_watts.c_2_33  = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
+  bonded->grp_bond_watts.c_3_33  = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
+  bonded->grp_bond_watts.c_4_33  = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
+  bonded->grp_bond_watts.c_5_33  = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
+  bonded->grp_bond_watts.c_6_33  = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
+  bonded->grp_bond_watts.dc_0_33 = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
+  bonded->grp_bond_watts.dc_1_33 = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
+  bonded->grp_bond_watts.dc_2_33 = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
+  bonded->grp_bond_watts.dc_3_33 = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
+  bonded->grp_bond_watts.dc_4_33 = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
+  bonded->grp_bond_watts.dc_5_33 = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
+  bonded->grp_bond_watts.dc_6_33 = cmall_mat(1,3,1,ngrp_typ_watt_33_mall);
 
-/*======================================================================*/
-/*   II) Bonds  */
+
+  /*=======*/
+  /* Bonds */
 
   now_memory = ((nbond_pow_mall)*(sizeof(double)*0+sizeof(int)*3)+
 		(nbond_con_mall)*(sizeof(double)*1 +  sizeof(int)*3)+
@@ -445,8 +470,8 @@ void close_intra_params(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
 		)*1.e-06;
 
   *tot_memory += now_memory;
-  printf("Intramolecular allocation: %g Mbytes; Total memory: %g Mbytes\n",
-          now_memory,*tot_memory);
+  printf("Intramolecular allocation: %g Mbytes\n", now_memory);
+  printf("             Total memory: %g Mbytes\n", *tot_memory);
   ntyp_pow = nbond_typ_pow_mall;
 
 
@@ -490,8 +515,8 @@ void close_intra_params(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
 	     null_inter_parse->nbond_nul*sizeof(int))-1;
 
 
-/*=======================================================================*/
-/*  III) Bends  */
+  /*========*/
+  /* Bends  */
 
   ntyp_pow = nbend_typ_pow_mall;
   bonded->bend.j1_pow = (int *)   crealloc(&(bonded->bend.j1_pow)[1],
@@ -552,8 +577,10 @@ void close_intra_params(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
   null_inter_parse->jbend3_nul= (int *)  
     crealloc(&(null_inter_parse->jbend3_nul)[1],
 	     null_inter_parse->nbend_nul*sizeof(int))-1;
-/*=======================================================================*/
-/*  III) Bend_bnds  */
+
+
+  /*===========*/
+  /* Bend_bnds */
 
   bonded->bend_bnd.j1 = (int *)   crealloc(&(bonded->bend_bnd.j1)[1],
                                    nbend_bnd_mall*sizeof(int))-1;
@@ -653,8 +680,9 @@ void close_intra_params(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
   bonded->bend_bnd.dsbend_6   = (double *)cmalloc(nbend_bnd_typ_mall
                                                   *sizeof(double))-1;
 
-/*======================================================================*/
-/*  IV) Tors  */
+
+  /*======*/
+  /* Tors */
 
   ntyp_pow = ntors_typ_pow_mall;
   bonded->tors.j1_pow = (int *)   crealloc(&(bonded->tors.j1_pow)[1],
@@ -723,8 +751,9 @@ void close_intra_params(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
     crealloc(&(null_inter_parse->jtors4_nul)[1],
 	     null_inter_parse->ntors_nul*sizeof(int))-1;
 
-/*=======================================================================*/
-/*   V) Onfo  */
+
+  /*======*/
+  /* Onfo */
 
   bonded->onfo.j1     = (int *)   crealloc(&(bonded->onfo.j1)[1],
 					   nonfo_mall*sizeof(int))-1;
@@ -742,64 +771,53 @@ void close_intra_params(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
     crealloc(&(null_inter_parse->jonfo2_nul)[1],
 	     null_inter_parse->nonfo_nul*sizeof(int))-1;
 
-/*=======================================================================*/
-/*   V) Assign mall variables  */
 
-    clatoms_info->natm_mall = natm_mall;   
-    clatoms_info->nchrg_mall = nchrg_mall;   
+  /*=======================*/
+  /* assign mall variables */
 
-    ghost_atoms->nghost_mall = nghost_mall;   
-    ghost_atoms->ncomp_mall = ncomp_mall;   
+  clatoms_info->natm_mall = natm_mall;
+  clatoms_info->nchrg_mall = nchrg_mall;
 
-    atommaps->nfreeze_mall = nfreeze_mall;   
-    atommaps->natm_typ_mall = natm_typ_mall;   
+  ghost_atoms->nghost_mall = nghost_mall;
+  ghost_atoms->ncomp_mall = ncomp_mall;
 
-    bonded->bond.nbond_pow_mall = nbond_pow_mall;    
-    bonded->bond.nbond_typ_pow_mall = nbond_typ_pow_mall;
-    bonded->bond.nbond_con_mall = nbond_con_mall;    
-    bonded->bond.nbond_typ_con_mall = nbond_typ_con_mall;
+  atommaps->nfreeze_mall = nfreeze_mall;
+  atommaps->natm_typ_mall = natm_typ_mall;
 
-    bonded->grp_bond_con.ngrp_21_mall = ngrp_21_mall;
-    bonded->grp_bond_watts.ngrp_33_mall = ngrp_watt_33_mall;
-    bonded->grp_bond_con.ngrp_33_mall = ngrp_33_mall;
-    bonded->grp_bond_con.ngrp_43_mall = ngrp_43_mall;
-    bonded->grp_bond_con.ngrp_23_mall = ngrp_23_mall;
-    bonded->grp_bond_con.ngrp_46_mall = ngrp_46_mall;    
-    bonded->grp_bond_con.ngrp_typ_21_mall = ngrp_typ_21_mall;
-    bonded->grp_bond_con.ngrp_typ_33_mall = ngrp_typ_33_mall;
-    bonded->grp_bond_watts.ngrp_typ_33_mall = ngrp_typ_watt_33_mall;
-    bonded->grp_bond_con.ngrp_typ_43_mall = ngrp_typ_43_mall;
-    bonded->grp_bond_con.ngrp_typ_23_mall = ngrp_typ_23_mall;
-    bonded->grp_bond_con.ngrp_typ_46_mall = ngrp_typ_46_mall;
+  bonded->bond.nbond_pow_mall = nbond_pow_mall;
+  bonded->bond.nbond_typ_pow_mall = nbond_typ_pow_mall;
+  bonded->bond.nbond_con_mall = nbond_con_mall;
+  bonded->bond.nbond_typ_con_mall = nbond_typ_con_mall;
 
-    bonded->bend.nbend_con_mall     = nbend_con_mall;
-    bonded->bend.nbend_typ_con_mall = nbend_typ_con_mall;
-    bonded->bend.nbend_pow_mall     = nbend_pow_mall;
-    bonded->bend.nbend_typ_pow_mall = nbend_typ_pow_mall;
+  bonded->grp_bond_con.ngrp_21_mall = ngrp_21_mall;
+  bonded->grp_bond_watts.ngrp_33_mall = ngrp_watt_33_mall;
+  bonded->grp_bond_con.ngrp_33_mall = ngrp_33_mall;
+  bonded->grp_bond_con.ngrp_43_mall = ngrp_43_mall;
+  bonded->grp_bond_con.ngrp_23_mall = ngrp_23_mall;
+  bonded->grp_bond_con.ngrp_46_mall = ngrp_46_mall;
+  bonded->grp_bond_con.ngrp_typ_21_mall = ngrp_typ_21_mall;
+  bonded->grp_bond_con.ngrp_typ_33_mall = ngrp_typ_33_mall;
+  bonded->grp_bond_watts.ngrp_typ_33_mall = ngrp_typ_watt_33_mall;
+  bonded->grp_bond_con.ngrp_typ_43_mall = ngrp_typ_43_mall;
+  bonded->grp_bond_con.ngrp_typ_23_mall = ngrp_typ_23_mall;
+  bonded->grp_bond_con.ngrp_typ_46_mall = ngrp_typ_46_mall;
 
-    bonded->bend_bnd.nbend_bnd_mall = nbend_bnd_mall;
-    bonded->bend_bnd.nbend_bnd_typ_mall = nbend_bnd_typ_mall;
+  bonded->bend.nbend_con_mall     = nbend_con_mall;
+  bonded->bend.nbend_typ_con_mall = nbend_typ_con_mall;
+  bonded->bend.nbend_pow_mall     = nbend_pow_mall;
+  bonded->bend.nbend_typ_pow_mall = nbend_typ_pow_mall;
 
-    bonded->tors.ntors_pow_mall = ntors_pow_mall;
-    bonded->tors.ntors_typ_pow_mall = ntors_typ_pow_mall;
-    bonded->tors.ntors_con_mall = ntors_con_mall;
-    bonded->tors.ntors_typ_con_mall = ntors_typ_con_mall;
+  bonded->bend_bnd.nbend_bnd_mall = nbend_bnd_mall;
+  bonded->bend_bnd.nbend_bnd_typ_mall = nbend_bnd_typ_mall;
 
-    bonded->onfo.nonfo_mall = nonfo_mall;
-    bonded->onfo.nonfo_typ_mall = nonfo_typ_mall;
+  bonded->tors.ntors_pow_mall = ntors_pow_mall;
+  bonded->tors.ntors_typ_pow_mall = ntors_typ_pow_mall;
+  bonded->tors.ntors_con_mall = ntors_con_mall;
+  bonded->tors.ntors_typ_con_mall = ntors_typ_con_mall;
 
+  bonded->onfo.nonfo_mall = nonfo_mall;
+  bonded->onfo.nonfo_typ_mall = nonfo_typ_mall;
+
+}
 /*-----------------------------------------------------------------------*/
-}/*end routine*/
-/*==========================================================================*/
-
-
-
-
-
-
-
-
-
-
-
 
