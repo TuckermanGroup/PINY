@@ -33,8 +33,6 @@
 #include "../proto_defs/proto_parse_entry.h"
 #include "../proto_defs/proto_communicate_wrappers.h"
 #include "../proto_defs/proto_communicate_entry.h"
-#include "../proto_defs/proto_math.h"
-#include "../proto_defs/proto_vel_sampl_class_local.h"
 
 
 /*==========================================================================*/
