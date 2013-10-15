@@ -75,17 +75,13 @@ void energy_control_inter_real(CLASS *class, BONDED *bonded,
   int iget_pe_real_inter = class->energy_ctrl.iget_pe_real_inter;
 
 
-  int pimd_on,cp_on,nfree3;
+  int cp_on;
+  
+  int nfree3;
 
 /*======================================================================*/
 /* 0) Get some constants */
 
-  pimd_on = general_data->simopts.pimd
-           +general_data->simopts.debug_pimd
-           +general_data->simopts.cp_pimd
-           +general_data->simopts.cp_wave_pimd
-           +general_data->simopts.cp_wave_min_pimd
-           +general_data->simopts.debug_cp_pimd;
   cp_on   = general_data->simopts.cp_min  
            +general_data->simopts.cp_wave_min
            +general_data->simopts.cp      
@@ -96,8 +92,7 @@ void energy_control_inter_real(CLASS *class, BONDED *bonded,
            +general_data->simopts.debug_cp_pimd
            +general_data->simopts.cp_wave_min_pimd;
 
-  nfree3  = nfree/3;
-  if(pimd_on==1){nfree3=natm_tot;}
+  nfree3 = nfree / 3;
 
 /*======================================================================*/
 /* I) Initialize */
