@@ -1,0 +1,26 @@
+~sim_gen_def[
+    \simulation_typ{md}
+    \ensemble_typ{nve}
+    \restart_type{initial}
+    \generic_fft_opt{on}
+]
+
+~sim_list_def[
+    \neighbor_list{no_list}
+]
+
+~sim_vol_def[
+    \periodicity{0}
+]
+
+~sim_write_def[
+    \mol_set_file{water.set}
+    \sim_name{water.input-all}
+    \instant_file{water.iavg}
+    \atm_pos_file{water.confp}
+    \atm_vel_file{water.confv}
+    \atm_force_file{water.conff}
+    \out_restart_file{water.coords_out}
+    \in_restart_file{W2.initial}
+    \conf_file_format{formatted}
+]

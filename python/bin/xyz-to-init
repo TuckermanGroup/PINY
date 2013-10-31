@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+
+"""Generate a PINY initial configuration from an XYZ file."""
+
+import sys
+import argparse
+
+import numpy as np
+
+from piny.tools import read_XYZ_frame
+from piny.tools import initial_file
+
+
+#
+# command line arguments and options
+#
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument('fn_in', type=str,
+                    help='Input file name - XYZ file format.')
+
+parser.add_argument('fn_out', type=str,
+                    help='Output file name - PINY initial positions.')
+
+parser.add_argument('--box', nargs='*', type=float, required=True,
+                    help='Box dimensions - 3 lengths or 9 components of h matrix.')
+
+parser.add_argument('--P', type=int, default=1,
+                    help='Number of PIMD replicas.')
+
+# run the option parser and get results
+args = parser.parse_args()
+
+# process box
+if len(args.box) == 3:
+    box = np.array(args.box)
+elif len(args.box) == 9:
+    box = np.array(args.box).reshape((3, 3))
+else:
+    raise StandardError('Box must be specified by 3 or 9 numbers.')
+
+# open files
+f_in = open(args.fn_in, 'r')
+f_out = open(args.fn_out, 'w')
+
+# read first frame from XYZ file
+comment, names, pos = read_XYZ_frame(f_in)
+
+# convert to PINY initial file format and write to output file
+f_out.write(initial_file(pos, args.P, box))
+
+# close files
+f_in.close()
+f_out.close()

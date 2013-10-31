@@ -34,6 +34,17 @@
 #include "../proto_defs/proto_communicate_wrappers.h"
 #include "../proto_defs/proto_communicate_entry.h"
 
+
+void Init_PINY(int argc, char *argv[], CLASS* class, GENERAL_DATA* general_data) {
+
+  Init(&argc, &argv, &((*class).communicate.world));
+  Comm_size((*class).communicate.world, &((*class).communicate.np));
+  Comm_rank((*class).communicate.world, &((*class).communicate.myid));
+  (*general_data).error_check_on = ((*class).communicate.myid==0?1:0);
+
+}
+
+
 /*==========================================================================*/
 /*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
 /*==========================================================================*/
@@ -64,10 +75,7 @@
 /*=======================================================================*/
 /* II)            Initialize MPI                                         */
 
-  Init(&argc,&argv,&class.communicate.world);
-  Comm_size(class.communicate.world,&class.communicate.np);
-  Comm_rank(class.communicate.world,&class.communicate.myid);
-  general_data.error_check_on = (class.communicate.myid==0?1:0);
+  Init_PINY(argc, argv, &class, &general_data);
 
 /*=======================================================================*/
 /* III)            Invoke User Interface                                 */
