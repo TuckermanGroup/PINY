@@ -1668,110 +1668,99 @@ void para_fft_gen3d_init(PARA_FFT_PKG3D *para_fft_pkg3d)
 /*==========================================================================*/
 
 
-
-
 /*==========================================================================*/
-/*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
+void fft_gen1d_init(int nfft, int incl, int num, int incn,
+                    int iopt, int *ier, double *work_1, int nwork_1,
+                    double *work_2, int nwork_2, int *ifax, int *scale_opt,
+                    int igeneric_opt) {
 /*==========================================================================*/
-/* fft_gen1d_init : Fortran wrappers for CP FFT initialization              */
-/*==========================================================================*/
 
-void fft_gen1d_init(int nfft,int incl,int num,int incn,
-                    int iopt,int *ier,double *work_1,int nwork_1,
-                    double *work_2,int nwork_2,int *ifax,int *scale_opt,
-                    int igeneric_opt)
-
-/*==========================================================================*/
- {/*begin routine */
-/*==========================================================================*/
-/*   Local Variables */
-
- int ifound;
- int init         = 1;
- int nfft_for     = nfft;
- int incl_for_x   = incl;
- int incn_for_x   = incn;
- int incl_for_y   = incl;
- int incn_for_y   = incn;
- int num_for      = num;
- int nwork_1_for  = nwork_1;
- int nwork_2_for  = nwork_2;
- int iopt_for     = iopt;
- double scale     = 1.0;
- double dum_x,dum_y;
- int isign,isys; /* for T3E*/
+  /* local Variables */
+  int ifound;
+  int init = 1;
+  int nfft_for = nfft;
+  int incl_for_x = incl;
+  int incn_for_x = incn;
+  int incl_for_y = incl;
+  int incn_for_y = incn;
+  int num_for = num;
+  int nwork_1_for = nwork_1;
+  int nwork_2_for = nwork_2;
+  int iopt_for = iopt;
+  double scale = 1.0;
+  double dum_x, dum_y;
+  int isign, isys; /* for T3E */
 
 
-/*==========================================================================*/
-/* Machine Specific FFT */
+  /*======================*/
+  /* Machine Specific FFT */
 
- if(igeneric_opt==0){
+  if (igeneric_opt == 0) {
 
-   ifound = 0;
+    ifound = 0;
 
-#ifdef IBM_ESSL
-   ifound++;
-   dcft(&init,&dum_x,&incl_for_x,&incn_for_x,&dum_y,&incl_for_y,&incn_for_y,
-        &nfft_for,&num_for,&iopt_for,&scale,&(work_1[1]),&nwork_1_for,
-        &(work_2[1]),&nwork_2_for);
-   *scale_opt = 1;
-#endif
+    #ifdef IBM_ESSL
+    ifound++;
+    dcft(&init, &dum_x, &incl_for_x, &incn_for_x, &dum_y, &incl_for_y,
+         &incn_for_y, &nfft_for, &num_for, &iopt_for, &scale,
+         &work_1[1], &nwork_1_for, &work_2[1], &nwork_2_for);
+    *scale_opt = 1;
+    #endif
 
-#ifdef SGI_COMPLIB
-   ifound++;
-   zfft1di_(&nfft_for,&(work_2[1]));
-   *scale_opt = 1;
-#endif
+    #ifdef SGI_COMPLIB
+    ifound++;
+    zfft1di_(&nfft_for,&work_2[1]);
+    *scale_opt = 1;
+    #endif
 
-#ifdef SUN_COMPLIB
-   ifound++;
-   zffti(nfft_for,&(work_2[1]));
-   *scale_opt = 1;
-#endif
+    #ifdef SUN_COMPLIB
+    ifound++;
+    zffti(nfft_for, &work_2[1]);
+    *scale_opt = 1;
+    #endif
 
-#ifdef HP_VECLIB
-   ifound++;
-   *scale_opt = 0;
-#endif
+    #ifdef HP_VECLIB
+    ifound++;
+    *scale_opt = 0;
+    #endif
 
-#ifdef T3E_SCILIB
-   ifound++;
-   isign = 0;
-   isys  = 0;
-  CCFFT(&isign,&nfft_for,&scale,&dum_x,&dum_y,&(work_1[1]),&(work_2[1]),&isys);
-   *scale_opt = 1;
-#endif
+    #ifdef T3E_SCILIB
+    ifound++;
+    isign = 0;
+    isys = 0;
+    CCFFT(&isign, &nfft_for, &scale, &dum_x, &dum_y, &work_1[1], &work_2[1],
+          &isys);
+    *scale_opt = 1;
+    #endif
 
-#ifdef C90
-   ifound++;
-   CFTFAX(&nfft_for,&(ifax[1]),&(work_2[1]));
-   *scale_opt = 1;
-#endif
+    #ifdef C90
+    ifound++;
+    CFTFAX(&nfft_for, &ifax[1], &work_2[1]);
+    *scale_opt = 1;
+    #endif
 
-   if(ifound!=1){
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
-       printf("Library FFT's not Implemented on this machine\n");
-       printf("Use generic_fft_option in input file\n");
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
-       fflush(stdout);
-       exit(1);
-   }/*endif*/
+    if (ifound != 1) {
+      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("Library FFT's not Implemented on this machine\n");
+      printf("Use generic_fft_option in input file\n");
+      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      fflush(stdout);
+      exit(1);
+    }
 
-/*==========================================================================*/
-/* Generic FFT */
+  /*=============*/
+  /* generic FFT */
 
- }else{
-#ifdef T3E_SCILIB
-   *scale_opt = 1;
-   CFFTI_GENERIC(&nfft_for,&(work_2[1]));
-#else
-   *scale_opt = 1;
-   DCFFTI_GENERIC(&nfft_for,&(work_2[1]));
-#endif
+  } else {
+    #ifdef T3E_SCILIB
+    *scale_opt = 1;
+    CFFTI_GENERIC(&nfft_for, &work_2[1]);
+    #else
+    *scale_opt = 1;
+    DCFFTI_GENERIC(&nfft_for, &work_2[1]);
+    #endif
+  }
 
- }/*endif*/
-
+}
 /*--------------------------------------------------------------------------*/
-   }/*end routine*/
-/*==========================================================================*/
 

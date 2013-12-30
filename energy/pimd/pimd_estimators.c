@@ -28,88 +28,90 @@
 /*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
 /*==========================================================================*/
 
-void mode_energy_control(CLASS *class,GENERAL_DATA *general_data)
+void mode_energy_control(CLASS *class, GENERAL_DATA *general_data)
 
 /*==========================================================================*/
-{/*begin routine*/
-/*======================================================================*/
+{ /* begin routine */
+/*==========================================================================*/
 
 #include "../typ_defs/typ_mask.h"
 
-/*           Local variable declarations                                */
+  /* local variable declarations */
 
-   int i,ip,ip_true,ipart,iii;
-   double *x,*y,*z,*fx,*fy,*fz,ake,ake_temp,akprim,fk,beta,tau;
-   int pi_beads = class->clatoms_info.pi_beads;
-   int pi_beads_proc = class->clatoms_info.pi_beads_proc;
-   int natm_tot = class->clatoms_info.natm_tot;
-   int myatm_start = class->clatoms_info.myatm_start;
-   int myatm_end = class->clatoms_info.myatm_end;
-   int pi_beads_proc_st = class->clatoms_info.pi_beads_proc_st;
-   int myid = class->communicate.myid_bead;
-   int np_forc = class->communicate.np_forc;
-   MPI_Comm comm_forc = class->communicate.comm_forc;
-   int nghost_tot = class->ghost_atoms.nghost_tot;
-   int nfreeze    = class->atommaps.nfreeze;
-   double *pvten_mode     = general_data->ptens.pvten_mode;
-   double *pvten_mode_tot = general_data->ptens.pvten_mode_tot;
-   double *prekf = class->clatoms_info.prekf;
-   double *veig  = class->clatoms_tran.path_eig;
-   double wght   = class->clatoms_info.wght_pimd;
-   double pi_temperature = class->clatoms_info.pi_temperature;
+  int i,ip,ip_true,ipart,iii;
+  double *x,*y,*z,*fx,*fy,*fz,ake,ake_temp,akprim,fk,beta,tau;
+  int pi_beads = class->clatoms_info.pi_beads;
+  int pi_beads_proc = class->clatoms_info.pi_beads_proc;
+  int natm_tot = class->clatoms_info.natm_tot;
+  int myatm_start = class->clatoms_info.myatm_start;
+  int myatm_end = class->clatoms_info.myatm_end;
+  int pi_beads_proc_st = class->clatoms_info.pi_beads_proc_st;
+  int myid = class->communicate.myid_bead;
+  int np_forc = class->communicate.np_forc;
+  MPI_Comm comm_forc = class->communicate.comm_forc;
+  int nghost_tot = class->ghost_atoms.nghost_tot;
+  int nfreeze    = class->atommaps.nfreeze;
+  double *pvten_mode     = general_data->ptens.pvten_mode;
+  double *pvten_mode_tot = general_data->ptens.pvten_mode_tot;
+  double *prekf = class->clatoms_info.prekf;
+  double *veig  = class->clatoms_tran.path_eig;
+  double wght   = class->clatoms_info.wght_pimd;
+  double pi_temperature = class->clatoms_info.pi_temperature;
 
-/*======================================================================*/
-/* I) Calculate the KE and pressure tensor                              */
+
+  /*======================================*/
+  /* calculate the KE and pressure tensor */
 
   ake = 0.0;
-  beta = BOLTZ/pi_temperature;
-  tau = beta/pi_beads_proc;
-  for(i=1;i<=9;i++){pvten_mode_tot[i] = 0.0;}
-  for(ip=1;ip<=pi_beads_proc;ip++){
-    ip_true = ip+pi_beads_proc_st-1;
+  beta = BOLTZ / pi_temperature;
+  tau = beta / pi_beads_proc;
+  for(i=1; i<=9; i++) {
+      pvten_mode_tot[i] = 0.0;
+  }
+  for(ip=1; ip<=pi_beads_proc; ip++) {
+    ip_true = ip + pi_beads_proc_st - 1;
     x = class->clatoms_pos[ip].x;
     y = class->clatoms_pos[ip].y;
     z = class->clatoms_pos[ip].z;
     fx = class->clatoms_pos[ip].fxm;
     fy = class->clatoms_pos[ip].fym;
     fz = class->clatoms_pos[ip].fzm;
-    for(ipart=myatm_start;ipart<=myatm_end;ipart++){
-      fk = prekf[ipart]*veig[ip_true];
-      ake += fk*(x[ipart]*x[ipart]+y[ipart]*y[ipart]+z[ipart]*z[ipart]);
-      fx[ipart] = -2.0*fk*x[ipart];
-      fy[ipart] = -2.0*fk*y[ipart];
-      fz[ipart] = -2.0*fk*z[ipart];
-      pvten_mode_tot[1] += x[ipart]*fx[ipart];
-      pvten_mode_tot[5] += y[ipart]*fy[ipart];
-      pvten_mode_tot[9] += z[ipart]*fz[ipart];
-      pvten_mode_tot[2] += x[ipart]*fy[ipart];
-      pvten_mode_tot[3] += x[ipart]*fz[ipart];
-      pvten_mode_tot[6] += y[ipart]*fz[ipart];
+    for(ipart=myatm_start; ipart<=myatm_end; ipart++) {
+      fk = prekf[ipart] * veig[ip_true];
+      ake += fk * (x[ipart]*x[ipart] + y[ipart]*y[ipart] + z[ipart]*z[ipart]);
+      fx[ipart] = -2.0 * fk * x[ipart];
+      fy[ipart] = -2.0 * fk * y[ipart];
+      fz[ipart] = -2.0 * fk * z[ipart];
+      pvten_mode_tot[1] += x[ipart] * fx[ipart];
+      pvten_mode_tot[5] += y[ipart] * fy[ipart];
+      pvten_mode_tot[9] += z[ipart] * fz[ipart];
+      pvten_mode_tot[2] += x[ipart] * fy[ipart];
+      pvten_mode_tot[3] += x[ipart] * fz[ipart];
+      pvten_mode_tot[6] += y[ipart] * fz[ipart];
       fx[ipart] *= wght;
       fy[ipart] *= wght;
       fz[ipart] *= wght;
-    }/*endfor*/
-  }/*endfor*/
+    }
+  }
   pvten_mode_tot[4] = pvten_mode_tot[2];
   pvten_mode_tot[7] = pvten_mode_tot[3];
   pvten_mode_tot[8] = pvten_mode_tot[6];
-  for(i=1;i<=9;i++){
-    pvten_mode[i] = wght*pvten_mode_tot[i];
-  }/*endfor*/
+  for(i=1; i<=9; i++) {
+    pvten_mode[i] = wght * pvten_mode_tot[i];
+  }
   general_data->stat_avg.kin_harm = ake;
-  if(np_forc>1){
+  if (np_forc > 1) {
     ake_temp = 0.0;
-    Reduce(&ake, &ake_temp,1,MPI_DOUBLE,MPI_SUM,0,comm_forc);
+    Reduce(&ake, &ake_temp, 1, MPI_DOUBLE, MPI_SUM, 0, comm_forc);
     ake = ake_temp;
-  }/*endif*/
+  }
 
-  akprim = 1.5*((double) (natm_tot-nghost_tot-nfreeze))/tau-ake;
+  akprim = 1.5 * ((double) (natm_tot - nghost_tot - nfreeze)) / tau - ake;
   general_data->stat_avg.pi_ke_prim = akprim;
 
 /*--------------------------------------------------------------------------*/
-}/*end routine*/
+} /* end routine */
 /*==========================================================================*/
-
 
 
 /*==========================================================================*/
@@ -117,16 +119,15 @@ void mode_energy_control(CLASS *class,GENERAL_DATA *general_data)
 /*==========================================================================*/
 
 void get_pimd_spread(CLATOMS_INFO *clatoms_info, CLATOMS_POS *clatoms_pos,
-                     double *spread,COMMUNICATE *communicate)
+                     double *spread, COMMUNICATE *communicate)
 
 /*==========================================================================*/
-{/*begin routine*/
-/*======================================================================*/
+{ /* begin routine */
+/*==========================================================================*/
 
-#include "../typ_defs/typ_mask.h"
+  #include "../typ_defs/typ_mask.h"
 
-/*           Local variable declarations                                */
-
+  /* local variable declarations */
   int ip,imall,ipart,iii;
   int pi_beads = clatoms_info->pi_beads;
   int pi_beads_proc = clatoms_info->pi_beads_proc;
@@ -135,36 +136,37 @@ void get_pimd_spread(CLATOMS_INFO *clatoms_info, CLATOMS_POS *clatoms_pos,
   int natm_tot = clatoms_info->natm_tot;
   int myatm_start = clatoms_info->myatm_start;
   int myatm_end = clatoms_info->myatm_end;
-  double *x1,*y1,*z1,*xp,*yp,*zp;
-  double r2,dx,dy,dz;  
+  double *x1, *y1, *z1, *xp, *yp, *zp;
+  double r2, dx, dy, dz;
   double spread_now;
   MPI_Comm comm_beads = communicate->comm_beads;
 
-/*======================================================================*/
-/* I) Calculate the spread of the beads                                 */
+
+  /*===================================*/
+  /* calculate the spread of the beads */
 
   *spread = 0.0;
   imall = 0;
-  if(pi_beads_proc_st==1){
-     x1 = clatoms_pos[1].x;
-     y1 = clatoms_pos[1].y;
-     z1 = clatoms_pos[1].z;
-  }else{
-     imall = 1;
-     x1 = (double *) cmalloc(natm_tot*sizeof(double))-1;
-     y1 = (double *) cmalloc(natm_tot*sizeof(double))-1;
-     z1 = (double *) cmalloc(natm_tot*sizeof(double))-1;
-  }/*endif*/
+  if (pi_beads_proc_st == 1) {
+    x1 = clatoms_pos[1].x;
+    y1 = clatoms_pos[1].y;
+    z1 = clatoms_pos[1].z;
+  } else {
+    imall = 1;
+    x1 = (double *)cmalloc(natm_tot*sizeof(double))-1;
+    y1 = (double *)cmalloc(natm_tot*sizeof(double))-1;
+    z1 = (double *)cmalloc(natm_tot*sizeof(double))-1;
+  }
 
-  if(communicate->np_beads>1){
-    Bcast(&(x1[1]),natm_tot,MPI_DOUBLE,0,communicate->comm_beads);
-    Bcast(&(y1[1]),natm_tot,MPI_DOUBLE,0,communicate->comm_beads);
-    Bcast(&(z1[1]),natm_tot,MPI_DOUBLE,0,communicate->comm_beads);
+  if (communicate->np_beads > 1) {
+    Bcast(&(x1[1]), natm_tot, MPI_DOUBLE, 0, communicate->comm_beads);
+    Bcast(&(y1[1]), natm_tot, MPI_DOUBLE, 0, communicate->comm_beads);
+    Bcast(&(z1[1]), natm_tot, MPI_DOUBLE, 0, communicate->comm_beads);
     Barrier(communicate->comm_beads);
-  }/*endif*/
+  }
 
-  if(pi_beads_proc_st==1){
-   for(ip=2;ip<=pi_beads_proc;ip++){
+  if (pi_beads_proc_st == 1) {
+   for(ip=2; ip<=pi_beads_proc; ip++) {
      xp = clatoms_pos[ip].x;
      yp = clatoms_pos[ip].y;
      zp = clatoms_pos[ip].z;
@@ -375,12 +377,7 @@ void get_vir_press(CLASS *class, GENERAL_DATA *general_data,
   }/*endfor*/
   *press_ret = press/(3.0*dpi_beads);
 
-
 /*--------------------------------------------------------------------------*/
 }/*end routine*/
 /*==========================================================================*/
-
-
-
-
 
