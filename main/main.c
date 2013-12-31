@@ -34,7 +34,6 @@
 #include "../proto_defs/proto_communicate_wrappers.h"
 #include "../proto_defs/proto_communicate_entry.h"
 
-
 /*==========================================================================*/
 /*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
 /*==========================================================================*/
