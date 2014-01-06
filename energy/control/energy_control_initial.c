@@ -87,6 +87,8 @@ void energy_control_initial(CLASS *class, BONDED *bonded,
 
   int cp_on,pimd_on;
 
+  TIMER_START("energy control initial");
+
   cp_on   = general_data->simopts.cp_min  +general_data->simopts.cp_wave_min
            +general_data->simopts.cp      +general_data->simopts.cp_wave
            +general_data->simopts.cp_pimd +general_data->simopts.cp_wave_pimd
@@ -269,6 +271,8 @@ void energy_control_initial(CLASS *class, BONDED *bonded,
     }/*endif*/
 
   }/*endif*/
+
+  TIMER_STOP("energy control initial");
 
 /*-----------------------------------------------------------------------*/
   }/*end routine */

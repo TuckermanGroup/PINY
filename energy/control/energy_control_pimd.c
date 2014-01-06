@@ -75,6 +75,8 @@ void energy_control_pimd(CLASS *class, BONDED *bonded,
   int bend_free_num      = bonded->bend_free.num;
   int tors_free_num      = bonded->tors_free.num;
 
+  TIMER_START("energy control PIMD");
+
 /*========================================================================*/
 /* 0) Zero stuff      */
 
@@ -85,22 +87,22 @@ void energy_control_pimd(CLASS *class, BONDED *bonded,
 
 /*========================================================================*/
 /* I) Initialize energy variables                                       */
-  
+
   energy_control_initial(class,bonded,general_data);
 
 /*======================================================================*/
 /* II) Get intermolecular real space force and  PE   */
-  
+
   energy_control_inter_real(class,bonded,general_data);
 
 /*======================================================================*/
 /* III) Get intermolecular recip space force and  PE */
-  
+
   energy_control_inter_recip(class,bonded,general_data);
 
 /*======================================================================*/
 /* III) Get surface force and  PE */
-  
+
   energy_control_surf(class,bonded,general_data);
 
 /*======================================================================*/
@@ -270,15 +272,9 @@ void energy_control_pimd(CLASS *class, BONDED *bonded,
 
   energy_control_final(class,bonded,general_data);
 
+  TIMER_STOP("energy control PIMD");
+
 /*-----------------------------------------------------------------------*/
    }/*end routine */
 /*==========================================================================*/
-
-
-
-
-
-
-
-
 

@@ -67,6 +67,8 @@ void int_0_to_dt2_nvt_pimd(CLASS *class,BONDED *bonded,
    int myid_bead        = class->communicate.myid_bead;
    MPI_Comm comm_bead   = class->communicate.comm_beads;
 
+   TIMER_START("evolve NVT PIMD");
+
 /*==========================================================================*/
 /*==========================================================================*/
 /* 0) Useful constants                                                      */
@@ -181,6 +183,7 @@ void int_0_to_dt2_nvt_pimd(CLASS *class,BONDED *bonded,
                    &(class->ghost_atoms));
    }/*endfor*/
 
+   TIMER_STOP("evolve NVT PIMD");
 
 /*--------------------------------------------------------------------------*/
    }/*end routine*/

@@ -68,6 +68,8 @@ void int_dt2_to_dt_nvt_pimd(CLASS *class,BONDED *bonded,
    int pi_beads_proc    = class->clatoms_info.pi_beads_proc;
    int pi_beads_proc_st = class->clatoms_info.pi_beads_proc_st;
 
+   TIMER_START("evolve NVT PIMD");
+
 /*==========================================================================*/
 /*==========================================================================*/
 /* 0) Useful constants                                                      */
@@ -151,6 +153,8 @@ void int_dt2_to_dt_nvt_pimd(CLASS *class,BONDED *bonded,
        }/*endfor*/
       }/*endif : rank==0*/
    }/*endif respa*/
+
+   TIMER_STOP("evolve NVT PIMD");
 
 /*--------------------------------------------------------------------------*/
   }/*end routine*/

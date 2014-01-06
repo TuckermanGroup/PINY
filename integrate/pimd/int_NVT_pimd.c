@@ -74,6 +74,8 @@ void int_NVT_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
     MPI_Comm world      = class->communicate.world;
     double kinet_tmp,kinet,temp;
 
+    TIMER_START("integrate NVT PIMD");
+
 /*==========================================================================*/
 /*==========================================================================*/
 /* 0) Useful constants                                                      */
@@ -200,7 +202,7 @@ void int_NVT_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
             class_clatoms_fx[ipart] = class_clatoms_fxm[ipart];
             class_clatoms_fy[ipart] = class_clatoms_fym[ipart];
             class_clatoms_fz[ipart] = class_clatoms_fzm[ipart];
-	  }/*endfor*/
+          }/*endfor*/
         }/*endfor*/
       }/*endif*/
 /*==========================================================================*/
@@ -369,6 +371,9 @@ void int_NVT_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
                                 general_data->ptens.tvten[9],pkin);
      scanf("%d",&iii);
 */
+
+  TIMER_STOP("integrate NVT PIMD");
+
 /*-------------------------------------------------------------------------*/
 /*end routine*/}
 /*==========================================================================*/
@@ -423,6 +428,7 @@ void apply_NHC_bead(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
       double *v_nhc;
       double *kinet_nhc_temp;
 
+      TIMER_START("NHC beads");
 
       if(iflag_mass==1){
        clatoms_mass    = clatoms_info->mass;
@@ -603,6 +609,8 @@ void apply_NHC_bead(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
 
     cfree(&(v_nhc_temp[1]));
     cfree(&(kinet_nhc_temp[1]));
+
+    TIMER_STOP("NHC beads");
 
 /*--------------------------------------------------------------------------*/
 /*end routine*/}

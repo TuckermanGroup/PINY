@@ -57,6 +57,8 @@ void user_wait() {
 void control_pimd_trans_mode(CLASS *class, GENERAL_DATA *general_data) {
 /*==========================================================================*/
 
+  TIMER_START("PI transformation - forward");
+
   if (class->communicate.np_beads == 1) {
 
     #ifdef DEBUG
@@ -134,6 +136,8 @@ void control_pimd_trans_mode(CLASS *class, GENERAL_DATA *general_data) {
 
   }
 
+  TIMER_STOP("PI transformation - forward");
+
 }
 /*--------------------------------------------------------------------------*/
 
@@ -165,6 +169,8 @@ void control_pimd_trans_pos(CLASS *class, GENERAL_DATA *general_data) {
   int *displs_atm = class->class_comm_forc_pkg.displs_atm;
   MPI_Comm comm_beads_forc = class->communicate.comm_beads_forc;
   MPI_Comm comm_forc = class->communicate.comm_forc;
+
+  TIMER_START("PI transformation - reverse");
 
   if (pi_beads_proc_st == 1) {
     for(i=myatm_start; i<=myatm_end; i++) {
@@ -238,6 +244,8 @@ void control_pimd_trans_pos(CLASS *class, GENERAL_DATA *general_data) {
 
   }
 
+  TIMER_STOP("PI transformation - reverse");
+
 }
 /*--------------------------------------------------------------------------*/
 
@@ -245,6 +253,8 @@ void control_pimd_trans_pos(CLASS *class, GENERAL_DATA *general_data) {
 /*==========================================================================*/
 void control_pimd_trans_force(CLASS *class, GENERAL_DATA *general_data) {
 /*==========================================================================*/
+
+  TIMER_START("PI transformation - forces");
 
   if (class->communicate.np_beads == 1) {
 
@@ -285,6 +295,8 @@ void control_pimd_trans_force(CLASS *class, GENERAL_DATA *general_data) {
     }
 
   }
+
+  TIMER_STOP("PI transformation - forces");
 
 }
 /*--------------------------------------------------------------------------*/

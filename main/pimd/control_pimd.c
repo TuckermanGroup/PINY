@@ -51,7 +51,7 @@ void control_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
 /*=======================================================================*/
 /*            Local variable declarations                                */
 
-  int itime,iii,nver_temp=0;        
+  int itime,iii,nver_temp=0;
   int ntime           = general_data->timeinfo.ntime;
   int error_check_on  = general_data->error_check_on;
   int num_proc        = class->communicate.np;
@@ -62,6 +62,8 @@ void control_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
   MPI_Comm comm_beads = class->communicate.comm_beads;
   MPI_Comm comm_forc  = class->communicate.comm_forc;
   MPI_Comm world      = class->communicate.world;
+
+  TIMER_START("control PIMD");
 
 /*=======================================================================*/
 /* 0) Preliminary MD stuff                                               */
@@ -202,6 +204,8 @@ if(error_check_on==1){
   printf("Completed PIMD run \n");
   PRINT_LINE_STAR;
 }/*endif for error check on*/
+
+  TIMER_STOP("control PIMD");
 
 /*-----------------------------------------------------------------------*/
 }/*end routine*/

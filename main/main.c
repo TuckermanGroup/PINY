@@ -61,6 +61,8 @@ void Init_PINY(int argc, char *argv[], CLASS* class, GENERAL_DATA* general_data)
   CP cp;
   ANALYSIS analysis;
 
+  TIMER_START("PINY");
+
 /*=======================================================================*/
 /*  I)             Check for input file                                  */
 
@@ -135,6 +137,9 @@ void Init_PINY(int argc, char *argv[], CLASS* class, GENERAL_DATA* general_data)
    Finalize();
   }/*endif*/
   fflush(stdout);
+
+  TIMER_STOP("PINY");
+
   exit(0); 
   return 0;
 
