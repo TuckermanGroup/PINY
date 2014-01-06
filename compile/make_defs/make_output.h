@@ -70,4 +70,9 @@ write_gen_header.o   :   $(STANDARD) $(DEFINES) \
 	$(ECHO) $@
 	$(COBJ_NOOPT) $(CODE)/output/write_gen_header.c
 
+#------------------------------------------------------------------
+timer.o: $(CODE)/output/timer.c
+	$(ECHO) $@
+	$(COBJ) $(CODE)/output/timer.c
+
 #====================================================================
