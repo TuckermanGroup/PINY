@@ -574,8 +574,36 @@ void parse(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,CP *cp,
     }/*endif*/
   }/*endif*/
 
+
+  /*=============*/
+  /* XXVI) timer */
+  /*=============*/
+
+  #if defined(TIMER)
+    PRINT_LINE_STAR;
+    printf("Code section timer\n");
+    PRINT_LINE_DASH;
+    printf("\n");
+
+    printf("Code section timer is active.\n");
+    #if defined(PARALLEL)
+      printf("Parallel version, reporting from MPI rank 0.\n");
+    #else
+      printf("Serial version.\n");
+    #endif
+    printf("Printing timer log to standard error output.\n");
+    printf("Timer resolution is %2.0e s.\n", timer_resolution());
+    printf("\n");
+
+    PRINT_LINE_DASH;
+    printf("Code section timer - done\n");
+    PRINT_LINE_STAR;
+    printf("\n");
+  #endif
+
+
 /*========================================================================*/
-/* XXVI) Flush the buffers                                                 */
+/* XXVII) Flush the buffers                                                 */
   
   fflush(stdout);
   fflush(stderr);
