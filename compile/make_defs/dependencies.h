@@ -690,6 +690,16 @@ int_nvt_res.o    :       $(STANDARD) $(DEFINES) \
                          $(INT_MD_ENT) $(INT_MD_LOC) $(INTRA_CON_ENT) \
                          $(ENR_CTRL_ENT) \
 ---------------------------------------
+int_nvt_isok.o     :     $(STANDARD) $(DEFINES) \
+                         $(TYP_CLASS) $(TYP_BND) $(TYP_GEN) \
+                         $(INT_MD_ENT) $(INT_MD_LOC) $(INTRA_CON_ENT) \
+                         $(ENR_CTRL_ENT) $(COMM_WRAP) \
+---------------------------------------
+int_nvt_isok_res.o    :  $(STANDARD) $(DEFINES) \
+                         $(TYP_CLASS) $(TYP_BND) $(TYP_GEN) \
+                         $(INT_MD_ENT) $(INT_MD_LOC) $(INTRA_CON_ENT) \
+                         $(ENR_CTRL_ENT) \
+---------------------------------------
 int_npti.o     :         $(STANDARD) $(DEFINES) \
                          $(TYP_CLASS) $(TYP_BND) $(TYP_GEN) \
                          $(INT_MD_ENT) $(INT_MD_LOC) $(INTRA_CON_ENT) \

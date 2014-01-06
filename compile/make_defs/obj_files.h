@@ -63,8 +63,8 @@ INTEGRATE_PIMD_FILES  = int_NVT_pimd.o int_NPTI_pimd.o int_NPTF_pimd.o \
                         int_dt2_to_dt_pimd.o
 INTEGRATE_CPPIMD_FILES = int_NVT_cp_pimd.o int_NPTI_cp_pimd.o \
                         int_NPTF_cp_pimd.o int_utils_cp_pimd.o
-
 INTEGRATE_MD_FILES    = int_NVE.o int_NVE_res.o int_NVT.o int_NVT_res.o \
+                        int_NVT_ISOK.o int_NVT_ISOK_res.o \
                         int_NPTI.o int_NPTI_res.o int_NPTF.o int_NPTF_res.o \
                         int_utils.o min_STD.o min_CG.o move_pos_box.o \
                         int_0_to_dt2.o int_dt2_to_dt.o move_vel_vbox.o

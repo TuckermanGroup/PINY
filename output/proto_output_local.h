@@ -15,6 +15,8 @@ void dink_quant_calc_md(CLASS *, GENERAL_DATA *,double *,
 			double *,double *, 
                         double *, double *, double *);
 
+void calc_isok_md(CLASS *,GENERAL_DATA *,BONDED *);
+
 void screen_write_md(CLASS *,GENERAL_DATA *,BONDED *,
                      double ,double ,double , 
                      double ,double ,

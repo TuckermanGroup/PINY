@@ -30,6 +30,7 @@ void control_vnhc_smpl(CLASS *class,GENERAL_DATA *general_data)
 
 /*===================================================================*/
 {/*begin routine*/
+if(general_data->ensopts.nvt_isok==0){
 
   int error_check_on  = general_data->error_check_on;
   MPI_Comm comm_beads = class->communicate.comm_beads;
@@ -66,6 +67,8 @@ if(error_check_on==1){
   PRINT_LINE_STAR;printf("\n");
 }/*endif*/
 
+
+} /*endif not nvt_isok*/
 /*====================================================================*/
   }/*end routine*/
 /*====================================================================*/

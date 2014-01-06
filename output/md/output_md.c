@@ -435,7 +435,7 @@ void dink_quant_calc_md(CLASS *class, GENERAL_DATA *general_data,double *etot,
 
   (*econv_now) = fabs((*etot)-general_data->stat_avg.econv0)/
                  fabs(general_data->stat_avg.econv0);
-
+  if(general_data->ensopts.nvt_isok==1) *econv_now=*etot;
 /*=======================================================================*/
 /*  Volume and pressure                                                    */
   
@@ -516,15 +516,30 @@ void screen_write_md(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
   printf("********************************************************\n");
   printf("QUANTITY          =  INSTANTANEOUS    AVERAGE           \n");
   printf("--------------------------------------------------------\n");
-  if(general_data->ensopts.nve==1)  printf("Ensemble          = NVE     \n");
-  if(general_data->ensopts.nvt==1)  printf("Ensemble          = NVT     \n");
-  if(general_data->ensopts.npt_i==1)printf("Ensemble          = NPT-ISO \n");
-  if(general_data->ensopts.npt_f==1)printf("Ensemble          = NPT-FLEX\n");
+  if(general_data->ensopts.nve==1)  		printf("Ensemble          = NVE     \n");
+  if(general_data->ensopts.nvt==1)  		printf("Ensemble          = NVT     \n");
+  if(general_data->ensopts.nvt_isok==1)		printf("Ensemble          = NVT-ISOK\n");
+  if(general_data->ensopts.npt_i==1)		printf("Ensemble          = NPT-ISO \n");
+  if(general_data->ensopts.npt_f==1)		printf("Ensemble          = NPT-FLEX\n");
   printf("Time step         = %g\n",(double)(general_data->timeinfo.itime));
   printf("----------------- \n");
-  printf("Econv%s          = %g %g\n",hat,( econv_now ),
+  atm_div = (double)(class->clatoms_info.nfree);
+  if(general_data->ensopts.nvt_isok==1)	{
+	/* printf("Isok Constraint%s = %g \n",hat,(  general_data->stat_avg.vpotnhc )); */
+
+	 printf("Isok Conv%s       = %g   %g\n",hat,( general_data->stat_avg.isokconv_now ),
+	        (( general_data->stat_avg.isokconv)/atime));
+     printf("Ex. Sys. Temp. %s = %g       %g\n",hat,
+		         (general_data->stat_avg.kinet_nhc)*eu_conv,
+		         (general_data->stat_avg.akinet_nhc)/atime*eu_conv);
+	 printf("----------------- \n");
+
+  }
+  else{
+  printf("Econv%s           = %g %g\n",hat,( econv_now ),
         ( general_data->stat_avg.econv/atime));
-  printf("Energy%s         = %g %g\n",hat,
+  }
+  printf("Energy%s          = %g %g\n",hat,
         (general_data->stat_avg.kinet+vtot)*eu_conv,
         (general_data->stat_avg.akinet+avtot)/atime*eu_conv);
   printf("Total PE%s        = %g %g\n",hat,
@@ -538,7 +553,6 @@ void screen_write_md(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
   printf("Atm KE            = %g %g\n",(general_data->stat_avg.kinet)*eu_conv,
         (general_data->stat_avg.akinet/atime)*eu_conv);
   printf("----------------- \n");
-  atm_div = (double)(class->clatoms_info.nfree);
   printf("Atm Deg. Free     = %g\n",atm_div); 
   printf("Atm Temperature   = %g %g \n",
         (general_data->stat_avg.kinet*2.0*BOLTZ/atm_div),

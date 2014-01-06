@@ -138,6 +138,9 @@ void simpavg_md(TIMEINFO *timeinfo,STAT_AVG *stat_avg,CELL *cell,
    if((ensopts->nvt)==1){   
      etot += stat_avg->kinet_nhc + stat_avg->vpotnhc;
    }
+   if((ensopts->nvt_isok)==1){
+	   etot = stat_avg->vpotnhc;
+   }
    if((ensopts->npt_i)==1){
     etot += stat_avg->kinet_nhc + stat_avg->vpotnhc
           + stat_avg->kinet_v+ stat_avg->vpot_v;

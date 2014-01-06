@@ -7,6 +7,9 @@ void apply_NHC(CLATOMS_INFO *,CLATOMS_POS *,THERM_INFO *,THERM_POS *,
 void apply_NHC_par(CLATOMS_INFO *,CLATOMS_POS *,THERM_INFO *,THERM_POS *,
                INT_SCR *, int,CLASS_COMM_FORC_PKG *);
 
+void apply_NH_ISOK_par(CLATOMS_INFO *,CLATOMS_POS *,THERM_INFO *,THERM_POS *,
+               INT_SCR *, int,CLASS_COMM_FORC_PKG *);
+
 void apply_GGMT2_par(CLATOMS_INFO *,CLATOMS_POS *, 
                THERM_INFO *,THERM_POS *, 
                INT_SCR *,int ,CLASS_COMM_FORC_PKG *);
@@ -81,11 +84,18 @@ void getsys_NPT(CLATOMS_INFO *,CLATOMS_POS *,THERM_INFO *,THERM_POS *,
 void nhc_vol_potkin(THERM_INFO *, THERM_POS *,BARO *, PAR_RAHMAN *,
                     STAT_AVG *,STATEPOINT *, int,int );
 
+void nhc_vol_potkin_isok(CLATOMS_INFO *, CLATOMS_POS *, THERM_INFO *,
+                    THERM_POS *, BARO *, PAR_RAHMAN *, STAT_AVG *, STATEPOINT *,
+                    int,int,int);
+
+
 /*--------------------------------------------------------------------------*/
 
 void int_0_to_dt2_nve(CLASS *,BONDED *,GENERAL_DATA *,int,int,int,double);
 
 void int_0_to_dt2_nvt(CLASS *,BONDED *,GENERAL_DATA *,int,int,int,double);
+
+void int_0_to_dt2_nvt_isok(CLASS *,BONDED *,GENERAL_DATA *,int ,int ,int ,double);
 
 void int_0_to_dt2_npti(CLASS *,BONDED *,GENERAL_DATA *,int,int,int,double);
 
@@ -94,6 +104,8 @@ void int_0_to_dt2_nptf(CLASS *,BONDED *,GENERAL_DATA *,int,int,int,double);
 void int_dt2_to_dt_nve(CLASS *,BONDED *,GENERAL_DATA *,int,int,int,double);
 
 void int_dt2_to_dt_nvt(CLASS *,BONDED *,GENERAL_DATA *,int,int,int,double);
+
+void int_dt2_to_dt_nvt_isok(CLASS *,BONDED *,GENERAL_DATA *,int,int,int,double);
 
 void int_dt2_to_dt_npti(CLASS *,BONDED *,GENERAL_DATA *,int,int,int,double);
 

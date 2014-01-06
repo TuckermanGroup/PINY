@@ -13,6 +13,8 @@ void int_NVE_res(CLASS *,BONDED *,GENERAL_DATA *);
 
 void int_NVT(CLASS *,BONDED *,GENERAL_DATA *);
 
+void int_NVT_ISOK(CLASS *,BONDED *,GENERAL_DATA *);
+
 void init_NHC(CLATOMS_INFO *,CLATOMS_POS *, 
               THERM_INFO *, THERM_POS *,
               INT_SCR *, int);
@@ -21,10 +23,17 @@ void init_NHC_par(CLATOMS_INFO *,CLATOMS_POS *,
               THERM_INFO *, THERM_POS *,
               INT_SCR *, int, CLASS_COMM_FORC_PKG *);
 
+void init_NH_ISOK_par(GENERAL_DATA *, CLATOMS_INFO *,CLATOMS_POS *,
+                     THERM_INFO *, THERM_POS *,
+                     INT_SCR *, int, CLASS_COMM_FORC_PKG *, VEL_SAMP_CLASS *);
+
+
 /*--------------------------------------------------------------------------*/
 /* /md/int_NVT_res.c */
 
 void int_NVT_res(CLASS *,BONDED *,GENERAL_DATA *);
+
+void int_NVT_ISOK_res(CLASS *,BONDED *,GENERAL_DATA *);
 
 /*--------------------------------------------------------------------------*/
 /* /md/int_NPTI.c */

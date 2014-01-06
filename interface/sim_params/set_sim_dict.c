@@ -570,8 +570,8 @@ void set_sim_dict_gen(int *num_dict,DICT_WORD *dict[])
         strcpy((*dict)[1].keyword,"simulation_typ");
         strcpy((*dict)[1].keyarg,"md");
   /*-----------------------------------------------------------------------*/ 
-  /*  2)\ensemble_typ{nve,nvt,npt_i,npt_f,nst} */
-        strcpy((*dict)[2].error_mes,"nve,nvt,npt_i,npt_f,nst");
+  /*  2)\ensemble_typ{nve,nvt,nvt_isok,npt_i,npt_f,nst} */
+        strcpy((*dict)[2].error_mes,"nve,nvt,nvt_isok,npt_i,npt_f,nst");
         strcpy((*dict)[2].keyword,"ensemble_typ");
         strcpy((*dict)[2].keyarg,"nve");
   /*-----------------------------------------------------------------------*/ 
