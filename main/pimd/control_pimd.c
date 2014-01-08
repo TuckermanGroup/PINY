@@ -117,6 +117,7 @@ if(error_check_on==1){
 #endif
   /*----------------------------------------------------------------------*/
   /*   5)Calculate some simple averages                                   */
+    TIMER_START("simple averages");
     cputime(&(general_data->stat_avg.cpu2)); 
     (general_data->stat_avg.cpu_now)=(general_data->stat_avg.cpu2)-
                                      (general_data->stat_avg.cpu1);
@@ -127,31 +128,37 @@ if(error_check_on==1){
 	         &(general_data->cell),&(bonded->constrnt),
 	         &(general_data->ensopts),&(general_data->simopts),
 	         &(general_data->ptens),&(class->communicate));
+    TIMER_STOP("simple averages");
 
   /*-----------------------------------------------------------------------*/
   /*   7)Produce the output specified by the user                          */
 
+    TIMER_START("comm: reduce Verlet list");
     if(np_forc>1){
       Reduce(&(class->nbr_list.verlist.nver_lst_now), &nver_temp,1,MPI_INT,
                    MPI_SUM,0,comm_forc);
       class->nbr_list.verlist.nver_lst_now = nver_temp;     
     }
+    TIMER_STOP("comm: reduce Verlet list");
 
 /*=======================================================================*/
 /* I) All gather velocities if necessary */ 
 
+ TIMER_START("comm: velocity gather");
  if(np_forc>1){
   if(((general_data->timeinfo.itime%general_data->filenames.iwrite_confv)==0)||
      ((general_data->timeinfo.itime%general_data->filenames.iwrite_dump)==0)){
     forc_level_vel_gather(class);
   }/*endif*/
  }/*endif*/
+ TIMER_STOP("comm: velocity gather");
 
 
 
     if(myid == 0) check_auto_exit(&(general_data->timeinfo.exit_flag));
     if(num_proc > 1) Bcast(&(general_data->timeinfo.exit_flag),1,MPI_INT,0,world);
 
+    TIMER_START("output");
     if(  (itime % (general_data->filenames.iwrite_screen))==0 ||
          (itime % (general_data->filenames.iwrite_dump  ))==0 ||
          (itime % (general_data->filenames.iwrite_confp ))==0 ||
@@ -167,6 +174,7 @@ if(error_check_on==1){
            output_pimd(class,general_data,bonded);
 	 }/*endif : error_check_on*/
     }/*endif*/
+    TIMER_STOP("output");
 
   /*---------------------------------------------------------------------*/
   /*   8)Resample the particle velocities if desired                     */
