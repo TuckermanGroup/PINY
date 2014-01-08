@@ -579,29 +579,33 @@ void parse(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,CP *cp,
   /* XXVI) timer */
   /*=============*/
 
-  PRINT_LINE_STAR;
-  printf("Code section timer\n");
-  PRINT_LINE_DASH;
-  printf("\n");
+  if (myid == 1) {
 
-  #if defined(TIMER)
-    printf("Code section timer is enabled.\n");
-    #if defined(PARALLEL)
-      printf("Parallel version, reporting from MPI rank 0.\n");
+    PRINT_LINE_STAR;
+    printf("Code section timer\n");
+    PRINT_LINE_DASH;
+    printf("\n");
+
+    #if defined(TIMER)
+      printf("Code section timer is enabled.\n");
+      #if defined(PARALLEL)
+        printf("Parallel version, reporting from MPI rank 0.\n");
+      #else
+        printf("Serial version.\n");
+      #endif
+      printf("Printing timer log to standard error output.\n");
+      printf("Timer resolution is %2.0e s.\n", timer_resolution());
     #else
-      printf("Serial version.\n");
+      printf("Code section timer was not enabled at compile time.\n");
     #endif
-    printf("Printing timer log to standard error output.\n");
-    printf("Timer resolution is %2.0e s.\n", timer_resolution());
-  #else
-    printf("Code section timer was not enabled at compile time.\n");
-  #endif
-  printf("\n");
+    printf("\n");
 
-  PRINT_LINE_DASH;
-  printf("Code section timer - done\n");
-  PRINT_LINE_STAR;
-  printf("\n");
+    PRINT_LINE_DASH;
+    printf("Code section timer - done\n");
+    PRINT_LINE_STAR;
+    printf("\n");
+
+  }
 
 /*========================================================================*/
 /* XXVII) Flush the buffers                                                 */
