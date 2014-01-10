@@ -53,6 +53,8 @@ void force_nolst(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
   int myid_forc          = class_comm_forc_pkg->myid;
   int np_forc            = class_comm_forc_pkg->num_proc;
 
+  TIMER_START("force evaluation - no list");
+
   /*========================================================================*/
   /* I) Count the interactions                                              */
 
@@ -191,6 +193,8 @@ void force_nolst(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
     fflush(stdout);
     exit(1);
   }/*endif*/
+
+  TIMER_STOP("force evaluation - no list");
 
 }/*end routine */
 /*==========================================================================*/
