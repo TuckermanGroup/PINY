@@ -52,6 +52,8 @@ void force_verlst(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
   int *for_scr_i_index   = for_scr->i_index;  
   int *for_scr_j_index   = for_scr->j_index;  
 
+  TIMER_START("force evaluation - Verlet list");
+
   /*========================================================================*/
   /*  I) Count the interactions and determine the number of force calls */
 
@@ -167,7 +169,9 @@ void force_verlst(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
      exit(1);
      /*endif*/}
-  
+
+  TIMER_STOP("force evaluation - Verlet list");
+
   /*------------------------------------------------------------------------*/
 }/*end routine */
 /*==========================================================================*/

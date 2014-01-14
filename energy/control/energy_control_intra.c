@@ -85,6 +85,8 @@ void energy_control_intra(CLASS *class, BONDED *bonded,
                           +general_data->simopts.cp_wave_min_pimd
                           +general_data->simopts.debug_cp_pimd;
 
+  TIMER_START("energy control intramolecular");
+
 /*======================================================================*/
 /* I) Zero stuff and set some constants */
 
@@ -322,6 +324,8 @@ void energy_control_intra(CLASS *class, BONDED *bonded,
     }/*endif*/
 
   }/*endif*/
+
+  TIMER_STOP("energy control intramolecular");
 
 /*-----------------------------------------------------------------------*/
    }/*end routine */

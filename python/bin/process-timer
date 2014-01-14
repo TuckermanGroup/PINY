@@ -1,0 +1,244 @@
+#!/usr/bin/env python
+
+import sys
+import StringIO
+from collections import defaultdict
+import operator
+
+import numpy as np
+
+
+class BaseTimer(object):
+    """ """
+
+    char_full_block = u'\u2588'
+    char_pipe = '|'
+
+    def __init__(self):
+        """Construct the timer."""
+
+        self.times = defaultdict(float)
+        """accumulates running times, keys are timer paths"""
+
+        self.path = list()
+        """current timer path stack"""
+
+        self.start_times = list()
+        """start times for all path items on the stack"""
+
+        self.char_bar = self.char_pipe
+
+    def process(self):
+        """ """
+
+        # TODO
+        # filter out things that have relative time smaller than a certain
+        # tolerance, which can be configured
+        # their time needs to be included in their parent, then, though
+
+        def bar_str(r, w=50):
+            """Return a bar of width `r` relative to `w`."""
+
+            assert(0.0 <= r <= 1.0)
+
+            n = int(round(w * r))
+            return n * self.char_bar
+
+        out = StringIO.StringIO()
+
+        # write main header
+        out.write('Timing report\n')
+        out.write('-------------\n\n')
+
+        # if not all timers are stopped
+        if self.path:
+            str_path = ' | '.join(self.path)
+            out.write('WARNING\n')
+            out.write('Not all timers are stopped. Timer path is:\n%s\n' % str_path)
+            out.write('\n\n')
+
+        # we have measured inclusive times for all paths
+        # now calculate
+        # - exclusive times
+        # - total time
+        # - time outside timed sections
+        t_inc = self.times.copy()
+        t_exc = t_inc.copy()
+        paths = t_inc.keys()
+        paths.sort()
+        for path in paths:
+            t_e = t_exc[path]
+            if len(path) > 1:
+                t_exc[path[:-1]] -= t_e
+
+        # if we have a start time, show time not accounted for
+        if self.t_start is not None:
+
+            # total time since object construction
+            t_total = time.time() - self.t_start
+
+            # time spent outside timed sections
+            t_other = t_total - sum(t_exc.values())
+
+            # add it to the list
+            t_exc[('other',)] = t_other
+            t_inc[('other',)] = t_other
+            paths.append(('other',))
+
+        else:
+
+            # just the sum of everything measured
+            t_total = sum(t_exc.values())
+
+
+        #
+        # structured profile
+        #
+
+        # maximum width of one path item string, including indentation
+        w_name = max([len(path[-1]) + len(path) for path in paths]) - 1
+
+        # maximum width of one printed time value
+        w_inc = int(np.log10(max(t_inc.values()))) + 5
+        w_exc = int(np.log10(max(t_exc.values()))) + 5
+
+        # total width of the cut line
+        w_cut = w_name + 2 + w_inc + 2 + w_exc + 1 + 6 + 3
+
+        # format strings
+        fmt_header = '%%-%is  %%%is  %%%is %%6s\n' % (w_name, w_inc, w_exc)
+        fmt_line = u'%%-%is  %%%i.3f  %%%i.3f %%6.2f %%%% %%s\n' % (w_name, w_inc, w_exc)
+        fmt_footer = '%%-%is  %%%is  %%%i.3f %%6.2f %%%%\n' % (w_name, w_inc, w_exc)
+
+        # header
+        out.write(fmt_header % ('segment', 'total', 'self', ''))
+        out.write('%s\n' % ('-' * w_cut))
+
+        # write all items
+        p_total = 0.0
+        for path in paths:
+
+            t_e = t_exc[path]
+            t_i = t_inc[path]
+            r = t_e / t_total
+            p = 100 * r
+            p_total += p
+            bar = bar_str(r)
+            indent = (len(path) - 1) * ' '
+            name = indent + path[-1]
+            out.write(fmt_line % (name, t_i, t_e, p, bar))
+
+        # footer
+        out.write('%s\n' % ('-' * w_cut))
+        out.write(fmt_footer % ('TOTAL', '', t_total, p_total))
+        out.write('\n')
+
+        #
+        # flat profile
+        #
+
+        # we have exclusive times, extract them for unique leaves
+        times_total = defaultdict(float)
+        names = []
+        for path in paths:
+            name = path[-1]
+            names.append(name)
+            times_total[name] += t_exc[path]
+        names = list(set(names))
+
+        # sort total times by time
+        names_times_sorted = sorted(times_total.items(),
+                                    key=operator.itemgetter(1),
+                                    reverse=True)
+
+        # maximum width of one name
+        w_name = max([len(name) for name in names])
+
+        # maximum width of one printed time value
+        w_t = int(np.log10(max(times_total.values()))) + 5
+
+        # total width of the cut line
+        w_cut = w_name + 2 + w_t + 1 + 6 + 3
+
+        # format strings
+        fmt_header = '%%-%is  %%%is %%6s\n' % (w_name, w_t)
+        fmt_line = u'%%-%is  %%%i.3f %%6.2f %%%% %%s\n' % (w_name, w_t)
+        fmt_footer = '%%-%is  %%%i.3f %%6.2f %%%%\n' % (w_name, w_t)
+
+        # header
+        out.write(fmt_header % ('segment', 'time', ''))
+        out.write('%s\n' % ('-' * w_cut))
+
+        t_total_flat = 0.0
+        p_total_flat = 0.0
+        for name, t in names_times_sorted:
+            t_total_flat += t
+            r = t / t_total
+            p = 100 * r
+            p_total_flat += p
+            bar = bar_str(r)
+            out.write(fmt_line % (name, t, p, bar))
+
+        # footer
+        out.write('%s\n' % ('-' * w_cut))
+        out.write(fmt_footer % ('TOTAL', t_total_flat, p_total_flat))
+
+        return out.getvalue()
+
+
+class LogTimer(BaseTimer):
+
+    def __init__(self):
+
+        self.t_start = None
+        """no time of construction"""
+
+        super(LogTimer, self).__init__()
+
+    def start(self, name, t):
+
+        path = self.path
+
+        # put the name and time on the stack
+        path.append(name)
+        self.start_times.append(t)
+
+    def stop(self, name, t):
+
+        # prepare current path as tuple
+        path_t = tuple(self.path)
+
+        # get data from the stack
+        name_last = self.path.pop()
+        t_last = self.start_times.pop()
+
+        # check that we are trying to remove the topmost name on the stack
+        if name != name_last:
+            data_err = (name, name_last)
+            str_err = ('Must stop timers in stack order. '
+                       'Requested stopping of "%s" but topmost is "%s".' % data_err)
+            raise ValueError(str_err)
+
+        # all clear, add time increment to current path
+        self.times[path_t] += t - t_last
+
+    def parse_log(self, filename):
+
+        f_in = open(filename)
+
+        for line in f_in:
+            items = line[:-1].split(' | ')
+            action = items[0]
+            now = float(items[1])
+            name = items[2]
+            if action == 'timer start':
+                self.start(name, now)
+            elif action == 'timer stop ':
+                self.stop(name, now)
+            else:
+                raise ValueError('Unknown timer action: %s' % action)
+
+
+timer = LogTimer()
+timer.parse_log(sys.argv[1])
+print timer.process()

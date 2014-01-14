@@ -86,6 +86,8 @@ void force_lnklst(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
   int myid_forc          = class_comm_forc_pkg->myid;
   int np_forc            = class_comm_forc_pkg->num_proc;
 
+  TIMER_START("force evaluation - linked list");
+
   /*========================================================================*/
   /* I) Get a nice value of nlen: a value divisible by natm_tot or vice versa*/
   
@@ -264,6 +266,8 @@ void force_lnklst(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
        num_call          += 1;
        intact_tot        += (*for_scr_intact);
     }/*endif*/
+
+  TIMER_STOP("force evaluation - linked list");
 
   /*------------------------------------------------------------------------*/
   /*end routine */}

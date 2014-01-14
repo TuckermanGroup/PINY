@@ -79,6 +79,8 @@ void energy_control_inter_real(CLASS *class, BONDED *bonded,
   
   int nfree3;
 
+  TIMER_START("energy control intermolecular real space");
+
 /*======================================================================*/
 /* 0) Get some constants */
 
@@ -182,6 +184,8 @@ void energy_control_inter_real(CLASS *class, BONDED *bonded,
     }/*endif*/
 
   }/*endif*/
+
+  TIMER_STOP("energy control intermolecular real space");
 
 /*-----------------------------------------------------------------------*/
    }/*end routine */
@@ -579,11 +583,4 @@ void mix_coul_corr(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
 /*==========================================================================*/
   }/*end routine */
 /*==========================================================================*/
-
-
-
-
-
-
-
 

@@ -88,7 +88,8 @@ void energy_control_final(CLASS *class, BONDED *bonded,
                         +general_data->simopts.cp_wave_pimd
                         +general_data->simopts.cp_wave_min_pimd
                         +general_data->simopts.debug_cp_pimd;
-  
+
+  TIMER_START("energy control final");
 
 /*======================================================================*/
 /* I) Set virial estimator flag stuff                                   */
@@ -229,6 +230,8 @@ void energy_control_final(CLASS *class, BONDED *bonded,
 
   }/*endif : inter RESPA step*/
 
+  TIMER_STOP("energy control final");
+
 /*-----------------------------------------------------------------------*/
    }/*end routine */
 /*=======================================================================*/
@@ -302,7 +305,4 @@ void box_force_flex(double *fgmat_p, double *pvten,double *pvten_inc,
 /*-----------------------------------------------------------------------*/
    }/*end routine */
 /*=======================================================================*/
-
-
-
 

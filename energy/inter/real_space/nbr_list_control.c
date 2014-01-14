@@ -52,6 +52,8 @@ void nbr_list_control(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
  int brnch_root_list_opt = nbr_list->brnch_root_list_opt;
  int pi_beads=clatoms_info->pi_beads;
 
+  TIMER_START("neighbor list control");
+
   ninter = (atommaps->natm_typ*(atommaps->natm_typ+1))/2;
 /*==========================================================================*/
 /* 0) Regenerate cut skin if you have more than one PI bead                 */
@@ -108,6 +110,8 @@ void nbr_list_control(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
                          class_comm_forc_pkg);
       /*endif*/}
   /*endif*/}
+
+  TIMER_STOP("neighbor list control");
 
 /*--------------------------------------------------------------------------*/
 }/*end routine */

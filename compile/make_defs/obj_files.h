@@ -116,7 +116,8 @@ MAIN_CP_FILES         = control_cp.o control_cp_min.o control_debug_cp.o \
 MATH_FILES            = mathlib.o blas_wrappers.o fft_package.o \
                         fft_create_package.o fft_generic.o
 OUTPUT_FILES          = output_md.o simpavg_md.o output_pimd.o simpavg_pimd.o \
-                        get_cell.o write_gen_header.o simpavg_md_communicate.o
+                        get_cell.o write_gen_header.o simpavg_md_communicate.o \
+                        timer.o
 OUTPUT_CP_FILES       = output_cp.o output_cp_min.o output_min.o simpavg_cp.o \
                         simpavg_cp_communicate.o simpavg_cp_pimd.o \
                         output_cp_pimd.o 

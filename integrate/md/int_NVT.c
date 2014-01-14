@@ -195,6 +195,7 @@ void apply_NHC_par(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
        clatoms_mass    = clatoms_pos->mass;
      }/*endif*/
 
+     TIMER_START("NHC");
 
 /*==========================================================================*/
 /* I) Map the ke of each particle to the appropriate nose-hoover chain      */
@@ -346,6 +347,7 @@ void apply_NHC_par(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
 
     /*endfor*/}
 
+    TIMER_STOP("NHC");
 
 /*--------------------------------------------------------------------------*/
 /*end routine*/}

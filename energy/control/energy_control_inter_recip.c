@@ -90,6 +90,8 @@ void energy_control_inter_recip(CLASS *class, BONDED *bonded,
   double wght_diff;
   wght_diff              = wght_ter_res - wght_ter;
 
+  TIMER_START("energy control intermolecular reciprocal");
+
 /*======================================================================*/
 /* 0) Zero stuff and assign flags*/
 
@@ -346,11 +348,9 @@ printf("ecor 3\n");
 
   }/*endif*/
 
+  TIMER_STOP("energy control intermolecular reciprocal");
+
 /*-----------------------------------------------------------------------*/
     }/*end routine */
 /*==========================================================================*/
-
-
-
-
 

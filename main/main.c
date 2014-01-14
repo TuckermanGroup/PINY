@@ -77,6 +77,8 @@ void Init_PINY(int argc, char *argv[], CLASS* class, GENERAL_DATA* general_data)
 
   Init_PINY(argc, argv, &class, &general_data);
 
+  TIMER_START("PINY");
+
 /*=======================================================================*/
 /* III)            Invoke User Interface                                 */
 
@@ -130,11 +132,14 @@ void Init_PINY(int argc, char *argv[], CLASS* class, GENERAL_DATA* general_data)
 /*==========================================================================*/
 /* V)                Exit Program                                           */
 
+  TIMER_STOP("PINY");
+
   if(class.communicate.np>1){
    Barrier(class.communicate.world);
    Finalize();
   }/*endif*/
   fflush(stdout);
+
   exit(0); 
   return 0;
 
