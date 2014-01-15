@@ -1,6 +1,7 @@
 """Some tools to manipulate PINY related files."""
 
 import os
+from pprint import pprint
 
 import numpy as np
 
@@ -242,3 +243,139 @@ def read_conf_header(f_in):
     atom_info = [atom_names, atom_residue_nums_global, atom_residue_types]
 
     return file_type, Dt, period, P, n_atoms, atom_info, types
+
+
+def read_atomtypes(data):
+
+    # assume data is a string
+    lines_data = data.split('\n')
+
+    if len(lines_data) == 1:
+        # if it was single line, assume filename
+        lines = open(lines_data[0]).readlines()
+    else:
+        # else assume actual data
+        lines = lines_data
+
+    atomtypes = {}
+
+    for line in lines:
+        items = line.split('#')[0].split()
+        if not items:
+            continue
+        name = items[0]
+        sigma, eps, mass, q = [float(i) for i in items[1:]]
+        if (sigma == 0) and (eps == 0):
+            sigma = None
+            eps = None
+        atomtypes[name] = {
+            'sigma': sigma,
+            'eps': eps,
+            'mass': mass,
+            'q': q}
+
+    return atomtypes
+
+
+def generate_inter(atomtypes, min_dist, max_dist, res_dist, verbose=False):
+
+    inter = {}
+    for name1, a1 in atomtypes.items():
+        for name2, a2 in atomtypes.items():
+            inter_name = name1 + '-' + name2
+            inter[inter_name] = {
+                'atom1': name1,
+                'atom2': name2,
+                'min_dist': min_dist,
+                'max_dist': max_dist,
+                'res_dist': res_dist
+            }
+            if (a1['sigma'] is None) or (a2['sigma'] is None):
+                inter[inter_name]['pot_type'] = 'null'
+            else:
+                inter[inter_name]['pot_type'] = 'lennard-jones'
+                inter[inter_name]['eps'] = np.sqrt(a1['eps'] * a2['eps'])
+                inter[inter_name]['sig'] = (a1['sigma'] + a2['sigma']) / 2
+
+    if verbose:
+        print 'generated non-bonded interactions:'
+        pprint(inter)
+        print
+
+    return inter
+
+
+def generate_intra(atomtypes, moleculetypes, verbose=False):
+
+    parm_all = {}
+    bond_all = []
+    bend_all = []
+
+    for name, moltype in moleculetypes.items():
+
+        parm = [
+            ['molecule_name_def', {
+                'molecule_name': name,
+                'natom': moltype['natom']}]]
+
+        for i, atom in enumerate(moltype['atoms']):
+            parm.append(
+                ['atom_def', {
+                    'atom_typ': atom,
+                    'atom_ind': i+1,
+                    'mass': atomtypes[atom]['mass'],
+                    'charge': atomtypes[atom]['q']}]
+            )
+
+        for bond in moltype['bonds']:
+            parm.append(
+                ['bond_def', {
+                    'atom1': bond[0],
+                    'atom2': bond[1]}],
+            )
+
+        for bend in moltype['bends']:
+            parm.append(
+                ['bend_def', {
+                    'atom1': bend[0],
+                    'atom2': bend[1],
+                    'atom3': bend[2]}],
+            )
+
+        for bp_id, bp in moltype['bond_parms'].items():
+            bond_all.append(
+                ['bond_parm', {
+                    'atom1': bp_id[0],
+                    'atom2': bp_id[1],
+                    'pot_type': bp['pot_type'],
+                    'eq': bp['eq'],
+                    'fk': bp['fk']}]
+            )
+
+        for bp_id, bp in moltype['bend_parms'].items():
+            bend_all.append(
+                ['bend_parm', {
+                    'atom1': bp_id[0],
+                    'atom2': bp_id[1],
+                    'atom3': bp_id[2],
+                    'pot_type_bend': bp['pot_type_bend'],
+                    'fk_bend': bp['fk_bend'],
+                    'eq_bend': bp['eq_bend']}]
+            )
+
+        parm_all[name] = parm
+
+        if verbose:
+            print 'molecule parameters for "%s":' % name
+            pprint(parm)
+            print
+
+    if verbose:
+        print 'bond parameters:'
+        pprint(bond_all)
+        print
+        print 'bend parameters:'
+        pprint(bend_all)
+        print
+
+    return parm_all, bond_all, bend_all
