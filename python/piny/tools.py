@@ -305,10 +305,7 @@ def read_bondtypes(data):
 
     for items in _read_line_items(data):
 
-        name1 = items[0]
-        name2 = items[1]
-
-        bond = {'atom1': name1, 'atom2': name2}
+        bond = {'atom1': items[0], 'atom2': items[1]}
 
         pot_type = items[2]
 
@@ -330,11 +327,7 @@ def read_bendtypes(data):
 
     for items in _read_line_items(data):
 
-        name1 = items[0]
-        name2 = items[1]
-        name3 = items[2]
-
-        bend = {'atom1': name1, 'atom2': name2, 'atom3': name3}
+        bend = {'atom1': items[0], 'atom2': items[1], 'atom3': items[2]}
 
         pot_type = items[3]
 
@@ -349,6 +342,17 @@ def read_bendtypes(data):
 
     return bend_all
 
+
+def read_torsiontypes(data):
+
+    torsion_all = []
+
+    for items in _read_line_items(data):
+
+        # TODO: implement
+        raise NotImplementedError
+
+    return torsion_all
 
 
 def combine_inter(atomtypes, min_dist, max_dist, res_dist, verbose=False, LJcomb='LB'):
@@ -405,6 +409,11 @@ def generate_parm(moleculetypes, atomtypes, verbose=False):
 
     parm_all = {}
 
+
+    # TODO
+    # - check that all bond, bend and torsion types actually exist
+    # - perhaps only take in bonds, calculate bends and torsions on the fly?
+
     for name, moltype in moleculetypes.items():
 
         atoms = moltype['atoms']
@@ -431,12 +440,15 @@ def generate_parm(moleculetypes, atomtypes, verbose=False):
             )
 
         for bend in moltype['bends']:
+            # TODO: continue without error if bends are not present
             parm.append(
                 ['bend_def', {
                     'atom1': bend[0],
                     'atom2': bend[1],
                     'atom3': bend[2]}],
             )
+
+        # TODO: torsions
 
         parm_all[name] = parm
 
