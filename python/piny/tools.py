@@ -245,7 +245,7 @@ def read_conf_header(f_in):
     return file_type, Dt, period, P, n_atoms, atom_info, types
 
 
-def read_atomtypes(data):
+def _read_line_items(data):
 
     # assume data is a string
     lines_data = data.split('\n')
@@ -257,68 +257,164 @@ def read_atomtypes(data):
         # else assume actual data
         lines = lines_data
 
-    atomtypes = {}
+    items_all = []
 
     for line in lines:
+
+        #remove comments
         items = line.split('#')[0].split()
+
+        # if we are left with an empty line, go to next line
         if not items:
             continue
+
+        items_all.append(items)
+
+    return items_all
+
+
+def read_atomtypes(data):
+
+    atomtypes = {}
+
+    for items in _read_line_items(data):
+
         name = items[0]
-        sigma, eps, mass, q = [float(i) for i in items[1:]]
-        if (sigma == 0) and (eps == 0):
-            sigma = None
-            eps = None
+        mass = float(items[1])
+        q = float(items[2])
+        int_type = items[3]
         atomtypes[name] = {
-            'sigma': sigma,
-            'eps': eps,
             'mass': mass,
-            'q': q}
+            'q': q
+        }
+        if int_type == 'None':
+            atomtypes[name]['type'] = None
+        elif int_type == 'LJ':
+            atomtypes[name]['type'] = int_type
+            atomtypes[name]['sigma'] = float(items[4])
+            atomtypes[name]['eps'] = float(items[5])
+        else:
+            raise ValueError('Unknown non-bonded interaction type: %s' % int_type)
 
     return atomtypes
 
 
-def generate_inter(atomtypes, min_dist, max_dist, res_dist, verbose=False):
+def read_bondtypes(data):
 
-    inter = {}
+    bond_all = []
+
+    for items in _read_line_items(data):
+
+        name1 = items[0]
+        name2 = items[1]
+
+        bond = {'atom1': name1, 'atom2': name2}
+
+        pot_type = items[2]
+
+        if pot_type == 'harm':
+            bond['pot_type'] = pot_type
+            bond['eq'] = float(items[3])
+            bond['fk'] = float(items[4])
+        else:
+            raise ValueError('Unknown bonded interaction type: %s' % pot_type)
+
+        bond_all.append(['bond_parm', bond])
+
+    return bond_all
+
+
+def read_bendtypes(data):
+
+    bend_all = []
+
+    for items in _read_line_items(data):
+
+        name1 = items[0]
+        name2 = items[1]
+        name3 = items[2]
+
+        bend = {'atom1': name1, 'atom2': name2, 'atom3': name3}
+
+        pot_type = items[3]
+
+        if pot_type == 'harm':
+            bend['pot_type_bend'] = pot_type
+            bend['eq_bend'] = float(items[4])
+            bend['fk_bend'] = float(items[5])
+        else:
+            raise ValueError('Unknown angle interaction type: %s' % pot_type)
+
+        bend_all.append(['bend_parm', bend])
+
+    return bend_all
+
+
+
+def combine_inter(atomtypes, min_dist, max_dist, res_dist, verbose=False, LJcomb='LB'):
+    """
+    LJcomb: which combination rule to use for Lennard-Jones, either 'LB' or 'geom'
+    """
+
+    inter_all = []
+    int_type = None
+
     for name1, a1 in atomtypes.items():
         for name2, a2 in atomtypes.items():
-            inter_name = name1 + '-' + name2
-            inter[inter_name] = {
+            inter = {
                 'atom1': name1,
                 'atom2': name2,
                 'min_dist': min_dist,
                 'max_dist': max_dist,
                 'res_dist': res_dist
             }
-            if (a1['sigma'] is None) or (a2['sigma'] is None):
-                inter[inter_name]['pot_type'] = 'null'
+            type1 = a1['type']
+            type2 = a2['type']
+            if (type1 is None) or (type2 is None):
+                inter['pot_type'] = 'null'
+            elif (type1 == 'LJ') and (type2 == 'LJ'):
+                inter['pot_type'] = 'lennard-jones'
+                eps1 = a1['eps']
+                eps2 = a2['eps']
+                sigma1 = a1['sigma']
+                sigma2 = a2['sigma']
+                if LJcomb == 'LB':
+                    inter['eps'] = np.sqrt(eps1 * eps2)
+                    inter['sig'] = (sigma1 + sigma2) / 2
+                elif LJcomb == 'geom':
+                    inter['eps'] = np.sqrt(eps1 * eps2)
+                    inter['sig'] = np.sqrt(sigma1 + sigma2)
+                else:
+                    msg = 'unknown combination rule for Lennard-Jones: %s' % LJcomb
+                    raise ValueError(msg)
             else:
-                inter[inter_name]['pot_type'] = 'lennard-jones'
-                inter[inter_name]['eps'] = np.sqrt(a1['eps'] * a2['eps'])
-                inter[inter_name]['sig'] = (a1['sigma'] + a2['sigma']) / 2
+                msg = 'Unknown interaction combination: %s - %s' % (type1, type2)
+                raise ValueError(msg)
+
+            inter_all.append(['inter_parm', inter])
 
     if verbose:
         print 'generated non-bonded interactions:'
-        pprint(inter)
+        pprint(inter_all)
         print
 
-    return inter
+    return inter_all
 
 
-def generate_intra(atomtypes, moleculetypes, verbose=False):
+def generate_parm(moleculetypes, atomtypes, verbose=False):
 
     parm_all = {}
-    bond_all = []
-    bend_all = []
 
     for name, moltype in moleculetypes.items():
+
+        atoms = moltype['atoms']
 
         parm = [
             ['molecule_name_def', {
                 'molecule_name': name,
-                'natom': moltype['natom']}]]
+                'natom': len(atoms)}]]
 
-        for i, atom in enumerate(moltype['atoms']):
+        for i, atom in enumerate(atoms):
             parm.append(
                 ['atom_def', {
                     'atom_typ': atom,
@@ -342,27 +438,6 @@ def generate_intra(atomtypes, moleculetypes, verbose=False):
                     'atom3': bend[2]}],
             )
 
-        for bp_id, bp in moltype['bond_parms'].items():
-            bond_all.append(
-                ['bond_parm', {
-                    'atom1': bp_id[0],
-                    'atom2': bp_id[1],
-                    'pot_type': bp['pot_type'],
-                    'eq': bp['eq'],
-                    'fk': bp['fk']}]
-            )
-
-        for bp_id, bp in moltype['bend_parms'].items():
-            bend_all.append(
-                ['bend_parm', {
-                    'atom1': bp_id[0],
-                    'atom2': bp_id[1],
-                    'atom3': bp_id[2],
-                    'pot_type_bend': bp['pot_type_bend'],
-                    'fk_bend': bp['fk_bend'],
-                    'eq_bend': bp['eq_bend']}]
-            )
-
         parm_all[name] = parm
 
         if verbose:
@@ -370,12 +445,4 @@ def generate_intra(atomtypes, moleculetypes, verbose=False):
             pprint(parm)
             print
 
-    if verbose:
-        print 'bond parameters:'
-        pprint(bond_all)
-        print
-        print 'bend parameters:'
-        pprint(bend_all)
-        print
-
-    return parm_all, bond_all, bend_all
+    return parm_all

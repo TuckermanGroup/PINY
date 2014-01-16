@@ -12,66 +12,54 @@ min_dist = 0.1
 max_dist = 6.2
 res_dist = 5.0
 
-
 #
 # topology and force field
 #
 
-kB_kcal = 0.001987204118 # kcal / mol / K
-
 atomtypes_str = """
-# name sigma eps mass charge
-OW   3.16542   0.15543   15.9994 -0.42   # water oxygen
-HW   0.0       0.0        1.008   0.42   # water hydrogen
+OW   15.9994 -0.42     LJ   3.16542   78.215
+HW    1.008   0.42   None
 """
 
-# define atom types
-# could also read from string or file using `piny.tools.read_atomtypes`
-atomtypes = {
-    'OW': { # water oxygen
-        'sigma': 3.16542,
-        'eps': 0.15543 * kB_kcal,
-        'mass': 15.9994,
-        'q': -0.42
-    },
-    'HW': { # water hydrogen
-        'sigma': None,
-        'eps': None,
-        'mass': 1.008,
-        'q': 0.42
+bondtypes_str = """
+OW   HW   harm   1.0   532991.045
+"""
+
+bendtypes_str = """
+HW   OW   HW   harm   112   38194.365
+"""
+
+# define structure of molecules "by hand"
+moleculetypes = {
+    'water': {
+        'atoms': ['OW', 'HW', 'HW'],
+        'bonds': [[1, 2], [1, 3]],
+        'bends': [[2, 1, 3]],
     }
 }
+
 atomtypes = piny.tools.read_atomtypes(atomtypes_str)
 pprint(atomtypes)
 print
 
-# define molecules
-moleculetypes = {
-    'water': {
-        'natom': 3,
-        'atoms': ['OW', 'HW', 'HW'],
-        'bonds': [[1, 2], [1, 3]],
-        'bends': [[2, 1, 3]],
-        'bond_parms': {
-            ('OW', 'HW'): {
-                'pot_type': 'harm',
-                'eq': 1.0,
-                'fk': 1059.162 / kB_kcal
-            }
-        },
-        'bend_parms': {
-            ('HW', 'OW', 'HW'): {
-                'pot_type_bend': 'harm',
-                'fk_bend': 75.9 / kB_kcal,
-                'eq_bend': 112.0
-            }
-        }
-    }
-}
+bond = piny.tools.read_bondtypes(bondtypes_str)
+pprint(bond)
+print
+
+bend = piny.tools.read_bendtypes(bendtypes_str)
+pprint(bend)
+print
+
 pprint(moleculetypes)
 print
 
-# system composition
+# apply combination rules to non-bonded interactions
+inter = piny.tools.combine_inter(atomtypes, min_dist, max_dist, res_dist, verbose=True)
+
+# generate molecule parameter structures
+parm = piny.tools.generate_parm(moleculetypes, atomtypes, verbose=True)
+
+# define system composition - "set" file
 molecule_set = [
     ['molecule_def', {
         'mol_parm_file': 'water.parm',
@@ -101,10 +89,6 @@ input_PINY = {
 # initial condition
 comment, names, positions = piny.tools.read_XYZ_frame(open(fn_initial))
 initial = piny.tools.initial_file(positions, 1, box)
-
-# process force field and topology
-inter = piny.tools.generate_inter(atomtypes, min_dist, max_dist, res_dist, verbose=True)
-parm, bond, bend = piny.tools.generate_intra(atomtypes, moleculetypes, verbose=True)
 
 # prepare input files for PINY
 data = {
