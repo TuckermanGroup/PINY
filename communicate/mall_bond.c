@@ -119,9 +119,9 @@ void mall_bond(BONDED *bonded, NULL_INTER_PARSE *null_inter_parse)
   bonded->grp_bond_con.jtyp_46 = (int *)cmalloc(ngrp_46_mall*sizeof(int))-1;
 
   bonded->grp_bond_watts.cos_thet0_2   = 
-                         (double *)malloc(ngrp_typ_watt_33_mall*sizeof(int))-1;
+                         (double *)malloc(ngrp_typ_watt_33_mall*sizeof(double))-1;
   bonded->grp_bond_watts.sin_thet0_2   = 
-                         (double *)malloc(ngrp_typ_watt_33_mall*sizeof(int))-1;
+                         (double *)malloc(ngrp_typ_watt_33_mall*sizeof(double))-1;
 
 /*========================================================================*/
 /*     bonded->grp_bond_con.grp_bond_con_data                             */
