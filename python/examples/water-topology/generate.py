@@ -4,6 +4,11 @@ from pprint import pprint
 
 import piny.tools
 
+# WARNING
+# This will not actually run. It has bogus torsions and an incomplete input
+# file. It is only meant to show and test the topology and force field
+# processing code.
+
 
 # settings
 box = 3 * [12.416]
@@ -29,12 +34,21 @@ bendtypes_str = """
 HW   OW   HW   harm   112   38194.365
 """
 
+torsiontypes_str = """
+#                              A1            C1    D1  A2     C2    D2
+X   CA   CA   X   freq-series   2   1824.182987   0.0
+Y   CA   CA   Y   freq-series   2   1824.182987   0.0   3   12.3   0.0
+"""
+
+
 # define structure of molecules "by hand"
 moleculetypes = {
     'water': {
         'atoms': ['OW', 'HW', 'HW'],
         'bonds': [[1, 2], [1, 3]],
         'bends': [[2, 1, 3]],
+        'torsions': [[1, 2, 3, 4],
+                     [1, 2, 3, 5, 'improper']]
     }
 }
 
@@ -48,6 +62,10 @@ print
 
 bendtypes = piny.tools.read_bendtypes(bendtypes_str)
 pprint(bendtypes)
+print
+
+torsiontypes = piny.tools.read_torsiontypes(torsiontypes_str)
+pprint(torsiontypes)
 print
 
 pprint(moleculetypes)
@@ -95,6 +113,7 @@ data = {
     'water.input': input_PINY,
     'all.bond': bondtypes,
     'all.bend': bendtypes,
+    'all.torsion': torsiontypes,
     'all.inter': inter,
     'W64-bulk.initial': initial,
     'water.parm': parm['water'],

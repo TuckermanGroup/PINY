@@ -314,7 +314,7 @@ def read_bondtypes(data):
             bond['eq'] = float(items[3])
             bond['fk'] = float(items[4])
         else:
-            raise ValueError('Unknown bonded interaction type: %s' % pot_type)
+            raise ValueError('Unknown bond potential type: %s' % pot_type)
 
         bond_all.append(['bond_parm', bond])
 
@@ -336,7 +336,7 @@ def read_bendtypes(data):
             bend['eq_bend'] = float(items[4])
             bend['fk_bend'] = float(items[5])
         else:
-            raise ValueError('Unknown angle interaction type: %s' % pot_type)
+            raise ValueError('Unknown angle potential type: %s' % pot_type)
 
         bend_all.append(['bend_parm', bend])
 
@@ -349,8 +349,32 @@ def read_torsiontypes(data):
 
     for items in _read_line_items(data):
 
-        # TODO: implement
-        raise NotImplementedError
+        torsion = {'atom1': items[0],
+                   'atom2': items[1],
+                   'atom3': items[2],
+                   'atom4': items[3]}
+
+        pot_type = items[4]
+
+        if pot_type == 'freq-series':
+
+            n_param = (len(items)-5)
+            items_param = items[5:]
+
+            # expect triples of values
+            if (n_param % 3) != 0:
+                raise ValueError('Expected triples of values for torsion potential "%s".' % pot_type)
+
+            for i in range(n_param // 3):
+                idx = str(i+1)
+                torsion['A'+idx] = int(items_param[3*i])
+                torsion['C'+idx] = float(items_param[3*i+1])
+                torsion['D'+idx] = float(items_param[3*i+2])
+
+        else:
+            raise ValueError('Unknown torsion potential type: %s' % pot_type)
+
+        torsion_all.append(['torsion_param', torsion])
 
     return torsion_all
 
@@ -431,7 +455,7 @@ def generate_parm(moleculetypes, atomtypes, verbose=False):
                     'charge': atomtypes[atom]['q']}]
             )
 
-        if 'bond' in moltype.keys():
+        if 'bonds' in moltype.keys():
             for bond in moltype['bonds']:
                 parm.append(
                     ['bond_def', {
@@ -439,7 +463,7 @@ def generate_parm(moleculetypes, atomtypes, verbose=False):
                         'atom2': bond[1]}],
                 )
 
-        if 'bend' in moltype.keys():
+        if 'bends' in moltype.keys():
             for bend in moltype['bends']:
                 parm.append(
                     ['bend_def', {
@@ -448,7 +472,20 @@ def generate_parm(moleculetypes, atomtypes, verbose=False):
                         'atom3': bend[2]}],
                 )
 
-        # TODO: torsions
+        if 'torsions' in moltype.keys():
+            for torsion in moltype['torsions']:
+                t = ['torsion_def', {
+                    'atom1': torsion[0],
+                    'atom2': torsion[1],
+                    'atom3': torsion[2],
+                    'atom4': torsion[3]}]
+                if len(torsion) > 4:
+                    # assume this is an improper torsion
+                    if torsion[4] == 'improper':
+                        t[1]['label'] = 'improper'
+                    else:
+                        raise ValueError('Expected 5th item of torsion atom list to be "improper".')
+                parm.append(t)
 
         parm_all[name] = parm
 
