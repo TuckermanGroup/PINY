@@ -46,7 +46,7 @@ bondtypes = piny.tools.read_bondtypes(bondtypes_str)
 pprint(bondtypes)
 print
 
-bendbendtypes = piny.tools.read_bendtypes(bendtypes_str)
+bendtypes = piny.tools.read_bendtypes(bendtypes_str)
 pprint(bendtypes)
 print
 

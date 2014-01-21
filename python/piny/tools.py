@@ -431,7 +431,7 @@ def generate_parm(moleculetypes, atomtypes, verbose=False):
                     'charge': atomtypes[atom]['q']}]
             )
 
-        if bond in moltype.keys:
+        if 'bond' in moltype.keys():
             for bond in moltype['bonds']:
                 parm.append(
                     ['bond_def', {
@@ -439,7 +439,7 @@ def generate_parm(moleculetypes, atomtypes, verbose=False):
                         'atom2': bond[1]}],
                 )
 
-        if bend in moltype.keys:
+        if 'bend' in moltype.keys():
             for bend in moltype['bends']:
                 parm.append(
                     ['bend_def', {
