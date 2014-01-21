@@ -42,12 +42,12 @@ atomtypes = piny.tools.read_atomtypes(atomtypes_str)
 pprint(atomtypes)
 print
 
-bond = piny.tools.read_bondtypes(bondtypes_str)
-pprint(bond)
+bondtypes = piny.tools.read_bondtypes(bondtypes_str)
+pprint(bondtypes)
 print
 
-bend = piny.tools.read_bendtypes(bendtypes_str)
-pprint(bend)
+bendbendtypes = piny.tools.read_bendtypes(bendtypes_str)
+pprint(bendtypes)
 print
 
 pprint(moleculetypes)
@@ -93,8 +93,8 @@ initial = piny.tools.initial_file(positions, 1, box)
 # prepare input files for PINY
 data = {
     'water.input': input_PINY,
-    'all.bond': bond,
-    'all.bend': bend,
+    'all.bond': bondtypes,
+    'all.bend': bendtypes,
     'all.inter': inter,
     'W64-bulk.initial': initial,
     'water.parm': parm['water'],

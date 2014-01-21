@@ -409,7 +409,6 @@ def generate_parm(moleculetypes, atomtypes, verbose=False):
 
     parm_all = {}
 
-
     # TODO
     # - check that all bond, bend and torsion types actually exist
     # - perhaps only take in bonds, calculate bends and torsions on the fly?
@@ -432,21 +431,22 @@ def generate_parm(moleculetypes, atomtypes, verbose=False):
                     'charge': atomtypes[atom]['q']}]
             )
 
-        for bond in moltype['bonds']:
-            parm.append(
-                ['bond_def', {
-                    'atom1': bond[0],
-                    'atom2': bond[1]}],
-            )
+        if bond in moltype.keys:
+            for bond in moltype['bonds']:
+                parm.append(
+                    ['bond_def', {
+                        'atom1': bond[0],
+                        'atom2': bond[1]}],
+                )
 
-        for bend in moltype['bends']:
-            # TODO: continue without error if bends are not present
-            parm.append(
-                ['bend_def', {
-                    'atom1': bend[0],
-                    'atom2': bend[1],
-                    'atom3': bend[2]}],
-            )
+        if bend in moltype.keys:
+            for bend in moltype['bends']:
+                parm.append(
+                    ['bend_def', {
+                        'atom1': bend[0],
+                        'atom2': bend[1],
+                        'atom3': bend[2]}],
+                )
 
         # TODO: torsions
 
