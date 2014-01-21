@@ -358,14 +358,17 @@ def read_torsiontypes(data):
 
         if pot_type == 'freq-series':
 
-            n_param = (len(items)-5)
             items_param = items[5:]
+            n_param = len(items_param)
+            n_param_set = n_param // 3
 
             # expect triples of values
             if (n_param % 3) != 0:
                 raise ValueError('Expected triples of values for torsion potential "%s".' % pot_type)
 
-            for i in range(n_param // 3):
+            torsion['nfreq'] = n_param_set
+
+            for i in range(n_param_set):
                 idx = str(i+1)
                 torsion['A'+idx] = int(items_param[3*i])
                 torsion['C'+idx] = float(items_param[3*i+1])

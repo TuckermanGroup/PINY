@@ -45,7 +45,8 @@ Y   CA   CA   Y   freq-series   2   1824.182987   0.0   3   12.3   0.0
 moleculetypes = {
     'water': {
         'atoms': ['OW', 'HW', 'HW'],
-        'bonds': [[1, 2], [1, 3]],
+        'bonds': [[1, 2],
+                  [1, 3]],
         'bends': [[2, 1, 3]],
         'torsions': [[1, 2, 3, 4],
                      [1, 2, 3, 5, 'improper']]
