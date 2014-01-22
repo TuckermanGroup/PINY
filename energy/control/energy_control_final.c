@@ -41,7 +41,8 @@ void energy_control_final(CLASS *class, BONDED *bonded,
 #include "../typ_defs/typ_mask.h"
   
   int i,iii,igloc,iver_get,ip,iup,j,igo;
-  double *fx,*fy,*fz,temp;
+  double *fx, *fy, *fz, temp;
+  double *fxt, *fyt, *fzt;
 
   double *fxtemp      = class->ewd_scr.x;
   double *fytemp      = class->ewd_scr.y;
@@ -52,6 +53,7 @@ void energy_control_final(CLASS *class, BONDED *bonded,
   int pimd_freez_typ  = class->atommaps.pimd_freez_typ;
 
   int nfree           = class->clatoms_info.nfree;
+  int pi_beads        = class->clatoms_info.pi_beads;
   int pi_beads_proc   = class->clatoms_info.pi_beads_proc;  
   int pi_beads_proc_st= class->clatoms_info.pi_beads_proc_st;  
   int *recv_count_atm = class->class_comm_forc_pkg.recv_count_atm;
@@ -191,11 +193,25 @@ void energy_control_final(CLASS *class, BONDED *bonded,
           fx = class->clatoms_pos[ip].fx;
           fy = class->clatoms_pos[ip].fy;
           fz = class->clatoms_pos[ip].fz;
+
+          if(pi_beads > 1) {
+             fxt = class->clatoms_pos[ip].fxt;
+             fyt = class->clatoms_pos[ip].fyt;
+             fzt = class->clatoms_pos[ip].fzt;
+          }/* endif */
+
           for(i=1;i <= nfreeze;i++){
             igloc     = freeze_map[i];
             fx[igloc] = 0.0;
             fy[igloc] = 0.0;
             fz[igloc] = 0.0;
+
+            if(pi_beads > 1) {
+               fxt[igloc] = 0.0;
+               fyt[igloc] = 0.0;
+               fzt[igloc] = 0.0;
+            }/* endif */
+
           }/*endfor*/
         }/*endfor*/
       }/*endif*/
