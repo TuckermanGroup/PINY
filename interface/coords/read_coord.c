@@ -198,7 +198,7 @@ void read_coord(CLASS *class,GENERAL_DATA *general_data,
 /*---------------------*/
 /* B) Type 2,3,4 start */
     if(istart>1){
-      if(fgetc(fp_dnamei)==0){
+      if(fgetc(fp_dnamei)==NULL){
         printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
         printf("Error reading header information \n");
         printf("in file %s\n",dnamei);
@@ -331,9 +331,15 @@ void read_coord(CLASS *class,GENERAL_DATA *general_data,
     }/*endfor : beads*/
 
     if(initial_spread_opt == 1 && pi_beads>1){
+
       spread_coord(&(class->clatoms_info),(class->clatoms_pos),
                    x_tmp,y_tmp,z_tmp,&iseed,&iseed2,&qseed,
                    &(class->atommaps),myid);
+
+      for(ip=1;ip<=pi_beads_proc;ip++){
+            get_ghost_pos(&(class->clatoms_info),&(class->clatoms_pos[ip]),
+                          &(class->ghost_atoms));
+      }/* endfor */
     }/*endif*/
  
 /*---------------------------------------------------------------------*/
@@ -452,10 +458,16 @@ void read_coord(CLASS *class,GENERAL_DATA *general_data,
       }/*endif*/
     }/*endfor:pi_beads*/
 
-    if(initial_spread_opt == 1&&pi_beads>1){
+    if(initial_spread_opt == 1 && pi_beads>1){
+
       spread_coord(&(class->clatoms_info),(class->clatoms_pos),
                    x_tmp,y_tmp,z_tmp,&iseed,&iseed2,&qseed,
                    &(class->atommaps),myid);
+
+      for(ip=1;ip<=pi_beads_proc;ip++){
+            get_ghost_pos(&(class->clatoms_info),&(class->clatoms_pos[ip]),
+                          &(class->ghost_atoms));
+      }/* endfor */
     }/*endif*/
 
 /*---------------------------------------------------------------------*/
