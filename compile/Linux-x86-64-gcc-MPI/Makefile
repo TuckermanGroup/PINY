@@ -1,20 +1,17 @@
 #===========================================================================
-#ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 #===========================================================================
-# MAKEFILE FOR PI_MD
+# MAKEFILE FOR PINY
 #
-# This makefile can be used from anywhere NFSd to the directory.
-# The objs defined in ../make_defs/obj_files.h, are placed in the same 
+# The objs defined in ../make_defs/obj_files.h, are placed in the same
 # directory as the Makefile. You may build the executable by typing ``make''.
 # You may delete all of the object files by typing "make clean"
 # You may delete some of the object files by typing "make clean_care"
-# or "make clean_group". Compilation instructions are in 
-# ../make_defs/make_*.h files and make_spec.h. Machine specific routines 
-# are in spec_files.h.  Machine specific directory tree and compiler options 
+# or "make clean_group". Compilation instructions are in
+# ../make_defs/make_*.h files and make_spec.h. Machine specific routines
+# are in spec_files.h.  Machine specific directory tree and compiler options
 # are given in make_head.h.
 #
 #===========================================================================
-#ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 #===========================================================================
 
 
@@ -30,7 +27,7 @@ TOUCH = touch
 #==========================
 # Machine specific info
 #==========================
-include make_head.h
+include make_head.mk
 
 #==========================
 # Compiler commands
@@ -46,15 +43,16 @@ LD         = $(FC) $(OPT) $(FFLAGS)
 #==========================
 # Make the executable
 #==========================
-include spec_files.h
 include ../make_defs/obj_files.h
 
 $(EXE): $(OBJS)
 	$(ECHO) $(EXE)
 	$(RM) $(EXE)
+	mkdir -p $(dir $(EXE))
 	$(LD) $(OBJS) -o $(EXE) $(LIBS)
 
 libpiny: $(OBJS)
+	mkdir -p $(dir $(LIBPINY))
 	$(LD) -shared $(OBJS) -o $(LIBPINY) $(LIBS)
 
 #==========================
@@ -83,7 +81,6 @@ include ../make_defs/make_math.h
 include ../make_defs/make_output.h
 include ../make_defs/make_output_cp.h
 include ../make_defs/make_communicate.h
-include make_spec.h
 
 #==========================
 #remove all objs and libs
