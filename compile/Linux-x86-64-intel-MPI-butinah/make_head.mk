@@ -2,7 +2,7 @@
 # module load openmpi/intel/1.6.2
 
 # binary names
-EXE_NAME = piny
+EXE_NAME = piny-mpi
 LIB_NAME = libpiny.so
 
 # compilers and options
