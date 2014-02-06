@@ -2,21 +2,14 @@
 #           INTERFACE_CP_FILES
 #==================================================================
 
-
 #==================================================================
-MOL_PARMS1 = $(CODE)/interface/mol_params
-DMOL_PARMS1 = $(DCODE)/interface/mol_params
-#==================================================================
-
-
-#==================================================================
-set_wave_params.o   :    $(STANDARD) $(DEFINES) \
-                         $(TYP_GEN) $(TYP_PAR) $(TYP_BND) \
-                         $(TYP_CLASS) $(TYP_CP) \
-                         $(MOL_LOC) $(HANDLE_ENT) \
-                         $(MOL_PARMS1)/set_params/set_wave_params.c
+set_wave_params.o: $(STANDARD) $(DEFINES) \
+                   $(TYP_GEN) $(TYP_PAR) $(TYP_BND) \
+                   $(TYP_CLASS) $(TYP_CP) \
+                   $(MOL_LOC) $(HANDLE_ENT) \
+                   $(CODE)/interface/mol_params/set_params/set_wave_params.c
 	$(ECHO) $@
-	$(COBJ_CARE) $(MOL_PARMS1)/set_params/set_wave_params.c
+	$(COBJ_CARE) $(CODE)/interface/mol_params/set_params/set_wave_params.c
 
 #------------------------------------------------------------------
 set_coef_NHC.o    :      $(STANDARD) $(DEFINES) \
@@ -156,6 +149,4 @@ control_scale_cp.o    :  $(STANDARD) $(DEFINES) \
 	$(COBJ_CARE) $(CODE)/interface/vel_sampl_cp/control_scale_cp.c
 
 #==================================================================
-
-
 

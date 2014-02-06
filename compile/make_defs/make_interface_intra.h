@@ -5,7 +5,6 @@
 
 #==================================================================
 SET_PARM  = $(CODE)/interface/intra_params/set_params
-DSET_PARM = $(DCODE)/interface/intra_params/set_params
 #==================================================================
 
 
