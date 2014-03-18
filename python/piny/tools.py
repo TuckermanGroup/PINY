@@ -1,6 +1,7 @@
 """Some tools to manipulate PINY related files."""
 
 import os
+from pprint import pprint
 
 import numpy as np
 
@@ -242,3 +243,258 @@ def read_conf_header(f_in):
     atom_info = [atom_names, atom_residue_nums_global, atom_residue_types]
 
     return file_type, Dt, period, P, n_atoms, atom_info, types
+
+
+def _read_line_items(data):
+
+    # assume data is a string
+    lines_data = data.split('\n')
+
+    if len(lines_data) == 1:
+        # if it was single line, assume filename
+        lines = open(lines_data[0]).readlines()
+    else:
+        # else assume actual data
+        lines = lines_data
+
+    items_all = []
+
+    for line in lines:
+
+        #remove comments
+        items = line.split('#')[0].split()
+
+        # if we are left with an empty line, go to next line
+        if not items:
+            continue
+
+        items_all.append(items)
+
+    return items_all
+
+
+def read_atomtypes(data):
+
+    atomtypes = {}
+
+    for items in _read_line_items(data):
+
+        name = items[0]
+        mass = float(items[1])
+        q = float(items[2])
+        int_type = items[3]
+        atomtypes[name] = {
+            'mass': mass,
+            'q': q
+        }
+        if int_type == 'None':
+            atomtypes[name]['type'] = None
+        elif int_type == 'LJ':
+            atomtypes[name]['type'] = int_type
+            atomtypes[name]['sigma'] = float(items[4])
+            atomtypes[name]['eps'] = float(items[5])
+        else:
+            raise ValueError('Unknown non-bonded interaction type: %s' % int_type)
+
+    return atomtypes
+
+
+def read_bondtypes(data):
+
+    bond_all = []
+
+    for items in _read_line_items(data):
+
+        bond = {'atom1': items[0], 'atom2': items[1]}
+
+        pot_type = items[2]
+
+        if pot_type == 'harm':
+            bond['pot_type'] = pot_type
+            bond['eq'] = float(items[3])
+            bond['fk'] = float(items[4])
+        else:
+            raise ValueError('Unknown bond potential type: %s' % pot_type)
+
+        bond_all.append(['bond_parm', bond])
+
+    return bond_all
+
+
+def read_bendtypes(data):
+
+    bend_all = []
+
+    for items in _read_line_items(data):
+
+        bend = {'atom1': items[0], 'atom2': items[1], 'atom3': items[2]}
+
+        pot_type = items[3]
+
+        if pot_type == 'harm':
+            bend['pot_type_bend'] = pot_type
+            bend['eq_bend'] = float(items[4])
+            bend['fk_bend'] = float(items[5])
+        else:
+            raise ValueError('Unknown angle potential type: %s' % pot_type)
+
+        bend_all.append(['bend_parm', bend])
+
+    return bend_all
+
+
+def read_torsiontypes(data):
+
+    torsion_all = []
+
+    for items in _read_line_items(data):
+
+        torsion = {'atom1': items[0],
+                   'atom2': items[1],
+                   'atom3': items[2],
+                   'atom4': items[3]}
+
+        pot_type = items[4]
+
+        if pot_type == 'freq-series':
+
+            items_param = items[5:]
+            n_param = len(items_param)
+            n_param_set = n_param // 3
+
+            # expect triples of values
+            if (n_param % 3) != 0:
+                raise ValueError('Expected triples of values for torsion potential "%s".' % pot_type)
+
+            torsion['nfreq'] = n_param_set
+
+            for i in range(n_param_set):
+                idx = str(i+1)
+                torsion['A'+idx] = int(items_param[3*i])
+                torsion['C'+idx] = float(items_param[3*i+1])
+                torsion['D'+idx] = float(items_param[3*i+2])
+
+        else:
+            raise ValueError('Unknown torsion potential type: %s' % pot_type)
+
+        torsion_all.append(['torsion_param', torsion])
+
+    return torsion_all
+
+
+def combine_inter(atomtypes, min_dist, max_dist, res_dist, verbose=False, LJcomb='LB'):
+    """
+    LJcomb: which combination rule to use for Lennard-Jones, either 'LB' or 'geom'
+    """
+
+    inter_all = []
+    int_type = None
+
+    for name1, a1 in atomtypes.items():
+        for name2, a2 in atomtypes.items():
+            inter = {
+                'atom1': name1,
+                'atom2': name2,
+                'min_dist': min_dist,
+                'max_dist': max_dist,
+                'res_dist': res_dist
+            }
+            type1 = a1['type']
+            type2 = a2['type']
+            if (type1 is None) or (type2 is None):
+                inter['pot_type'] = 'null'
+            elif (type1 == 'LJ') and (type2 == 'LJ'):
+                inter['pot_type'] = 'lennard-jones'
+                eps1 = a1['eps']
+                eps2 = a2['eps']
+                sigma1 = a1['sigma']
+                sigma2 = a2['sigma']
+                if LJcomb == 'LB':
+                    inter['eps'] = np.sqrt(eps1 * eps2)
+                    inter['sig'] = (sigma1 + sigma2) / 2
+                elif LJcomb == 'geom':
+                    inter['eps'] = np.sqrt(eps1 * eps2)
+                    inter['sig'] = np.sqrt(sigma1 + sigma2)
+                else:
+                    msg = 'unknown combination rule for Lennard-Jones: %s' % LJcomb
+                    raise ValueError(msg)
+            else:
+                msg = 'Unknown interaction combination: %s - %s' % (type1, type2)
+                raise ValueError(msg)
+
+            inter_all.append(['inter_parm', inter])
+
+    if verbose:
+        print 'generated non-bonded interactions:'
+        pprint(inter_all)
+        print
+
+    return inter_all
+
+
+def generate_parm(moleculetypes, atomtypes, verbose=False):
+
+    parm_all = {}
+
+    # TODO
+    # - check that all bond, bend and torsion types actually exist
+    # - perhaps only take in bonds, calculate bends and torsions on the fly?
+
+    for name, moltype in moleculetypes.items():
+
+        atoms = moltype['atoms']
+
+        parm = [
+            ['molecule_name_def', {
+                'molecule_name': name,
+                'natom': len(atoms)}]]
+
+        for i, atom in enumerate(atoms):
+            parm.append(
+                ['atom_def', {
+                    'atom_typ': atom,
+                    'atom_ind': i+1,
+                    'mass': atomtypes[atom]['mass'],
+                    'charge': atomtypes[atom]['q']}]
+            )
+
+        if 'bonds' in moltype.keys():
+            for bond in moltype['bonds']:
+                parm.append(
+                    ['bond_def', {
+                        'atom1': bond[0],
+                        'atom2': bond[1]}],
+                )
+
+        if 'bends' in moltype.keys():
+            for bend in moltype['bends']:
+                parm.append(
+                    ['bend_def', {
+                        'atom1': bend[0],
+                        'atom2': bend[1],
+                        'atom3': bend[2]}],
+                )
+
+        if 'torsions' in moltype.keys():
+            for torsion in moltype['torsions']:
+                t = ['torsion_def', {
+                    'atom1': torsion[0],
+                    'atom2': torsion[1],
+                    'atom3': torsion[2],
+                    'atom4': torsion[3]}]
+                if len(torsion) > 4:
+                    # assume this is an improper torsion
+                    if torsion[4] == 'improper':
+                        t[1]['label'] = 'improper'
+                    else:
+                        raise ValueError('Expected 5th item of torsion atom list to be "improper".')
+                parm.append(t)
+
+        parm_all[name] = parm
+
+        if verbose:
+            print 'molecule parameters for "%s":' % name
+            pprint(parm)
+            print
+
+    return parm_all
