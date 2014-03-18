@@ -198,7 +198,7 @@ void read_coord(CLASS *class,GENERAL_DATA *general_data,
 /*---------------------*/
 /* B) Type 2,3,4 start */
     if(istart>1){
-      if(fgetc(fp_dnamei)==NULL){
+      if(fgetc(fp_dnamei)==0){
         printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
         printf("Error reading header information \n");
         printf("in file %s\n",dnamei);
