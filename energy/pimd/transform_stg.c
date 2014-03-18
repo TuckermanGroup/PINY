@@ -311,11 +311,12 @@ void spread_coord(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
   int natm_tot       = clatoms_info->natm_tot;
   int myatm_start    = clatoms_info->myatm_start;
   int myatm_end      = clatoms_info->myatm_end;
-  double pi_temperature;
+  double pi_temperature = clatoms_info->pi_temperature;
   double *mass       = clatoms_info->mass;
 
   int pimd_freez_typ = atommaps->pimd_freez_typ;
   int *freeze_flag   = atommaps->freeze_flag;
+  int *ighost_flag   = atommaps->ighost_flag;
 
   int ip_off;
   ip_off = ip_start-1;
@@ -323,7 +324,6 @@ void spread_coord(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
 /*========================================================================*/
 /*  I)Malloc local variables:                                             */
 
-  pi_temperature = clatoms_info->pi_temperature*5.0;
   pos   = (double *) cmalloc(pi_beads*sizeof(double))-1;
   gauss = (double *) cmalloc(pi_beads*sizeof(double))-1;
 
@@ -335,26 +335,28 @@ void spread_coord(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
   for(ipart=1;ipart<=natm_tot;ipart++){
 
     if( (pimd_freez_typ==1) || (freeze_flag[ipart]==0)){
-      stage_1_part(pos,gauss,mass[ipart],pi_temperature,rcut, 
-                   pi_beads,iseed,iseed2,qseed,&ierr_now);
-      ierr += ierr_now;
-      for(ip=1;ip<=pi_beads_proc;ip++){
-        clatoms_pos[ip].x[ipart] = pos[(ip+ip_off)] + x[ipart];
-      }/*endfor*/
+	if(ighost_flag[ipart] == 0){ 
+            stage_1_part(pos,gauss,mass[ipart],pi_temperature,rcut, 
+                         pi_beads,iseed,iseed2,qseed,&ierr_now);
+            ierr += ierr_now;
+            for(ip=1;ip<=pi_beads_proc;ip++){
+              clatoms_pos[ip].x[ipart] = pos[(ip+ip_off)] + x[ipart];
+            }/*endfor*/
 
-      stage_1_part(pos ,gauss,mass[ipart],pi_temperature,rcut, 
-                   pi_beads,iseed,iseed2,qseed,&ierr_now);
-      ierr += ierr_now;
-      for(ip=1;ip<=pi_beads_proc;ip++){
-        clatoms_pos[ip].y[ipart] = pos[(ip+ip_off)] + y[ipart];
-      }/*endfor*/
+            stage_1_part(pos ,gauss,mass[ipart],pi_temperature,rcut, 
+                         pi_beads,iseed,iseed2,qseed,&ierr_now);
+            ierr += ierr_now;
+            for(ip=1;ip<=pi_beads_proc;ip++){
+              clatoms_pos[ip].y[ipart] = pos[(ip+ip_off)] + y[ipart];
+            }/*endfor*/
 
-      stage_1_part(pos ,gauss,mass[ipart],pi_temperature,rcut, 
-                   pi_beads,iseed,iseed2,qseed,&ierr_now);
-      ierr += ierr_now;
-      for(ip=1;ip<=pi_beads_proc;ip++){
-        clatoms_pos[ip].z[ipart] = pos[(ip+ip_off)] + z[ipart];
-      }/*endfor*/
+            stage_1_part(pos ,gauss,mass[ipart],pi_temperature,rcut, 
+                         pi_beads,iseed,iseed2,qseed,&ierr_now);
+            ierr += ierr_now;
+            for(ip=1;ip<=pi_beads_proc;ip++){
+               clatoms_pos[ip].z[ipart] = pos[(ip+ip_off)] + z[ipart];
+            }/*endfor*/
+        } /* endif not ghost atom (only sample a path if a regular atom)  */
 
     }else{
 
