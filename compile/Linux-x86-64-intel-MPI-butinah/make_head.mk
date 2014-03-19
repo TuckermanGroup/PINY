@@ -8,7 +8,7 @@ LIB_NAME = libpiny.so
 # compilers and options
 FC = mpif77
 CC = mpicc
-DEFINE = -DLINUX
+DEFINE =
 OPT = -O3 -no-prec-div -xHost
 OPT_CARE = -O2
 OPT_GRP = -O2

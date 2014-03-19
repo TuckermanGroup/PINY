@@ -5,7 +5,7 @@ LIB_NAME = libpiny.so
 # compilers and options
 FC = gfortran
 CC = gcc
-DEFINE = -DLINUX
+DEFINE =
 OPT = -O2
 OPT_CARE = -O2
 OPT_GRP = -O2
