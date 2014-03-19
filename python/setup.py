@@ -4,7 +4,7 @@ import glob
 # PINY directories
 dir_piny = '..'
 dir_piny_include = dir_piny + '/include'
-dir_libpiny = dir_piny + '/runable'
+dir_libpiny = dir_piny + '/lib'
 
 
 # global Cython directives
