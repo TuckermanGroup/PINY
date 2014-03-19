@@ -494,7 +494,7 @@ void screen_write_md(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
   double atime,vol_div,atm_div,eu_conv=1.0;
   double updates_t,updates_true,updates_now; 
 
-  char hat[2], hat_p[2];
+  char hat[3], hat_p[3];
   iprint = 0;strcpy(hat,"  ");strcpy(hat_p,"  ");
   if(general_data->timeinfo.iget_pe_real_inter_freq>1){
    iprint=1;strcpy(hat,"^*");
