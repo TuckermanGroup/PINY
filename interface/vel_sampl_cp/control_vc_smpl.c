@@ -142,7 +142,7 @@ void control_vc_smpl(GENERAL_DATA *general_data,CP *cp)
     if(nproc>1){Bcast(&iproj_vel,1,MPI_INT,0,world);}
 
     if((debug_on == 1 && iproj_vel == 1) ||
-       (debug_on != 1) && (cp->cpopts.zero_cp_vel < 1)){
+       ((debug_on != 1) && (cp->cpopts.zero_cp_vel < 1))) {
       for(ip=1;ip<=pi_beads;ip++){ 
         proj_velc(cp,ip);
       }/*endfor*/

@@ -102,12 +102,15 @@ void int_dt2_to_dt_nvt_pimd(CLASS *class,BONDED *bonded,
 /* 2) Evolve NHCs and velocities                                            */
 
    ix_now = 5;
-   if((ir_pimd==nres_pimd)){ix_now=4;}
-   if((ir_pimd==nres_pimd)&&(ir_tra==nres_tra)){ix_now=3;}
-   if((ir_pimd==nres_pimd)&&(ir_tra==nres_tra)&&(ir_tor==nres_tor))
-                            {ix_now=2;}
-   if((ir_pimd==nres_pimd)&&(ir_tra==nres_tra)&&(ir_tor==nres_tor)
-                                 &&(ir_ter==nres_ter)){ix_now=1;}
+   if(ir_pimd==nres_pimd) {ix_now=4;}
+   if((ir_pimd==nres_pimd) &&(ir_tra==nres_tra)) {ix_now=3;}
+   if((ir_pimd==nres_pimd) &&(ir_tra==nres_tra) && (ir_tor==nres_tor)) {
+       ix_now=2;
+   }
+   if((ir_pimd==nres_pimd) && (ir_tra==nres_tra) && (ir_tor==nres_tor)
+      &&(ir_ter==nres_ter)) {
+     ix_now=1;
+   }
 
    if(ix_respa>=ix_now){
      if(pi_beads_proc_st == 1){
@@ -244,12 +247,15 @@ void int_dt2_to_dt_npti_pimd(CLASS *class,BONDED *bonded,
 /* 2) Evolve NHCs and velocities                                            */
 
     ix_now = 5;
-    if((ir_pimd==nres_pimd)){ix_now=4;}
-    if((ir_pimd==nres_pimd)&&(ir_tra==nres_tra)){ix_now=3;}
-    if((ir_pimd==nres_pimd)&&(ir_tra==nres_tra)&&(ir_tor==nres_tor))
-                                   {ix_now=2;}
-    if((ir_pimd==nres_pimd)&&(ir_tra==nres_tra)&&(ir_tor==nres_tor)
-                                 &&(ir_ter==nres_ter)){ix_now=1;}
+    if(ir_pimd==nres_pimd) {ix_now=4;}
+    if((ir_pimd==nres_pimd) && (ir_tra==nres_tra)) {ix_now=3;}
+    if((ir_pimd==nres_pimd) && (ir_tra==nres_tra) && (ir_tor==nres_tor)) {
+        ix_now=2;
+    }
+    if((ir_pimd==nres_pimd) && (ir_tra==nres_tra) && (ir_tor==nres_tor)
+       && (ir_ter==nres_ter)) {
+        ix_now=1;
+    }
  
     if(ix_respa>=ix_now){
       if(pi_beads_proc_st == 1){
@@ -389,12 +395,15 @@ void int_dt2_to_dt_nptf_pimd(CLASS *class,BONDED *bonded,
 /* 2) Evolve NHCs and velocities                                            */
 
    ix_now = 5;
-   if((ir_pimd==nres_pimd)){ix_now=4;}
-   if((ir_pimd==nres_pimd)&&(ir_tra==nres_tra)){ix_now=3;}
-   if((ir_pimd==nres_pimd)&&(ir_tra==nres_tra)
-                                   &&(ir_tor==nres_tor)){ix_now=2;}
-   if((ir_pimd==nres_pimd)&&(ir_tra==nres_tra)&&(ir_tor==nres_tor)
-                                 &&(ir_ter==nres_ter)){ix_now=1;}
+   if(ir_pimd==nres_pimd) {ix_now=4;}
+   if((ir_pimd==nres_pimd) && (ir_tra==nres_tra)) {ix_now=3;}
+   if((ir_pimd==nres_pimd) && (ir_tra==nres_tra) && (ir_tor==nres_tor)) {
+     ix_now=2;
+   }
+   if((ir_pimd==nres_pimd) && (ir_tra==nres_tra) && (ir_tor==nres_tor)
+      && (ir_ter==nres_ter)) {
+     ix_now=1;
+   }
 
    if(ix_respa>=ix_now){
      if(pi_beads_proc_st == 1){

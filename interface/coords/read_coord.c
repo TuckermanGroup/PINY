@@ -27,6 +27,8 @@
 #include "../proto_defs/proto_pimd_local.h"
 #include "../proto_defs/proto_pimd_entry.h"
 #include "../proto_defs/proto_communicate_wrappers.h"
+#include "../proto_defs/proto_intra_con_entry.h"
+#include "../proto_defs/proto_vel_sampl_class_local.h"
 
 /*==========================================================================*/
 /*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
@@ -337,8 +339,8 @@ void read_coord(CLASS *class,GENERAL_DATA *general_data,
                    &(class->atommaps),myid);
 
       for(ip=1;ip<=pi_beads_proc;ip++){
-            get_ghost_pos(&(class->clatoms_info),&(class->clatoms_pos[ip]),
-                          &(class->ghost_atoms));
+        get_ghost_pos(&(class->clatoms_info), &(class->clatoms_pos[ip]),
+                      &(class->ghost_atoms));
       }/* endfor */
     }/*endif*/
  
@@ -465,8 +467,8 @@ void read_coord(CLASS *class,GENERAL_DATA *general_data,
                    &(class->atommaps),myid);
 
       for(ip=1;ip<=pi_beads_proc;ip++){
-            get_ghost_pos(&(class->clatoms_info),&(class->clatoms_pos[ip]),
-                          &(class->ghost_atoms));
+        get_ghost_pos(&(class->clatoms_info), &(class->clatoms_pos[ip]),
+                      &(class->ghost_atoms));
       }/* endfor */
     }/*endif*/
 

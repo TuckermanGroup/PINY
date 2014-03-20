@@ -1390,7 +1390,7 @@ void cp_get_vks(CPOPTS *cpopts,CPSCR *cpscr,CPEWALD *cpewald,EWALD *ewald,
 /*--------------------------------------------------------------------*/
 /*  b) LSDA                                                           */
 
-   if((cp_lsda==1)  ){
+   if(cp_lsda == 1) {
 
 /*--------------*/
 /* Perdew-Zunger*/

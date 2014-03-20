@@ -121,9 +121,9 @@
 /*     State and Force comms are INNER communicators                     */
 /*     CP is off : np = np_forc*np_bead                                  */
 
-  if((cp_on==1)&&(np_forc==1))        {icase=1;}
-  if((cp_on==1)&&(np_forc==np_states)){icase=2;}
-  if((cp_on==0))                      {icase=3;}
+  if((cp_on==1) && (np_forc==1))         {icase=1;}
+  if((cp_on==1) && (np_forc==np_states)) {icase=2;}
+  if(cp_on==0)                           {icase=3;}
 
   switch(icase){
 

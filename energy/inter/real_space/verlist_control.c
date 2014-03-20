@@ -306,7 +306,7 @@ void nolst_ver_gen(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
 /*  i)  List creat conditions                                              */
 
         ifor_call = 0;
-        if(((*for_scr_intact)==(nlen))){ifor_call=1;}
+        if(*for_scr_intact == nlen) {ifor_call=1;}
         if((ipart==(natm_tot))&&(upper==intact_now)&&
           ((*for_scr_intact)!=0)   ){
             ifor_call=1;
@@ -400,7 +400,7 @@ void nolst_ver_gen(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
       nbr_list_jver_off[jpart] = nbr_list_jver_off[mtemp]
                                + nbr_list_nter[mtemp];
    }/*endfor*/
-   if((int_res_ter==1)){
+   if(int_res_ter == 1) {
      for(jpart=2;jpart<=natm_tot;jpart++){
         mtemp = jpart-1;
         nbr_list_jver_off_res[jpart] = nbr_list_jver_off_res[mtemp]
@@ -642,7 +642,7 @@ void nolst_ver_gen_root(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
 /*------------------------------------------------------------------------*/
 /*   i) Force call conditions                                             */
         ifor_call = 0;
-        if(((*for_scr_intact)==(nlen))){ifor_call=1;}
+        if(*for_scr_intact == nlen) {ifor_call=1;}
         if((ipart==(natm_tot))&&(upper==intact_now)&&
           ((*for_scr_intact)!=0)   ){
             ifor_call=1;
@@ -2168,7 +2168,7 @@ void lnk_ver_gen_pad(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
       upper         = lower+nbr_list_nter[jpart]-1;
       ioff_tot     += iver_tmp;
       nbr_list_jver_off[jpart] = nver_now;
-      if((*isuccess==1)){
+      if(*isuccess == 1) {
           for(iter=lower;iter<=upper;iter++){
              mtemp =  iter+ioff_tot;
              nbr_list_jter[mtemp] = nbr_list_jter[iter];  
@@ -2196,7 +2196,7 @@ void lnk_ver_gen_pad(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
          upper         = lower+nbr_list_nter_res[jpart]-1;
          ioff_tot     += iver_tmp;
          nbr_list_jver_off_res[jpart] = nver_res_now;
-         if((*isuccess==1)){
+         if(*isuccess == 1) {
             for(iter=lower;iter<=upper;iter++){
                mtemp =  iter+ioff_tot;
                nbr_list_jter_res[mtemp] = nbr_list_jter_res[iter];  
@@ -2716,7 +2716,7 @@ void lnk_ver_gen_pad_root(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
       upper         = lower+nbr_list_nter[jpart]-1;
       ioff_tot     += iver_tmp;
       nbr_list_jver_off[jpart] = nver_now;
-      if((*isuccess==1)){
+      if(*isuccess == 1) {
           for(iter=lower;iter<=upper;iter++){
              mtemp =  iter+ioff_tot;
              nbr_list_jter[mtemp] = nbr_list_jter[iter];  
@@ -2744,7 +2744,7 @@ void lnk_ver_gen_pad_root(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
          upper         = lower+nbr_list_nter_res[jpart]-1;
          ioff_tot     += iver_tmp;
          nbr_list_jver_off_res[jpart] = nver_res_now;
-         if((*isuccess==1)){
+         if(*isuccess == 1) {
             for(iter=lower;iter<=upper;iter++){
                mtemp =  iter+ioff_tot;
                nbr_list_jter_res[mtemp] = nbr_list_jter_res[iter];  
@@ -3494,7 +3494,7 @@ void ver_pare_down_root(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
 /*  i)  List creat conditions                                              */
 
         ifor_call = 0;
-        if(((*for_scr_intact)==(nlen))){ifor_call=1;}
+        if(*for_scr_intact == nlen) {ifor_call=1;}
         if((ipart==(natm_tot))&&(upper==intact_now)&&
           ((*for_scr_intact)!=0)   ){
             ifor_call=1;
@@ -3580,7 +3580,7 @@ void ver_pare_down_root(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
       nbr_list_nter[jpart] -= nbr_list_jver_off[jpart];
    }/*endfor*/
 
-   if((int_res_ter==1)){
+   if(int_res_ter == 1) {
      for(jpart=1;jpart<=natm_tot;jpart++){
         nbr_list_nter_res[jpart] -= nbr_list_jver_off_res[jpart];
      }/*endfor*/

@@ -235,7 +235,7 @@ void cp_transpose_fwd(double *cre,double *cim,int *icoef_form,
      printf("@@@@@@@@@@@@@@@@@@@@_ERROR_@@@@@@@@@@@@@@@@@@@@\n");
      fflush(stdout);exit(1);
   }/*endif*/
-  if((*icoef_form==1)){
+  if(*icoef_form == 1) {
       printf("@@@@@@@@@@@@@@@@@@@@_ERROR_@@@@@@@@@@@@@@@@@@@@\n");
       printf("The coefficients must be in normal form\n");
       printf("on state processor %d in cp_transpose_fwd \n",myid);
@@ -299,7 +299,7 @@ void cp_transpose_bck(double *cre,double *cim,int *icoef_form,
      printf("@@@@@@@@@@@@@@@@@@@@_ERROR_@@@@@@@@@@@@@@@@@@@@\n");
      fflush(stdout);exit(1);
   }/*endif*/
-  if((*icoef_form==0)){
+  if (*icoef_form == 0) {
       printf("@@@@@@@@@@@@@@@@@@@@_ERROR_@@@@@@@@@@@@@@@@@@@@\n");
       printf("The coefficients must be in normal form\n");
       printf("on state processor %d in cp_transpose_bck \n",myid);

@@ -124,7 +124,7 @@ void energy_control_pimd(CLASS *class, BONDED *bonded,
    }/*endfor*/
   }/*endfor*/
 
-  if( ((iget_full_inter)==1)){
+  if(iget_full_inter == 1) {
    if(pi_beads>1){
     for(ip=1;ip<= pi_beads_proc;ip++){
      fxt = class->clatoms_pos[ip].fxt;
