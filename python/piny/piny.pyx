@@ -324,7 +324,7 @@ cdef class PINYEmpirical:
         """
 
         # TODO
-        # there might be additional compoments for NpT simulations
+        # there might be additional components for NpT simulations
         # possibly depending on other settings (switching)
 
         cdef int P = self._P

@@ -49,7 +49,8 @@ cdef extern from 'typ_defs/typedefs_class.h':
         double mass_sc_fact
         int *ip_lab
         int *ichrg
-        int *cp_vlnc_up, *cp_vlnc_dn
+        int *cp_vlnc_up
+        int *cp_vlnc_dn
         int *cp_atm_flag
         double *mass
         double *q
@@ -58,9 +59,13 @@ cdef extern from 'typ_defs/typedefs_class.h':
         double *roll_sc
         double *text_atm
         double *text_mol
-        double *xold, *yold, *zold
+        double *xold
+        double *yold
+        double *zold
         double *prekf
-        double *xmod, *ymod, *zmod
+        double *xmod
+        double *ymod
+        double *zmod
         double alp_ewd
 
     ctypedef struct CLATOMS_TRAN:
@@ -68,12 +73,27 @@ cdef extern from 'typ_defs/typedefs_class.h':
 
     ctypedef struct CLATOMS_POS:
         double *mass
-        double *x, *y, *z
-        double *vx, *vy, *vz
-        double *fx, *fy, *fz
-        double *fxt, *fyt, *fzt
-        double *fxm, *fym, *fzm
-        double *hess_xx, *hess_xy, *hess_xz, *hess_yy, *hess_yz, *hess_zz
+        double *x
+        double *y
+        double *z
+        double *vx
+        double *vy
+        double *vz
+        double *fx
+        double *fy
+        double *fz
+        double *fxt
+        double *fyt
+        double *fzt
+        double *fxm
+        double *fym
+        double *fzm
+        double *hess_xx
+        double *hess_xy
+        double *hess_xz
+        double *hess_yy
+        double *hess_yz
+        double *hess_zz
 
     ctypedef struct GHOST_ATOMS:
         pass
@@ -299,7 +319,9 @@ cdef extern from 'typ_defs/typedefs_gen.h':
         double api_ke_prim, api_ke_vir
         double aipi_ke_prim, aipi_ke_vir
         double kin_harm,akin_harm, aikin_harm
-        double *apten, *aipten, *apten_out
+        double *apten
+        double *aipten
+        double *apten_out
         double fc_mag_up, fc_mag_dn
         double fc_max_up, fc_max_dn
         double fatm_max, fatm_mag
