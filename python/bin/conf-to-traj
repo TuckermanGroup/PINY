@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#!/usr/bin/env python
 
 """
 Convert PINY trajectory output ("conf") to XYZ or GRO format.
@@ -37,10 +37,10 @@ au2ps = 2.418884326505e-5   # time a.u. in ps
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--conf', dest='fns_in', nargs='+', type=str,
+parser.add_argument('fns_in', nargs='+', type=str,
                     help='Input file names - PINY output conf files.')
 
-parser.add_argument('--out', dest='fn_out', type=str,
+parser.add_argument('--out', dest='fn_out', type=str, required=True,
                     help='Output trajectory file name - XYZ or GRO format.')
 
 parser.add_argument('--h-matrix', dest='fn_out_h', type=str,
