@@ -577,9 +577,8 @@ void parse(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,CP *cp,
 
   /*=============*/
   /* XXVI) timer */
-  /*=============*/
 
-  if (myid == 1) {
+  if (myid == 0) {
 
     PRINT_LINE_STAR;
     printf("Code section timer\n");
@@ -607,15 +606,47 @@ void parse(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,CP *cp,
 
   }
 
-/*========================================================================*/
-/* XXVII) Flush the buffers                                                 */
-  
+
+  /*===============*/
+  /* XXVII) PLUMED */
+
+  if (myid == 0) {
+
+    PRINT_LINE_STAR;
+    printf("PLUMED interface\n");
+    PRINT_LINE_DASH;
+    printf("\n");
+
+    #if defined(PLUMED)
+      printf("Interface to PLUMED is enabled.\n");
+      #if defined(PARALLEL)
+        printf("Parallel version.\n");
+        printf("Not yet implemented.\n");
+        exit(1);
+      #else
+        printf("Serial version.\n");
+      #endif
+    #else
+      printf("Interface to PLUMED was not enabled at compile time.\n");
+    #endif
+    printf("\n");
+
+    PRINT_LINE_DASH;
+    printf("PLUMED interface - done\n");
+    PRINT_LINE_STAR;
+    printf("\n");
+
+  }
+
+
+  /*===========================*/
+  /* XXVIII) Flush the buffers */
+
   fflush(stdout);
   fflush(stderr);
 
-
 /*------------------------------------------------------------------------*/
-  }/*end routine*/ 
+}/*end routine*/
 /*==========================================================================*/
 
 
