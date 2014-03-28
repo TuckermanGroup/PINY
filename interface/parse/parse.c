@@ -579,7 +579,7 @@ void parse(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,CP *cp,
   /* XXVI) timer */
   /*=============*/
 
-  if (myid == 1) {
+  if (myid == 0) {
 
     PRINT_LINE_STAR;
     printf("Code section timer\n");
