@@ -226,10 +226,11 @@ void int_dt2_to_dt_nvt(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
      }/*endif*/
    }else{
      ix_now = 4;
-     if((ir_tra==nres_tra)){ix_now=3;}
-     if((ir_tra==nres_tra)&&(ir_tor==nres_tor)){ix_now=2;}
-     if((ir_tra==nres_tra)&&(ir_tor==nres_tor)&&(ir_ter==nres_ter))
-                                                    {ix_now=1;}
+     if(ir_tra==nres_tra) {ix_now=3;}
+     if((ir_tra==nres_tra) && (ir_tor==nres_tor)) {ix_now=2;}
+     if((ir_tra==nres_tra) && (ir_tor==nres_tor) && (ir_ter==nres_ter)) {
+         ix_now=1;
+     }
      if(ix_respa>=ix_now){
       if(class->therm_info_class.therm_typ == 1) {
        apply_NHC_par(&(class->clatoms_info),&(class->clatoms_pos[1]),
@@ -370,9 +371,9 @@ void int_dt2_to_dt_nvt_isok(CLASS *class,BONDED *bonded,GENERAL_DATA *general_da
                           &(class->int_scr),iflag_mass,&(class->class_comm_forc_pkg));
       }else{
        ix_now = 4;
-       if((ir_tra==1)){ix_now=3;}
-       if((ir_tra==1)&&(ir_tor==1)){ix_now=2;}
-       if((ir_tra==1)&&(ir_tor==1)&&(ir_ter==1)){ix_now=1;}
+       if(ir_tra==1) {ix_now=3;}
+       if((ir_tra==1) && (ir_tor==1)) {ix_now=2;}
+       if((ir_tra==1) && (ir_tor==1) && (ir_ter==1)) {ix_now=1;}
        if(ix_respa>=ix_now){
            apply_NH_ISOK_par(&(class->clatoms_info),&(class->clatoms_pos[1]),
                               &(class->therm_info_class),&(class->therm_class),
@@ -500,10 +501,11 @@ void int_dt2_to_dt_npti(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
                         &(class->int_scr),&(class->class_comm_forc_pkg));
      }else{
         ix_now = 4;
-        if((ir_tra==nres_tra)){ix_now=3;}
-        if((ir_tra==nres_tra)&&(ir_tor==nres_tor)){ix_now=2;}
-        if((ir_tra==nres_tra)&&(ir_tor==nres_tor)&&(ir_ter==nres_ter))
-                                                    {ix_now=1;}
+        if(ir_tra==nres_tra) {ix_now=3;}
+        if((ir_tra==nres_tra) && (ir_tor==nres_tor)) {ix_now=2;}
+        if((ir_tra==nres_tra) && (ir_tor==nres_tor) && (ir_ter==nres_ter)) {
+            ix_now=1;
+        }
         if(ix_respa>=ix_now){
           apply_NHCPI_par(&(class->clatoms_info),&(class->clatoms_pos[1]),
                           &(class->therm_info_class),&(class->therm_class),
@@ -654,10 +656,11 @@ void int_dt2_to_dt_nptf(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
                        &(class->int_scr),&(class->class_comm_forc_pkg));
       }else{
         ix_now = 4;
-        if((ir_tra==nres_tra)){ix_now=3;}
-        if((ir_tra==nres_tra)&&(ir_tor==nres_tor)){ix_now=2;}
-        if((ir_tra==nres_tra)&&(ir_tor==nres_tor)&&(ir_ter==nres_ter))
-                                                    {ix_now=1;}
+        if(ir_tra==nres_tra) {ix_now=3;}
+        if((ir_tra==nres_tra) && (ir_tor==nres_tor)) {ix_now=2;}
+        if((ir_tra==nres_tra) && (ir_tor==nres_tor) && (ir_ter==nres_ter)) {
+            ix_now=1;
+        }
         if(ix_respa>=ix_now){
           apply_NHCPF_par(&(class->clatoms_info),&(class->clatoms_pos[1]),
                           &(class->therm_info_class),&(class->therm_class),

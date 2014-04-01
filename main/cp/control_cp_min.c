@@ -222,11 +222,11 @@ void control_cp_min(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
          min_STD_cp(class,bonded,general_data,cp,ip_now);
          cp_shuffle_states(cp,1);
       }/*endif*/
-      if((general_data->minopts.cp_min_cg==1)){
+      if(general_data->minopts.cp_min_cg == 1) {
          min_CG_cp(class,bonded,general_data,cp,ip_now);
          cp->cpcoeffs_info.cg_reset_flag = 0;
       }/*endif*/
-      if((general_data->minopts.cp_min_diis==1)){
+      if(general_data->minopts.cp_min_diis == 1) {
          min_DIIS_cp(class,bonded,general_data,cp,iatm_count,ip_now);
          cp->cpcoeffs_info.diis_reset_flag = 0;
       }/*endif*/

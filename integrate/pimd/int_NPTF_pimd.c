@@ -169,7 +169,7 @@ void int_NPTF_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
              {(class->energy_ctrl.iget_res_inter) = 1;}
           if((ir_tra==nres_tra)&&(ir_pimd==nres_pimd))
              {(class->energy_ctrl.iget_full_intra) = 1;}
-          if((ir_pimd==nres_pimd))
+          if(ir_pimd == nres_pimd)
              {(class->energy_ctrl.iget_res_intra) = 1;}
 
           energy_control_pimd(class,bonded,general_data);

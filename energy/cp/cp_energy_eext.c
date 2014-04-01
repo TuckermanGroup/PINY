@@ -2411,7 +2411,7 @@ void get_atm_hess_recip(double xk,double yk,double zk,
 /* This routine must be modified to add indirect addressing for           */
 /* it to work with idens_opt==1 !! Also careful with q_tmp vs q           */
 
-   if( (iperd ==0) ) {
+   if(iperd == 0) {
 
      for(ipart=1;ipart<=natm_use;ipart++){
 

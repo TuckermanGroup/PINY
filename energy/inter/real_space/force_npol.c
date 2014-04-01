@@ -1237,7 +1237,7 @@ void npol_vir_reduc(int energy_ctrl_int_res_ter,int intact_now,
 
 /*=======================================================================*/
 
-    if((energy_ctrl_int_res_ter == 0)){
+    if(energy_ctrl_int_res_ter == 0) {
      for (jpart = 1; jpart <= intact_now; jpart++) {
       intra_scr_fx1[jpart] *= wght_lnk;
       intra_scr_fy1[jpart] *= wght_lnk;

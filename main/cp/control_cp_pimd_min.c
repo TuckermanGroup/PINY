@@ -135,11 +135,11 @@ void control_cp_pimd_min(CLASS *class,BONDED *bonded,
          min_STD_cp(class,bonded,general_data,cp,ip);
          cp_shuffle_states(cp,ip);
       }/*endif*/
-      if((general_data->minopts.cp_min_cg==1)){
+      if(general_data->minopts.cp_min_cg == 1) {
          min_CG_cp(class,bonded,general_data,cp,ip);
          cp->cpcoeffs_info.cg_reset_flag = 0;
       }/*endif*/
-      if((general_data->minopts.cp_min_diis==1)){
+      if(general_data->minopts.cp_min_diis == 1) {
          min_DIIS_cp(class,bonded,general_data,cp,iatm_count,ip);
          cp->cpcoeffs_info.diis_reset_flag = 0;
       }/*endif*/

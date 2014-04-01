@@ -127,8 +127,8 @@ void energy_control_elec(CLASS *class,BONDED *bonded,
   vecor = vecor_temp;
  }
 
- if((class->communicate.np_states>1)||(class->communicate.np_beads>1)
-        && iperd > 0){
+ if(((class->communicate.np_states>1) || (class->communicate.np_beads>1))
+    && (iperd > 0)) {
    Allreduce(&(general_data->stat_avg.vrecip), &(vrecip_temp),1,MPI_DOUBLE,
                MPI_SUM,0,class->communicate.world);
    general_data->stat_avg.vrecip = vrecip_temp;

@@ -132,7 +132,7 @@ void cp_energy_control_pimd(CLASS *class,BONDED *bonded,
         }/*endfor*/
       }/*endfor*/
 
-      if( (iget_full_inter==1)){
+      if(iget_full_inter == 1) {
         if(pi_beads>1){
           for(ip=1;ip<= pi_beads_proc;ip++){
             fxt = class->clatoms_pos[ip].fxt;
@@ -228,7 +228,7 @@ void cp_energy_control_pimd(CLASS *class,BONDED *bonded,
 /*======================================================================*/
 /* XIII) Collect and store PE                                           */
   
-  if( ((class->energy_ctrl.iget_full_inter)==1)){
+  if(class->energy_ctrl.iget_full_inter == 1) {
     general_data->stat_avg.vbond_free = vbond_free;
     general_data->stat_avg.vbend_free = vbend_free;
     general_data->stat_avg.vtors_free = vtors_free;

@@ -137,7 +137,7 @@ void force_nolst(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
       /*       appropriate counters                                         */
 
       ifor_call = 0;
-      if(((*for_scr_intact)==(nlen))){ifor_call=1;}
+      if(*for_scr_intact == nlen) {ifor_call=1;}
       if( (ipart==(natm_tot))&&
          (upper==intact_now)&&
          ((*for_scr_intact)!=0)   ){ifor_call=1;}

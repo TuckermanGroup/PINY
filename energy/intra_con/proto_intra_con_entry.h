@@ -24,14 +24,12 @@ void zero_constrt_iters(STAT_AVG *);
 /*--------------------------------------------------------------------------*/
 /* Ghost_control.c */
 
-void get_ghost_pos(CLATOMS_INFO *,CLATOMS_POS *,
-                   GHOST_ATOMS *);
+void get_ghost_pos(CLATOMS_INFO *, CLATOMS_POS *, GHOST_ATOMS *);
 
-void distrib_ghost_force(CLATOMS_INFO *,CLATOMS_POS *,
-                         GHOST_ATOMS *,int);
+void distrib_ghost_force(CLATOMS_INFO *, CLATOMS_POS *, GHOST_ATOMS *, int);
 
-void distrib_ghost_force_mode(CLATOMS_INFO *,CLATOMS_POS *,
-                         GHOST_ATOMS *);
+void distrib_ghost_force_mode(CLATOMS_INFO *, CLATOMS_POS *, GHOST_ATOMS *);
+
 /*--------------------------------------------------------------------------*/
 /* proj_com_min.c.c */
 

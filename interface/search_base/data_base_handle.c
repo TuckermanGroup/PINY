@@ -159,7 +159,7 @@ void read_data_base(char filename[],DICT_WORD fun_dict[], int num_fun_dict,
     }/*endfor*/
   }/*endif*/
 
-  if( (ibase_want==8) ){
+  if (ibase_want == 8) {
     for(i=1;i<=nbase;i++){
       strcpy(cbase[(i+nbase)].atm2,cbase[i].atm1);
       strcpy(cbase[(i+nbase)].atm1,cbase[i].atm2);
