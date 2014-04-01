@@ -25,49 +25,46 @@
 #include "../proto_defs/proto_pimd_local.h"
 #include "../proto_defs/proto_math.h"
 
-#define DEBUG_OFF
 
 /*==========================================================================*/
-/*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
+void control_intra_params(double *tot_memory,
+                          CLATOMS_INFO *clatoms_info,
+                          CLATOMS_POS *clatoms_pos,
+                          GHOST_ATOMS *ghost_atoms,
+                          ATOMMAPS *atommaps,
+                          BONDED *bonded,
+                          FILENAME_PARSE *filename_parse,
+                          FREE_PARSE *free_parse,
+                          CLASS_PARSE *class_parse,
+                          NULL_INTER_PARSE *null_inter_parse,
+                          SIMOPTS *simopts,
+                          COMMUNICATE *communicate,
+                          int isurf_on) {
 /*==========================================================================*/
 
-void control_intra_params(double *tot_memory,CLATOMS_INFO *clatoms_info,
-                    CLATOMS_POS *clatoms_pos, 
-                    GHOST_ATOMS *ghost_atoms,
-                    ATOMMAPS *atommaps,BONDED *bonded,
-                    FILENAME_PARSE *filename_parse,
-                    FREE_PARSE *free_parse,CLASS_PARSE *class_parse,
-                    NULL_INTER_PARSE *null_inter_parse,
-                    SIMOPTS *simopts, COMMUNICATE *communicate,
-                    int isurf_on)
-
-/*========================================================================*/
-/*     Begin routine                                                      */
-{/*begin routine*/
-
-/*========================================================================*/
-/*     Local Variables                                                    */
+  /*=================*/
+  /* local Variables */
 
   DICT_INTRA dict_intra;
   BUILD_INTRA build_intra;
   RESBOND_PARSE resbond_parse;
   START_INDEX start_index;
 
-  int i,iii;
+  int i, iii;
   int jmol_typ;
-  int ifirst,nresidue,mol_or_res;
-  int nmol_tot,nres_bond;
-  int nres_tot,ncon_tot,nmass_unphys;
+  int ifirst, nresidue, mol_or_res;
+  int nmol_tot, nres_bond;
+  int nres_tot, ncon_tot, nmass_unphys;
   int myid = communicate->myid;
-  double cpu1,cpu2;
+  double cpu1, cpu2;
 
-  char *filename,*fun_key;
+  char *filename, *fun_key;
   FILE *fp;
 
   int pi_beads = clatoms_info->pi_beads;
 
-/*=======================================================================*/
-/*   I) Start the routine                                                */
+  /*===================*/
+  /* start the routine */
 
   printf("\n");
   PRINT_LINE_STAR;
@@ -76,79 +73,80 @@ void control_intra_params(double *tot_memory,CLATOMS_INFO *clatoms_info,
   cputime(&cpu1);
 
 
-/*=======================================================================*/
-/* II) Initialize/malloc intra stuff                                     */
-/*      (init_intra_params.c)                                            */
+  /*===============================*/
+  /* initialize/malloc intra stuff */
+  /* (init_intra_params.c)         */
 
-  filename               = (char *)cmalloc(MAXWORD*sizeof(char));  
-  fun_key                 = (char *)cmalloc(MAXWORD*sizeof(char));  
+  filename = (char *)cmalloc(MAXWORD*sizeof(char));
+  fun_key = (char *)cmalloc(MAXWORD*sizeof(char));
 
   init_intra_params(clatoms_info,ghost_atoms,atommaps,&build_intra,
                     bonded,null_inter_parse,&resbond_parse,
-		    filename_parse);
+                    filename_parse);
 
-/*=======================================================================*/
-/* III) Set up the dictionaries                                          */
-/*      (set_intra_dict.c)                                               */
+
+  /*=========================*/
+  /* set up the dictionaries */
+  /* (set_intra_dict.c)      */
 
   ifirst = 1;
-  dict_intra.word         = (DICT_WORD *)cmalloc(sizeof(DICT_WORD));
-  set_intra_fun_dict(&dict_intra.fun_dict,&dict_intra.num_fun_dict,ifirst);
-  set_atm_dict(&dict_intra.atm_dict,&dict_intra.num_atm_dict,ifirst);
-  set_intra_dict(&dict_intra.intra_dict,&dict_intra.num_intra_dict,ifirst);
-  set_mol_name_dict(&dict_intra.mol_name_dict,&dict_intra.num_mol_name_dict,
-                ifirst);
-  set_res_name_dict(&dict_intra.res_name_dict,&dict_intra.num_res_name_dict,
-                ifirst);
-  set_res_def_dict(&dict_intra.res_def_dict,&dict_intra.num_res_def_dict,
-                ifirst);
-  set_res_bond_dict(&dict_intra.res_bond_dict,&dict_intra.num_res_bond_dict,
-                ifirst);
+  dict_intra.word = (DICT_WORD *)cmalloc(sizeof(DICT_WORD));
+  set_intra_fun_dict(&dict_intra.fun_dict, &dict_intra.num_fun_dict, ifirst);
+  set_atm_dict(&dict_intra.atm_dict, &dict_intra.num_atm_dict, ifirst);
+  set_intra_dict(&dict_intra.intra_dict, &dict_intra.num_intra_dict, ifirst);
+  set_mol_name_dict(&dict_intra.mol_name_dict, &dict_intra.num_mol_name_dict,
+                    ifirst);
+  set_res_name_dict(&dict_intra.res_name_dict, &dict_intra.num_res_name_dict,
+                    ifirst);
+  set_res_def_dict(&dict_intra.res_def_dict, &dict_intra.num_res_def_dict,
+                   ifirst);
+  set_res_bond_dict(&dict_intra.res_bond_dict, &dict_intra.num_res_bond_dict,
+                    ifirst);
 
-  strcpy(atommaps->atm_typ[1],"HELP");
+  strcpy(atommaps->atm_typ[1], "HELP");
 
-/*=======================================================================*/
-/* V) Zero the list counters                                             */
- 
-   bonded->bond.npow             = 0;
-   bonded->bond.ncon             = 0;
-   null_inter_parse->nbond_nul   = 0;
-   bonded->bend.npow             = 0;
-   bonded->bend.ncon             = 0;
-   null_inter_parse->nbend_nul   = 0;
-   bonded->tors.npow             = 0;
-   bonded->tors.ncon             = 0;
-   bonded->tors.nimpr            = 0;
-   null_inter_parse->ntors_nul   = 0;
-   bonded->onfo.num              = 0;
-   null_inter_parse->nonfo_nul   = 0;
-   bonded->bend_bnd.num          = 0;
-   clatoms_info->natm_tot        = 0;
-   atommaps->nres_typ            = 0;
-   atommaps->nfreeze             = 0;
-   atommaps->natm_typ            = 0;
-   ghost_atoms->nghost_tot       = 0;
-   ghost_atoms->natm_comp_max    = 0;
-   bonded->grp_bond_con.num_21   = 0;
-   bonded->grp_bond_con.num_33   = 0;
-   bonded->grp_bond_con.num_43   = 0;
-   bonded->grp_bond_con.num_23   = 0;
-   bonded->grp_bond_con.num_46   = 0;
-   bonded->grp_bond_con.ntyp_21  = 0;
-   bonded->grp_bond_con.ntyp_33  = 0;
-   bonded->grp_bond_con.ntyp_43  = 0;
-   bonded->grp_bond_con.ntyp_23  = 0;
-   bonded->grp_bond_con.ntyp_46  = 0;
-   bonded->grp_bond_watts.num_33 = 0;
-   bonded->grp_bond_watts.ntyp_33= 0;
+  /*=========================*/
+  /*  zero the list counters */
 
-/*=======================================================================*/
-/* IV) Loop over molecular parameter files                               */
+   bonded->bond.npow              = 0;
+   bonded->bond.ncon              = 0;
+   null_inter_parse->nbond_nul    = 0;
+   bonded->bend.npow              = 0;
+   bonded->bend.ncon              = 0;
+   null_inter_parse->nbend_nul    = 0;
+   bonded->tors.npow              = 0;
+   bonded->tors.ncon              = 0;
+   bonded->tors.nimpr             = 0;
+   null_inter_parse->ntors_nul    = 0;
+   bonded->onfo.num               = 0;
+   null_inter_parse->nonfo_nul    = 0;
+   bonded->bend_bnd.num           = 0;
+   clatoms_info->natm_tot         = 0;
+   atommaps->nres_typ             = 0;
+   atommaps->nfreeze              = 0;
+   atommaps->natm_typ             = 0;
+   ghost_atoms->nghost_tot        = 0;
+   ghost_atoms->natm_comp_max     = 0;
+   bonded->grp_bond_con.num_21    = 0;
+   bonded->grp_bond_con.num_33    = 0;
+   bonded->grp_bond_con.num_43    = 0;
+   bonded->grp_bond_con.num_23    = 0;
+   bonded->grp_bond_con.num_46    = 0;
+   bonded->grp_bond_con.ntyp_21   = 0;
+   bonded->grp_bond_con.ntyp_33   = 0;
+   bonded->grp_bond_con.ntyp_43   = 0;
+   bonded->grp_bond_con.ntyp_23   = 0;
+   bonded->grp_bond_con.ntyp_46   = 0;
+   bonded->grp_bond_watts.num_33  = 0;
+   bonded->grp_bond_watts.ntyp_33 = 0;
 
-  for(jmol_typ=1;jmol_typ<=atommaps->nmol_typ;jmol_typ++){
+  /*=====================================*/
+  /* loop over molecular parameter files */
 
-/*-----------------------------------------------------------------------*/
-/*  0) Write to the screen                                               */
+  for(jmol_typ=1; jmol_typ<=atommaps->nmol_typ; jmol_typ++) {
+
+    /*---------------------*/
+    /* write to the screen */
 
     printf("**************************************************************\n");
     printf("Reading from molecular parameter file %s\n",
@@ -156,8 +154,8 @@ void control_intra_params(double *tot_memory,CLATOMS_INFO *clatoms_info,
     printf("--------------------------------------------------------------\n");
     printf("\n");
 
-/*-----------------------------------------------------------------------*/
-/* 1) Store the present list counter values                              */
+    /*---------------------------------------*/
+    /* store the present list counter values */
 
     start_index.nbond_pow    = bonded->bond.npow;
     start_index.nbond_con    = bonded->bond.ncon;
@@ -180,49 +178,49 @@ void control_intra_params(double *tot_memory,CLATOMS_INFO *clatoms_info,
     start_index.ngrp_23      = bonded->grp_bond_con.num_23;
     start_index.ngrp_46      = bonded->grp_bond_con.num_46;
     start_index.ngrp_watt_33 = bonded->grp_bond_watts.num_33;
-   
-/*------------------------------------------------------------------------*/
-/*  2) Count and error check the molecular parm file:                     */
-/*     (fetch_residue.c)                                                  */
 
-    strcpy(filename,filename_parse->mol_param_name[jmol_typ]);
-    nresidue = atommaps->nres_1mol_jmol_typ[jmol_typ];/* spec in mol_set_file*/
+    /*-----------------------------------------------*/
+    /* count and error check the molecular parm file */
+    /* (fetch_residue.c)                             */
+
+    strcpy(filename, filename_parse->mol_param_name[jmol_typ]);
+    nresidue = atommaps->nres_1mol_jmol_typ[jmol_typ];
+    /* spec in mol_set_file */
 
     mol_or_res = 1;
-    check_parmfile(filename,&(dict_intra.num_fun_dict),&(dict_intra.fun_dict),
-                    fun_key,nresidue,&nres_bond,mol_or_res);
-                                          /* in fetch_residue.c */
-    resbond_parse.nres_bond = nres_bond; 
+    check_parmfile(filename, &(dict_intra.num_fun_dict), &(dict_intra.fun_dict),
+                    fun_key, nresidue, &nres_bond, mol_or_res);
+    /* in fetch_residue.c */
+    resbond_parse.nres_bond = nres_bond;
     resbond_parse.nresidue  = nresidue;
     resbond_parse_realloc(&resbond_parse);
-                                          /* in manipulate_res_bonds.c */
+    /* in manipulate_res_bonds.c */
 
-/*-----------------------------------------------------------------------*/
-/* 3) Read in the molecule name functional keyword: molecule type        */
-/*     number of atoms and/or number of residues                         */
-/*     (fetch_residue.c)                                                 */
+    /*-------------------------------------------------------------*/
+    /* read in the molecule name functional keyword: molecule type */
+    /* number of atoms and/or number of residues                   */
+    /* (fetch_residue.c)                                           */
 
+    fetch_molname(filename, &dict_intra, atommaps, fun_key, jmol_typ, nresidue);
 
-    fetch_molname(filename,&dict_intra,atommaps,
-                  fun_key,jmol_typ,nresidue);
-/*-----------------------------------------------------------------------*/
-/* 4) Read in the molecule residue definitions:                          */
-/*       index,natom,parm_file,name                                      */
-/*     (fetch_residue.c)                                                 */
+    /*-------------------------------------------*/
+    /* read in the molecule residue definitions: */
+    /* index, natom, parm_file, name             */
+    /* (fetch_residue.c)                         */
 
-    if(nresidue>0){
-       fetch_residue_defs(filename,&dict_intra,
-                          atommaps,filename_parse,
-                          fun_key,nresidue,
-                          jmol_typ,&build_intra);
+    if (nresidue > 0) {
+      fetch_residue_defs(filename,&dict_intra,
+                         atommaps,filename_parse,
+                         fun_key,nresidue,
+                         jmol_typ,&build_intra);
 
-    }else{
-      fetch_residue_def0(atommaps,&build_intra,jmol_typ);  
+    } else {
+      /* Assigns the molecule type to the residue type
+         when there are no explicit residues. */
+      fetch_residue_def0(atommaps, &build_intra, jmol_typ);
       strcpy(filename_parse->res_param_name[1],
-	     filename_parse->mol_param_name[jmol_typ]);
-        /* assigns the molecule type to the residue type 
-	   when there are no explicit residues           */
-    }/*endif*/
+             filename_parse->mol_param_name[jmol_typ]);
+    }
 
 /*-----------------------------------------------------------------------*/
 /* 5) Read in the molecule resbonds then map them to the residues:       */
@@ -378,15 +376,15 @@ void control_intra_params(double *tot_memory,CLATOMS_INFO *clatoms_info,
   set_intra_potent(bonded,&build_intra,
                filename_parse->def_intra_name,
                filename_parse->user_intra_name);
-  
+
 #ifdef DEBUG
-   printf("Vomitting \n");mal_verify(1);
-   vomit_intra_potent(bonded,&build_intra);
+  printf("Vomitting \n");mal_verify(1);
+  vomit_intra_potent(bonded,&build_intra);
 #endif
 
-/*========================================================================*/
-/*  X) Free memory                */                                     
-  
+  /*============*/
+  /*free memory */
+
   cfree(fun_key);
   cfree(filename);
 
@@ -414,64 +412,69 @@ void control_intra_params(double *tot_memory,CLATOMS_INFO *clatoms_info,
   cfree(&build_intra.cbend_bnd_typ[1]);
   cfree(build_intra.cbend_bnd_typ_now);
 
-/*=======================================================================*/
-/*  X) Write out synopsis                                               */
-  
+  /*====================*/
+  /* write out synopsis */
+
   PRINT_LINE_STAR;
-  printf("System Summary  \n");
-  PRINT_LINE_DASH;printf("\n");
-
-  nmol_tot=0;
-  nres_tot=0;
-  for(i=1;i<=atommaps->nmol_typ;i++){
-    nmol_tot+=(atommaps->nmol_jmol_typ)[i];
-    nres_tot+=(atommaps->nres_1mol_jmol_typ)[i]*
-              (atommaps->nmol_jmol_typ)[i];
-  }/*endfor*/
-  atommaps->nres_tot = nres_tot;   
-
-  printf("There are %d molecular units      \n",nmol_tot);
-  printf("There are %d molecular unit types \n",atommaps->nmol_typ);
-  printf("There are %d residue units        \n",nres_tot);
-  printf("There are %d residue unit types   \n",atommaps->nres_typ);
-  printf("There are %d atoms                \n",clatoms_info->natm_tot);
-  printf("There are %d degrees of freedom   \n",clatoms_info->nfree);
-  printf("There are %d ghost atoms          \n",ghost_atoms->nghost_tot);
-  printf("There are %d atom types           \n",atommaps->natm_typ);
-  printf("There are %d charged atoms        \n",clatoms_info->nchrg);
-  printf("There are %d power series bonds   \n",bonded->bond.npow);
-  printf("There are %d constrained bonds    \n",bonded->bond.ncon);
-  printf("There are %d null bonds           \n",null_inter_parse->nbond_nul);
-  printf("There are %d power series bends   \n",bonded->bend.npow);
-  printf("There are %d constrained bends    \n",bonded->bend.ncon);
-  printf("There are %d null bends           \n",null_inter_parse->nbend_nul);
-  printf("There are %d Urey-Bradley bends   \n",bonded->bend_bnd.num);
-  printf("There are %d power series torsions\n",bonded->tors.npow
-                                               -bonded->tors.nimpr);
-  printf("There are %d improper torsions    \n",bonded->tors.nimpr);
-  printf("There are %d constrained torsions \n",bonded->tors.ncon);
-  printf("There are %d null torsions        \n",null_inter_parse->ntors_nul);
-  printf("There are %d lj onefours          \n",bonded->onfo.num);
-  printf("There are %d null onefours        \n",null_inter_parse->nonfo_nul);
-  printf("There are %d free energy bonds    \n",bonded->bond_free.num);
-  printf("There are %d free energy bends    \n",bonded->bend_free.num);
-  printf("There are %d free energy torsions \n",bonded->tors_free.num);
-  printf("There are %d free energy rbar-sig \n",bonded->rbar_sig_free.nfree);
-  printf("There are %d 21 group constraints \n",bonded->grp_bond_con.num_21);
-  printf("There are %d 23 group constraints \n",bonded->grp_bond_con.num_23);
-  printf("There are %d 33 group constraints \n",bonded->grp_bond_con.num_33);
-  printf("There are %d 43 group constraints \n",bonded->grp_bond_con.num_43);
-  printf("There are %d 46 group constraints \n",bonded->grp_bond_con.num_46);
-  printf("There are %d 33 group Watts       \n",bonded->grp_bond_watts.num_33);
-  printf("There is  %d surface              \n",isurf_on);
+  printf("System Summary\n");
+  PRINT_LINE_DASH;
   printf("\n");
-  
+
+  nmol_tot = 0;
+  nres_tot = 0;
+  for(i=1; i<=atommaps->nmol_typ; i++) {
+    nmol_tot += (atommaps->nmol_jmol_typ)[i];
+    nres_tot += (atommaps->nres_1mol_jmol_typ)[i]
+                * (atommaps->nmol_jmol_typ)[i];
+  }
+  atommaps->nres_tot = nres_tot;
+
+  printf("% 6d molecular units\n",      nmol_tot);
+  printf("% 6d molecular unit types\n", atommaps->nmol_typ);
+  printf("% 6d residue units\n",        nres_tot);
+  printf("% 6d residue unit types\n",   atommaps->nres_typ);
+  printf("% 6d atoms\n",                clatoms_info->natm_tot);
+  printf("% 6d degrees of freedom\n",   clatoms_info->nfree);
+  if (pi_beads > 1)
+    printf("% 6d PIMD degrees of freedom\n", clatoms_info->nfree_pimd);
+  printf("% 6d ghost atoms\n",          ghost_atoms->nghost_tot);
+  printf("% 6d atom types\n",           atommaps->natm_typ);
+  printf("% 6d charged atoms\n",        clatoms_info->nchrg);
+  printf("% 6d power series bonds\n",   bonded->bond.npow);
+  printf("% 6d constrained bonds\n",    bonded->bond.ncon);
+  printf("% 6d null bonds\n",           null_inter_parse->nbond_nul);
+  printf("% 6d power series bends\n",   bonded->bend.npow);
+  printf("% 6d constrained bends\n",    bonded->bend.ncon);
+  printf("% 6d null bends\n",           null_inter_parse->nbend_nul);
+  printf("% 6d Urey-Bradley bends\n",   bonded->bend_bnd.num);
+  printf("% 6d power series torsions\n",bonded->tors.npow
+                                        - bonded->tors.nimpr);
+  printf("% 6d improper torsions\n",    bonded->tors.nimpr);
+  printf("% 6d constrained torsions\n", bonded->tors.ncon);
+  printf("% 6d null torsions\n",        null_inter_parse->ntors_nul);
+  printf("% 6d LJ onefours\n",          bonded->onfo.num);
+  printf("% 6d null onefours\n",        null_inter_parse->nonfo_nul);
+  printf("% 6d free energy bonds\n",    bonded->bond_free.num);
+  printf("% 6d free energy bends\n",    bonded->bend_free.num);
+  printf("% 6d free energy torsions\n", bonded->tors_free.num);
+  printf("% 6d free energy rbar-sig\n", bonded->rbar_sig_free.nfree);
+  printf("% 6d 21 group constraints\n", bonded->grp_bond_con.num_21);
+  printf("% 6d 23 group constraints\n", bonded->grp_bond_con.num_23);
+  printf("% 6d 33 group constraints\n", bonded->grp_bond_con.num_33);
+  printf("% 6d 43 group constraints\n", bonded->grp_bond_con.num_43);
+  printf("% 6d 46 group constraints\n", bonded->grp_bond_con.num_46);
+  printf("% 6d 33 group Watts\n",       bonded->grp_bond_watts.num_33);
+  printf("% 6d surface\n",              isurf_on);
+  printf("\n");
+
   PRINT_LINE_DASH;
   printf("End System Summary\n");
-  PRINT_LINE_STAR;printf("\n");
-  if((simopts->debug+simopts->debug_cp+simopts->debug_pimd)==1){
-    printf("Enter an integer ");scanf("%d",&iii);
-  }/*endif*/
+  PRINT_LINE_STAR;
+  printf("\n");
+  if((simopts->debug + simopts->debug_cp + simopts->debug_pimd) == 1) {
+    printf("Enter an integer ");
+    scanf("%d", &iii);
+  }
 
 /*=======================================================================*/
 /*   V) If np_forc > 1 and there are non-group constraints, die.         */
@@ -734,4 +737,3 @@ mal_verify(1);printf("Enter an integer ");scanf("%d",&iii);
 /*=======================================================================*/
 
 #endif
-
