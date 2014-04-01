@@ -618,7 +618,6 @@ void parse(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,CP *cp,
     PRINT_LINE_DASH;
     printf("\n");
 
-
     #if defined(PLUMED)
       printf("Interface to PLUMED is enabled.\n");
       #if defined(PARALLEL)
