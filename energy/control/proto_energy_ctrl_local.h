@@ -42,7 +42,5 @@ void communicate_test_energy_pimd(double *,double *,double *,
 /*--------------------------------------------------------------------------*/
 /* Period.c */
 
-void check_cutoff(int ,int ,double *,double );
+void check_cutoff(int, int, double *, double);
 
-
-/*--------------------------------------------------------------------------*/
