@@ -545,7 +545,7 @@ void screen_write_pimd(CLASS *class, GENERAL_DATA *general_data, BONDED *bonded,
   if(general_data->ensopts.npt_i==1)printf("Ensemble          = NPT-ISO\n");
   if(general_data->ensopts.npt_f==1)printf("Ensemble          = NPT-FLEX\n");
   printf("Time step         = %d\n", general_data->timeinfo.itime);
-  printf("Time              = %.3f ps\n", atime * time_fact);
+  printf("Time              = %.4f ps\n", atime * time_fact);
   printf("\n");
   printf("QUANTITY                 INSTANTANEOUS            AVERAGE\n");
   printf("---------------------------------------------------------\n");
@@ -718,37 +718,37 @@ void screen_write_pimd(CLASS *class, GENERAL_DATA *general_data, BONDED *bonded,
     printf("QUANTITY\n");
     printf("----------------------------------------------------------------------------\n");
     printf("\n");
-    printf("Avg  P11,P22,P33  = "FMT" "FMT" "FMT"\n",
-           general_data->stat_avg.apten[1]/(PCONV*atime),
-           general_data->stat_avg.apten[5]/(PCONV*atime),
-           general_data->stat_avg.apten[9]/(PCONV*atime));
     printf("Inst P11,P22,P33  = "FMT" "FMT" "FMT"\n",
            general_data->stat_avg.apten_out[1],
            general_data->stat_avg.apten_out[5],
            general_data->stat_avg.apten_out[9]);
-    printf("Avg  P12,P13,P23  = "FMT" "FMT" "FMT"\n",
-           general_data->stat_avg.apten[4]/(PCONV*atime),
-           general_data->stat_avg.apten[7]/(PCONV*atime),
-           general_data->stat_avg.apten[8]/(PCONV*atime));
     printf("Inst P12,P13,P23  = "FMT" "FMT" "FMT"\n",
            general_data->stat_avg.apten_out[4],
            general_data->stat_avg.apten_out[7],
            general_data->stat_avg.apten_out[8]);
-    printf("Avg  P21,P31,P32  = "FMT" "FMT" "FMT"\n",
-           general_data->stat_avg.apten[2]/(PCONV*atime),
-           general_data->stat_avg.apten[3]/(PCONV*atime),
-           general_data->stat_avg.apten[6]/(PCONV*atime));
     printf("Inst P21,P31,P32  = "FMT" "FMT" "FMT"\n",
            general_data->stat_avg.apten_out[2],
            general_data->stat_avg.apten_out[3],
            general_data->stat_avg.apten_out[6]);
+    printf("Avg  P11,P22,P33  = "FMT" "FMT" "FMT"\n",
+           general_data->stat_avg.apten[1]/(PCONV*atime),
+           general_data->stat_avg.apten[5]/(PCONV*atime),
+           general_data->stat_avg.apten[9]/(PCONV*atime));
+    printf("Avg  P12,P13,P23  = "FMT" "FMT" "FMT"\n",
+           general_data->stat_avg.apten[4]/(PCONV*atime),
+           general_data->stat_avg.apten[7]/(PCONV*atime),
+           general_data->stat_avg.apten[8]/(PCONV*atime));
+    printf("Avg  P21,P31,P32  = "FMT" "FMT" "FMT"\n",
+           general_data->stat_avg.apten[2]/(PCONV*atime),
+           general_data->stat_avg.apten[3]/(PCONV*atime),
+           general_data->stat_avg.apten[6]/(PCONV*atime));
     printf("\n");
     printf("Inst cell lths    = "FMT" "FMT" "FMT"\n", a, b, c);
+    printf("Inst cell angs    = "FMT" "FMT" "FMT"\n", tab, tac, tbc);
     printf("Avg  cell lths    = "FMT" "FMT" "FMT"\n",
            general_data->stat_avg.acella/atime,
            general_data->stat_avg.acellb/atime,
            general_data->stat_avg.acellc/atime);
-    printf("Inst cell angs    = "FMT" "FMT" "FMT"\n", tab, tac, tbc);
     printf("Avg  cell angs    = "FMT" "FMT" "FMT"\n",
            general_data->stat_avg.acellab/atime,
            general_data->stat_avg.acellac/atime,
