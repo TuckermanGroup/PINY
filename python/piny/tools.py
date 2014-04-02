@@ -72,9 +72,7 @@ def write_XST_frame(f_out, h, frame, fmt = '%6i'+9*' %18.8f'+3*' %4.1f'+'\n'):
 
     pos_origin = (0.0, 0.0, 0.0)
 
-    # Transpose needed as the pos file is the only place in PINY that has the
-    # box vectors in columns of the h matrix. That should be fixed.
-    data_line = (frame,) + tuple(h.transpose().reshape(-1)) + pos_origin
+    data_line = (frame,) + tuple(h.reshape(-1)) + pos_origin
 
     f_out.write(fmt % data_line)
 
@@ -115,10 +113,12 @@ def write_GRO_frame(f_out, atom_residue_nums, atom_residue_types, atom_names, po
 
     # write box
     if h is not None:
-        # TODO: for now, take only cubic boxes
-        if not (h[0,1] == h[1,0] == h[0,2] == h[2,0] == h[1,2] == h[2,1] == 0):
-            raise NotImplementedError('Only cubic boxes supported at the moment.')
-        f_out.write('%12.6f %12.6f %12.6f\n' % (h[0,0], h[1,1], h[2,2]))
+        if (h[0,1] == h[1,0] == h[0,2] == h[2,0] == h[1,2] == h[2,1] == 0):
+            f_out.write('%12.6f %12.6f %12.6f\n' % (h[0,0], h[1,1], h[2,2]))
+        else:
+            fmt = ' '.join(9 * ['%12.6f']) + '\n'
+            data = (h[0,0], h[1,1], h[2,2], h[0,1], h[0,2], h[1,0], h[1,2], h[2,0], h[2,1])
+            f_out.write(fmt % data)
 
 
 def read_conf_frame(f_in, n_lines):

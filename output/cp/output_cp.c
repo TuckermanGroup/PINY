@@ -1340,9 +1340,9 @@ void write_config_files_cp(CLASS *class,BONDED *bonded,
        fprintf(fp_cpname,"%.12g  %.12g  %.12g\n",class->clatoms_pos[1].x[i],
               class->clatoms_pos[1].y[i],class->clatoms_pos[1].z[i]);
        }/*endfor*/
-      for(i=1;i<=9;i+=3) 
-       fprintf(fp_cpname,"%.12g %.12g %.12g\n",general_data->cell.hmat[i],
-              general_data->cell.hmat[i+1],general_data->cell.hmat[i+2]);
+      for(i=0;i<3;i++) 
+       fprintf(fp_cpname,"%.12g %.12g %.12g\n",general_data->cell.hmat[1+i],
+              general_data->cell.hmat[4+i],general_data->cell.hmat[7+i]);
       fflush(fp_cpname);
       fclose(fp_cpname);
     }/*endif*/
@@ -1355,10 +1355,10 @@ void write_config_files_cp(CLASS *class,BONDED *bonded,
      fwrite(&(class->clatoms_pos[1].y)[i],sizeof(double),n,fp_cpname);
      fwrite(&(class->clatoms_pos[1].z)[i],sizeof(double),n,fp_cpname);
     }/*endfor*/ 
-    for(i=1;i<=9;i+=3){ 
-      fwrite(&(general_data->cell.hmat)[i],sizeof(double),n,fp_cpname);
-      fwrite(&(general_data->cell.hmat)[i+1],sizeof(double),n,fp_cpname);
-      fwrite(&(general_data->cell.hmat)[i+2],sizeof(double),n,fp_cpname);
+    for(i=0;i<3;i++){ 
+      fwrite(&(general_data->cell.hmat)[1+i],sizeof(double),n,fp_cpname);
+      fwrite(&(general_data->cell.hmat)[4+i],sizeof(double),n,fp_cpname);
+      fwrite(&(general_data->cell.hmat)[7+i],sizeof(double),n,fp_cpname);
     }/*endfor*/ 
       fflush(fp_cpname);
       fclose(fp_cpname);
@@ -1380,9 +1380,9 @@ void write_config_files_cp(CLASS *class,BONDED *bonded,
        fprintf(fp_cvname,"%.12g  %.12g  %.12g\n",class->clatoms_pos[1].vx[i],
               class->clatoms_pos[1].vy[i],class->clatoms_pos[1].vz[i]);
        }/*endfor*/
-      for(i=1;i<=9;i+=3) 
-       fprintf(fp_cvname,"%.12g %.12g %.12g\n",general_data->cell.hmat[i],
-              general_data->cell.hmat[i+1],general_data->cell.hmat[i+2]);
+      for(i=0;i<3;i++) 
+       fprintf(fp_cvname,"%.12g %.12g %.12g\n",general_data->cell.hmat[1+i],
+              general_data->cell.hmat[4+i],general_data->cell.hmat[7+i]);
       fflush(fp_cvname);
       fclose(fp_cvname);
     }/*endif*/
@@ -1396,10 +1396,10 @@ void write_config_files_cp(CLASS *class,BONDED *bonded,
        fwrite(&(class->clatoms_pos[1].vy)[i],sizeof(double),n,fp_cvname);
        fwrite(&(class->clatoms_pos[1].vz)[i],sizeof(double),n,fp_cvname);
       }/*endfor*/ 
-     for(i=1;i<=9;i+=3){ 
-      fwrite(&(general_data->cell.hmat)[i],sizeof(double),n,fp_cvname);
-      fwrite(&(general_data->cell.hmat)[i+1],sizeof(double),n,fp_cvname);
-      fwrite(&(general_data->cell.hmat)[i+2],sizeof(double),n,fp_cvname);
+     for(i=0;i<3;i++){ 
+      fwrite(&(general_data->cell.hmat)[1+i],sizeof(double),n,fp_cvname);
+      fwrite(&(general_data->cell.hmat)[4+i],sizeof(double),n,fp_cvname);
+      fwrite(&(general_data->cell.hmat)[7+i],sizeof(double),n,fp_cvname);
      }/*endfor*/ 
      fflush(fp_cvname);
      fclose(fp_cvname);
