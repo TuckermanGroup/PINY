@@ -1,1 +1,1 @@
-#include "../../interface/search_base/proto_search_entry.h"
+#include "../../src/interface/search_base/proto_search_entry.h"

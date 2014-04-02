@@ -1,1 +1,1 @@
-#include "../../communicate/proto_communicate_wrappers.h"
+#include "../../src/communicate/proto_communicate_wrappers.h"

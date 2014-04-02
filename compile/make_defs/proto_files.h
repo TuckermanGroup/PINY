@@ -12,17 +12,17 @@
 #              STANDARD INCLUDE FILE
 
 STANDARD      = $(INCLUDES)/standard_include.h
-DEFINES       = $(CODE)/include/typ_defs/defines.h 
+DEFINES       = $(BASE)/include/typ_defs/defines.h 
 
 #-------------------------------------------------------
 #              TYPEDEFS 
 
-TYP_GEN       = $(CODE)/include/typ_defs/typedefs_gen.h
-TYP_CLASS     = $(CODE)/include/typ_defs/typedefs_class.h
-TYP_PAR       = $(CODE)/include/typ_defs/typedefs_par.h
-TYP_BND       = $(CODE)/include/typ_defs/typedefs_bnd.h
-TYP_CP        = $(CODE)/include/typ_defs/typedefs_cp.h
-TYP_STAT      = $(CODE)/include/typ_defs/typedefs_stat.h
+TYP_GEN       = $(BASE)/include/typ_defs/typedefs_gen.h
+TYP_CLASS     = $(BASE)/include/typ_defs/typedefs_class.h
+TYP_PAR       = $(BASE)/include/typ_defs/typedefs_par.h
+TYP_BND       = $(BASE)/include/typ_defs/typedefs_bnd.h
+TYP_CP        = $(BASE)/include/typ_defs/typedefs_cp.h
+TYP_STAT      = $(BASE)/include/typ_defs/typedefs_stat.h
 
 #-------------------------------------------------------
 #               PROTO_TYPES

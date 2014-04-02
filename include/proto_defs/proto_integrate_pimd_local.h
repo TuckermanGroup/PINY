@@ -1,1 +1,1 @@
-#include "../../integrate/pimd/proto_integrate_pimd_local.h"
+#include "../../src/integrate/pimd/proto_integrate_pimd_local.h"

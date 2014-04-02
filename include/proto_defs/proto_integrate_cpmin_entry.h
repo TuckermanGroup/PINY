@@ -1,1 +1,1 @@
-#include "../../integrate/cpmin/proto_integrate_cpmin_entry.h"
+#include "../../src/integrate/cpmin/proto_integrate_cpmin_entry.h"
