@@ -944,7 +944,7 @@ void read_coord(CLASS *class,GENERAL_DATA *general_data,
 /*  IX) Isokinetic restart_posvel/restart_all */
 
   if((nvt_isok==1) && (istart>=3)){
-	  sampl_isok_restart(&(class->clatoms_info),&(class->clatoms_pos),&(class->therm_info_class),&(class->therm_class));
+	  sampl_isok_restart(&(class->clatoms_info),(class->clatoms_pos),&(class->therm_info_class),&(class->therm_class));
   }
 
 /*========================================================================*/
