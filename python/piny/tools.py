@@ -313,6 +313,11 @@ def read_bondtypes(data):
             bond['pot_type'] = pot_type
             bond['eq'] = float(items[3])
             bond['fk'] = float(items[4])
+        elif pot_type == 'morse':
+            bond['pot_type'] = pot_type
+            bond['eq'] = float(items[3])
+            bond['alpha'] = float(items[4])
+            bond['d0'] = float(items[5])
         else:
             raise ValueError('Unknown bond potential type: %s' % pot_type)
 
