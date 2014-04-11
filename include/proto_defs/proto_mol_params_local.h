@@ -1,1 +1,1 @@
-#include "../../interface/mol_params/proto_mol_params_local.h"
+#include "../../src/interface/mol_params/proto_mol_params_local.h"

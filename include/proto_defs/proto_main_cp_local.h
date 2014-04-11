@@ -1,1 +1,1 @@
-#include "../../main/proto_main_cp_local.h"
+#include "../../src/main/proto_main_cp_local.h"

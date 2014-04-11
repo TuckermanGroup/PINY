@@ -1,1 +1,1 @@
-#include "../../energy/intra/proto_intra_entry.h"
+#include "../../src/energy/intra/proto_intra_entry.h"

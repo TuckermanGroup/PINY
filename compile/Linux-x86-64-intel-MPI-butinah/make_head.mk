@@ -16,8 +16,9 @@ CFLAGS = -fPIC -static-intel $(DEFINE)
 FFLAGS = $(CFLAGS) -nofor-main
 LIBS = $(LIB_PATH) $(MALLOC) -Wl,-rpath,/share/apps/intel/12.1.3.293/composer_xe_2011_sp1.9.293/compiler/lib/intel64
 
-INCLUDES = $(CODE)/include/pentium_nopar
-CODE = $(realpath ../..)
-EXE = $(CODE)/bin/$(EXE_NAME)
-LIBPINY = $(CODE)/lib/$(LIB_NAME)
+BASE = $(realpath ../..)
+CODE = $(BASE)/src
+INCLUDES = $(BASE)/include/pentium
+EXE = $(BASE)/bin/$(EXE_NAME)
+LIBPINY = $(BASE)/lib/$(LIB_NAME)
 SPEC_FILES = math_generic.o

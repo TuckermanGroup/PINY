@@ -341,7 +341,7 @@ void prelim_md(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
                      class->class_comm_forc_pkg.myid);
   }/*endif*/
   if((general_data->ensopts.nvt_isok)==1){
-	  init_NH_ISOK_par(&general_data,&(class->clatoms_info),&(class->clatoms_pos[1]),
+	  init_NH_ISOK_par(general_data,&(class->clatoms_info),&(class->clatoms_pos[1]),
               &(class->therm_info_class),&(class->therm_class),
               &(class->int_scr),iflag_mass,&(class->class_comm_forc_pkg),&(class->vel_samp_class));
     iflag = 0;
