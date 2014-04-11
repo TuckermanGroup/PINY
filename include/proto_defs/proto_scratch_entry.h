@@ -1,1 +1,1 @@
-#include "../../interface/scratch/proto_scratch_entry.h"
+#include "../../src/interface/scratch/proto_scratch_entry.h"

@@ -1,1 +1,1 @@
-#include "../../energy/pimd/proto_pimd_entry.h"
+#include "../../src/energy/pimd/proto_pimd_entry.h"

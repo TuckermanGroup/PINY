@@ -1,1 +1,1 @@
-#include "../../analysis/proto_analysis_local_entry.h"
+#include "../../src/analysis/proto_analysis_local_entry.h"

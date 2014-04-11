@@ -1,1 +1,1 @@
-#include "../../energy/control/proto_energy_ctrl_local.h"
+#include "../../src/energy/control/proto_energy_ctrl_local.h"

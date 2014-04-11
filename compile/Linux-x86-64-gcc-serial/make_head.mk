@@ -13,8 +13,9 @@ CFLAGS = -fPIC $(DEFINE)
 FFLAGS = -fPIC $(DEFINE)
 LIBS = -lm
 
-INCLUDES = $(CODE)/include/pentium_nopar
-CODE = $(realpath ../..)
-EXE = $(CODE)/bin/$(EXE_NAME)
-LIBPINY = $(CODE)/lib/$(LIB_NAME)
+BASE = $(realpath ../..)
+CODE = $(BASE)/src
+INCLUDES = $(BASE)/include/pentium_nopar
+EXE = $(BASE)/bin/$(EXE_NAME)
+LIBPINY = $(BASE)/lib/$(LIB_NAME)
 SPEC_FILES = math_generic.o

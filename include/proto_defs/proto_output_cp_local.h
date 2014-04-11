@@ -1,1 +1,1 @@
-#include "../../output/proto_output_cp_local.h"
+#include "../../src/output/proto_output_cp_local.h"
