@@ -1842,11 +1842,7 @@ void assign_atm_pme(int n,int *index_orig,double *sa,double *sb,double *sc,
   isum = 0; /* sort along b for atms with the same c */
   for(i=1;i<=nkf_c;i++){
     if(nc[i]> 1){
-#ifdef T3E_SCILIB
-      sort_pme_short(nc[i],&sb_tmp[isum],&index_tmp[isum]);      
-#else
-      sort_pme(nc[i],&sb_tmp[isum],&index_tmp[isum]);      
-#endif
+      sort_pme(nc[i],&sb_tmp[isum],&index_tmp[isum]);
     }/*endif*/
     isum += nc[i];
   }/*endfor*/
@@ -1982,77 +1978,3 @@ void sort_pme(int n, double index[],int jndex[])
   } /*end routine*/ 
 /*==========================================================================*/
 
-
-/*==========================================================================*/
-/*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
-/*==========================================================================*/
-
-void sort_pme_short(int n, double index[],list_int jndex[])
-
-/*=======================================================================*/
-/*            Begin subprogram:                                          */
-   {/*begin routine*/
-/*=======================================================================*/
-/*          Local variable declarations                                  */
-
-  int m,ir,i,j,rjndex,iii;
-  int k,*kndex,*mask,isub,temp;
-  double rindex;
-
-/*=======================================================================*/
-/* I) Setup                        */
-
-  m  = n/2+1;
-  ir = n;
-
-/*=======================================================================*/
-/* II) Sort array index keeping jndex commensurrate */
-
-  for(;;){
-
-/*---------------------------------------------------------------------*/
-/*  A)hire rindex */
-    if(m>1){ 
-      m--;
-      rindex = index[m];
-      rjndex = jndex[m];
-/*--------------------------------------------------------------------*/
-/*  B)retire/promote index[1] */
-    }else{
-      rindex = index[ir];
-      rjndex = jndex[ir];
-      index[ir]=index[1];
-      jndex[ir]=jndex[1];
-      ir--;
-      if(ir==1){
-	index[1]=rindex;
-	jndex[1]=rjndex;
-	break;
-      }/*endif*/
-    }/*endif*/
-/*---------------------------------------------------------------------*/
-/*  C)put rindex in appropriate slot */
-    i=m;
-    j=2*m;
-    while(j<=ir){
-      /*    a)compare to rindex to underling */
-      if((j<ir) && (index[j]< index[(j+1)])) j++;
-      /*    b)demote */
-      if(rindex<index[j]){
-	index[i]=index[j];
-	jndex[i]=jndex[j];
-	i=j;
-	j=2*j;
-      }else{
-	/*    c)if no demotations exit while */
-	j=ir+1;
-      }/*endif*/
-    } /*endwhile*/
-    /*    d)slot rindex */
-    index[i] = rindex;
-    jndex[i] = rjndex;
-  }/*endfor*/
-
-/*-----------------------------------------------------------------------*/
-  } /*end routine*/ 
-/*==========================================================================*/

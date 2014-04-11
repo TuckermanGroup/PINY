@@ -18,7 +18,7 @@ LIBS = $(LIB_PATH) $(MALLOC) -Wl,-rpath,/share/apps/intel/12.1.3.293/composer_xe
 
 BASE = $(realpath ../..)
 CODE = $(BASE)/src
-INCLUDES = $(BASE)/include/pentium
+INCLUDES = $(BASE)/include/linux_parallel
 EXE = $(BASE)/bin/$(EXE_NAME)
 LIBPINY = $(BASE)/lib/$(LIB_NAME)
 SPEC_FILES = math_generic.o

@@ -1374,8 +1374,6 @@ void fft_gen1d(double *zfft, int nfft, int incl, int num, int incn,
   int nwork_2_for = nwork_2;
   double scale = 1.0;
   int iopt_for, i, istart;
-  int ier_for;
-  int isys;
 
 
   /*======================*/
@@ -1383,68 +1381,13 @@ void fft_gen1d(double *zfft, int nfft, int incl, int num, int incn,
 
   if (igeneric_opt == 0) {
 
-  ifound = 0;
+  #if defined IBM_ESSL
+    ifound++;
+    iopt_for = iopt;
+    dcft(&init,&(zfft[1]),&incl_for_x,&incn_for_x,&(zfft[1]),
+         &incl_for_y,&incn_for_y,&nfft_for,&num_for,&iopt_for,&scale,
+         &(work_1[1]),&nwork_1_for,&(work_2[1]),&nwork_2_for);
 
-  #ifdef IBM_ESSL
-  ifound++;
-  iopt_for = iopt;
-  dcft(&init,&(zfft[1]),&incl_for_x,&incn_for_x,&(zfft[1]),
-       &incl_for_y,&incn_for_y,&nfft_for,&num_for,&iopt_for,&scale,
-       &(work_1[1]),&nwork_1_for,&(work_2[1]),&nwork_2_for);
-  #endif
-
-  #ifdef SGI_COMPLIB
-  ifound++;
-  iopt_for = -iopt;
-  for(i=1; i<=num; i++) {
-    istart = 1 + (i-1)*2*incn;
-    zfft1d_(&iopt_for,&nfft_for,&(zfft[istart]),&incl_for_x,&(work_2[1]));
-  }
-  #endif
-
-  #ifdef SUN_COMPLIB
-  ifound++;
-  if (iopt == 1) { /* forward  from g -> r */
-    for(i=1; i<=num; i++) {
-      istart = 1 + (i-1)*2*incn;
-      zfftf(nfft_for, &zfft[istart], &work_2[1]);
-    }
-  } else if (iopt == -1) { /* reverse from r -> g */
-    for(i=1; i<=num; i++) {
-      istart = 1 + (i-1)*2*incn;
-      zfftb(nfft_for, &zfft[istart],&work_2[1]);
-    }
-  }
-  #endif
-
-  #ifdef HP_VECLIB
-  ifound++;
-  iopt_for = iopt;
-  zffts(&(zfft[1]),&nfft_for,&incl_for_x,&num_for,&incn_for_x,&iopt_for,
-        &ier_for);
-  *ier = ier_for;
-  if (*ier != 0) {
-    printf("The HP is nice and dies if the radix conditions is wrong!!!\n");
-    exit(1);
-  }
-  #endif
-
-  #ifdef C90
-  ifound++;
-  iopt_for = -iopt;
-  CFFT99(&(zfft[1]), &(work_1[1]), &(work_2[1]), &(ifax[1]), &incl_for_x,
-         &incn_for_x, &nfft_for, &num_for, &iopt_for);
-  #endif
-
-  #ifdef T3E_SCILIB
-  ifound++;
-  isys  = 0;
-  iopt_for = -iopt;
-  for(i=1; i<=num; i++) {
-    istart = 1 + (i-1)*2*incn;
-    CCFFT(&iopt_for, &nfft_for, &scale, &(zfft[istart]), &(zfft[istart]),
-                 &(work_1[1]), &(work_2[1]), &isys);
-  }
   #endif
 
   if (ifound != 1) {
@@ -1456,30 +1399,20 @@ void fft_gen1d(double *zfft, int nfft, int incl, int num, int incn,
     exit(1);
   }
 
+  } else {
+
   /*=============*/
   /* generic FFT */
 
-  } else {
-
     if(iopt == 1) {
       for(i=1; i<=num; i++) {
-        #ifdef T3E_SCILIB
-        istart = 1 + (i-1)*2*incn;
-        CFFTF_GENERIC(&nfft_for, &zfft[istart], &work_2[1]);
-        #else
         istart = 1 + (i-1)*2*incn;
         DCFFTF_GENERIC(&nfft_for, &zfft[istart], &work_2[1]);
-        #endif
       }
     } else {
       for(i=1; i<=num; i++) {
-        #ifdef T3E_SCILIB
-        istart = 1 + (i-1)*2*incn;
-        CFFTB_GENERIC(&nfft_for, &zfft[istart], &work_2[1]);
-        #else
         istart = 1 + (i-1)*2*incn;
         DCFFTB_GENERIC(&nfft_for, &zfft[istart], &work_2[1]);
-        #endif
       }
     }
 

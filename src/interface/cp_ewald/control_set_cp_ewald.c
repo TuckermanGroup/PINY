@@ -1010,9 +1010,6 @@ void control_fft_pkg(PARA_FFT_PKG3D *cp_sclr_fft_pkg_sm,
                           ewald->kcstr,cp_dual_grid_opt_on);
 
     pme_fft_pkg->scale_opt = 0;
-#ifdef HP_VECLIB
-    if(pme_fft_pkg->igeneric_opt==0){pme_fft_pkg->scale_opt = -1;}
-#endif
 
     if(pme_para_opt==2){
       nfft_ext  = 2*ngrid_a*(  (pme_fft_pkg->nfft_ka_proc)
@@ -1061,9 +1058,6 @@ void control_fft_pkg(PARA_FFT_PKG3D *cp_sclr_fft_pkg_sm,
                           ewald->kcstr_res,cp_dual_grid_opt_on);
 
     pme_res_fft_pkg->scale_opt = 0;
-#ifdef HP_VECLIB
-    if(pme_res_fft_pkg->igeneric_opt==0){pme_res_fft_pkg->scale_opt = -1;}
-#endif
 
     if(np_forc>1 && pme_para_opt==2){
       create_pme_comm_full_g(n_interp_res,pme_res_fft_pkg);

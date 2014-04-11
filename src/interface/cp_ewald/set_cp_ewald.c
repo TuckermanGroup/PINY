@@ -841,8 +841,8 @@ void radixme(int *kmax1, int *kmax2, int *kmax3)
   nrad = 50;
 
 
-/* radix condition IBM_ESSL (2^h)(3^i)(5^j)(7^k)(11^m)                */
-/* radix condition HP_VECLIB SGI_COMPLIB   (2^h)(3^i)(5^j)             */
+/* radix condition IBM_ESSL: (2^h)(3^i)(5^j)(7^k)(11^m)                */
+/* radix condition otherwise: (2^h)(3^i)(5^j)             */
 #ifdef IBM_ESSL
   krad[0] = 4;
   krad[1] = 8;
@@ -1307,61 +1307,41 @@ void get_bspline_wght1d(int n_interp,int ngrid,double *aj,double *rn,
 /*==========================================================================*/
 /* I) Get B spline coefficients                                         */
 
-   grid  = (double) ngrid;
-   for(j=1;j<=n_interp;j++){
-     aj[j] = (double) (j-1);
-     rn[j] = (double) (j);
-     if(j > 1){rn1[j] = 1.0/((double)(j-1));}
-   }/*endfor*/
-   rn1[1] = 0.0;
-   mn_k[1] = 1.0; 
-   uk[1]   = 1.0;
-   for(k=2;k<=n_interp;k++){
-     uk[k] = (double) (k);
-     mn_k[k] = 0.0; 
-   }/*endfor*/
-   for(n=3;n<=n_interp;n++){
-     for(k=n;k>=2;k--){
-       k1 = k-1;
-       mn_k_tmp  = (uk[k]*mn_k[k]+(rn[n]-uk[k])*mn_k[k1])*rn1[n];
-       mn_k[k] = mn_k_tmp;
-     }/*endfor*/
-     mn_k[1] = uk[1]*mn_k[1]*rn1[n];
-   }/*endfor*/
+  grid  = (double) ngrid;
+  for(j=1;j<=n_interp;j++){
+    aj[j] = (double) (j-1);
+    rn[j] = (double) (j);
+    if(j > 1){rn1[j] = 1.0/((double)(j-1));}
+  }/*endfor*/
+  rn1[1] = 0.0;
+  mn_k[1] = 1.0; 
+  uk[1]   = 1.0;
+  for(k=2;k<=n_interp;k++){
+    uk[k] = (double) (k);
+    mn_k[k] = 0.0; 
+  }/*endfor*/
+  for(n=3;n<=n_interp;n++){
+    for(k=n;k>=2;k--){
+      k1 = k-1;
+      mn_k_tmp  = (uk[k]*mn_k[k]+(rn[n]-uk[k])*mn_k[k1])*rn1[n];
+      mn_k[k] = mn_k_tmp;
+    }/*endfor*/
+    mn_k[1] = uk[1]*mn_k[1]*rn1[n];
+  }/*endfor*/
 
 /*==========================================================================*/
 /* II) Transform coeffs                                                     */
 
-/*----------------------------------------------*/
-/*       i)On HP perform transform using 1D FFT */
-#ifdef HP_VECLIB
-   for(k=1;k<=ngrid;k++){
-     bden_r[k] = 0.0;
-     bden_i[k] = 0.0;
-   }/*endfor*/
-   for(k=1;k<=n_interp-1;k++){
-     bden_r[k] = mn_k[k];
-   }/*endfor*/
-    iopt = 1;ierr = 0;incl = 1;nn = 1;incn = 1;
-    nk = ngrid;
-    DFFTS(&bden_r[1],&bden_i[1],&nk,&incl,&nn,&incn,&iopt,&ierr);
-   for(k=1;k<=ngrid;k++){
-     bden_i[k] *= -1.0;
-   }/*endfor*/
-/*-----------------------------------------------*/
-/*     ii) Not HP perform transform using 1D SFT */
-#else
-   tpi_n = 2.0*M_PI/grid;
-   for(m=1;m<=ngrid;m++){
-     bden_r[m] = 0.0;
-     bden_i[m] = 0.0;
-     for(k=1;k<=n_interp-1;k++){
-       arg = tpi_n*((double)((k-1)*(m-1)));
-       bden_r[m] += cos(arg)*mn_k[k];
-       bden_i[m] += sin(arg)*mn_k[k];
-     }/*endfor*/
-   }/*endfor*/
-#endif
+  tpi_n = 2.0*M_PI/grid;
+  for(m=1;m<=ngrid;m++){
+    bden_r[m] = 0.0;
+    bden_i[m] = 0.0;
+    for(k=1;k<=n_interp-1;k++){
+      arg = tpi_n*((double)((k-1)*(m-1)));
+      bden_r[m] += cos(arg)*mn_k[k];
+      bden_i[m] += sin(arg)*mn_k[k];
+    }/*endfor*/
+  }/*endfor*/
 
 /*==========================================================================*/
 /* III) Make separable bweights                                             */

@@ -1803,29 +1803,14 @@ if(myid==0){
     fprintf(fp_dnamec,"dft_typ, restart_typ, time of dump\n");
  }else{
 
-#ifdef HP_VECLIB
-   strcpy(c_array1,"hp_veclib:ncoef_up ");
-#endif
-#ifdef SGI_COMPLIB
-   strcpy(c_array1,"sgi_complib:ncoef_up ");
-#endif
 #ifdef IBM_ESSL
    strcpy(c_array1,"ibm_essl:ncoef_up ");
 #endif
 #ifdef IBM_NOESSL
    strcpy(c_array1,"ibm_noessl:ncoef_up ");
 #endif
-#ifdef DEC_ALPHA
-   strcpy(c_array1,"dec_alpha:ncoef_up ");
-#endif
-#ifdef _CRAY
-   strcpy(c_array1,"cray:ncoef_up:ncoef_up ");
-#endif
-#ifdef SUN_COMPLIB
-   strcpy(c_array1,"sun_complib:ncoef_up ");
-#endif
-#ifdef SUN_COMPLIB_OFF
-   strcpy(c_array1,"sun_complib:ncoef_up ");
+#ifdef LINUX
+   strcpy(c_array1,"linux:ncoef_up ");
 #endif
    strcpy(c_array2,"ncoef_dn, ");
    strcpy(c_array3,"nstate_up ");

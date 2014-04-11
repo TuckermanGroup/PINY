@@ -7,7 +7,6 @@ void assign_atm_pme(int ,int *,double *,double *,double *,
                     int ,int ,int *,int *);
 
 void sort_pme(int , double [],int []);
-void sort_pme_short(int , double [],list_int []);
 
 
 

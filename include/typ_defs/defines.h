@@ -30,11 +30,7 @@
 #define MAXWORD 50
 #define MAXLINE 100
 
-#ifdef T3E_SCILIB
-#define list_int short
-#else
 #define list_int int
-#endif
 
 
 /*==========================================================================*/
@@ -118,14 +114,6 @@ typedef char LINE[MAXLINE];    /* Chr: a line; Lth: MAXLINE           */
 /*-------------------------------------------------------------------------*/
 /* DEFINE FORTRAN PROTOCAL:  */
 
-#ifdef HP_VECLIB
-#define FORTRANUNDERSCORE_OFF
-#endif
-
-#ifdef SGI_COMPLIB
-#define FORTRANUNDERSCORE
-#endif
-
 #ifdef IBM_ESSL
 #define FORTRANUNDERSCORE_OFF
 #endif
@@ -134,11 +122,7 @@ typedef char LINE[MAXLINE];    /* Chr: a line; Lth: MAXLINE           */
 #define FORTRANUNDERSCORE_OFF
 #endif
 
-#ifdef DEC_ALPHA
-#define FORTRANUNDERSCORE
-#endif
-
-#ifdef SUN_COMPLIB
+#ifdef LINUX
 #define FORTRANUNDERSCORE
 #endif
 /*-------------------------------------------------------------------------*/

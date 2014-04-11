@@ -1689,7 +1689,6 @@ void fft_gen1d_init(int nfft, int incl, int num, int incn,
   int iopt_for = iopt;
   double scale = 1.0;
   double dum_x, dum_y;
-  int isign, isys; /* for T3E */
 
 
   /*======================*/
@@ -1699,43 +1698,11 @@ void fft_gen1d_init(int nfft, int incl, int num, int incn,
 
     ifound = 0;
 
-    #ifdef IBM_ESSL
+    #if defined IBM_ESSL
     ifound++;
     dcft(&init, &dum_x, &incl_for_x, &incn_for_x, &dum_y, &incl_for_y,
          &incn_for_y, &nfft_for, &num_for, &iopt_for, &scale,
          &work_1[1], &nwork_1_for, &work_2[1], &nwork_2_for);
-    *scale_opt = 1;
-    #endif
-
-    #ifdef SGI_COMPLIB
-    ifound++;
-    zfft1di_(&nfft_for,&work_2[1]);
-    *scale_opt = 1;
-    #endif
-
-    #ifdef SUN_COMPLIB
-    ifound++;
-    zffti(nfft_for, &work_2[1]);
-    *scale_opt = 1;
-    #endif
-
-    #ifdef HP_VECLIB
-    ifound++;
-    *scale_opt = 0;
-    #endif
-
-    #ifdef T3E_SCILIB
-    ifound++;
-    isign = 0;
-    isys = 0;
-    CCFFT(&isign, &nfft_for, &scale, &dum_x, &dum_y, &work_1[1], &work_2[1],
-          &isys);
-    *scale_opt = 1;
-    #endif
-
-    #ifdef C90
-    ifound++;
-    CFTFAX(&nfft_for, &ifax[1], &work_2[1]);
     *scale_opt = 1;
     #endif
 
@@ -1748,19 +1715,16 @@ void fft_gen1d_init(int nfft, int incl, int num, int incn,
       exit(1);
     }
 
+
+  } else {
+
   /*=============*/
   /* generic FFT */
 
-  } else {
-    #ifdef T3E_SCILIB
-    *scale_opt = 1;
-    CFFTI_GENERIC(&nfft_for, &work_2[1]);
-    #else
     *scale_opt = 1;
     DCFFTI_GENERIC(&nfft_for, &work_2[1]);
-    #endif
+
   }
 
 }
 /*--------------------------------------------------------------------------*/
-

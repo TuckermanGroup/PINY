@@ -46,14 +46,6 @@ void write_gen_header(CLASS *class, GENERAL_DATA *general_data,FILE *fp,
 /* Get the Machine type                                                     */
 
  ifound = 0;
-#ifdef HP_VECLIB
-  strcpy(mach_typ,"hp_veclib");
-  ifound = 1;
-#endif
-#ifdef SGI_COMPLIB
-  strcpy(mach_typ,"sgi_complib");
-  ifound = 1;
-#endif
 #ifdef IBM_ESSL
   strcpy(mach_typ,"ibm_essl");
   ifound = 1;
@@ -62,20 +54,8 @@ void write_gen_header(CLASS *class, GENERAL_DATA *general_data,FILE *fp,
   strcpy(mach_typ,"ibm_noessl");
   ifound = 1;
 #endif
-#ifdef DEC_ALPHA
-  strcpy(mach_typ,"dec_alpha");
-  ifound = 1;
-#endif
-#ifdef _CRAY
-  strcpy(mach_typ,"cray");
-  ifound = 1;
-#endif
-#ifdef SUN_COMPLIB
-  strcpy(mach_typ,"sun_complib");
-  ifound = 1;
-#endif
-#ifdef SUN_COMPLIB_OFF
-  strcpy(mach_typ,"sun_complib");
+#ifdef LINUX
+  strcpy(mach_typ,"linux");
   ifound = 1;
 #endif
   if(ifound==0){
@@ -266,14 +246,6 @@ void write_gen_header_cp(CLASS *class, GENERAL_DATA *general_data,
 /* Get the Machine type                                                     */
 
  ifound = 0;
-#ifdef HP_VECLIB
-  strcpy(mach_typ,"hp_veclib");
-  ifound = 1;
-#endif
-#ifdef SGI_COMPLIB
-  strcpy(mach_typ,"sgi_complib");
-  ifound = 1;
-#endif
 #ifdef IBM_ESSL
   strcpy(mach_typ,"ibm_essl");
   ifound = 1;
@@ -282,20 +254,8 @@ void write_gen_header_cp(CLASS *class, GENERAL_DATA *general_data,
   strcpy(mach_typ,"ibm_noessl");
   ifound = 1;
 #endif
-#ifdef DEC_ALPHA
-  strcpy(mach_typ,"dec_alpha");
-  ifound = 1;
-#endif
-#ifdef _CRAY
-  strcpy(mach_typ,"cray");
-  ifound = 1;
-#endif
-#ifdef SUN_COMPLIB
-  strcpy(mach_typ,"sun_complib");
-  ifound = 1;
-#endif
-#ifdef SUN_COMPLIB_OFF
-  strcpy(mach_typ,"sun_complib");
+#ifdef LINUX
+  strcpy(mach_typ,"linux");
   ifound = 1;
 #endif
   if(ifound==0){
