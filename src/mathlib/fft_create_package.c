@@ -24,6 +24,10 @@
 #include "../proto_defs/proto_energy_cp_local.h"
 #include "../proto_defs/proto_communicate_wrappers.h"
 
+#ifdef FFTW3
+#include "fftw3.h"
+#endif
+
 #define DEBUG_PME_OFF
 
 /*==========================================================================*/
@@ -84,8 +88,7 @@ void create_para_fft_pkg3d(PARA_FFT_PKG3D *para_fft_pkg3d,
    int *sendcounts_fft_kc,*senddspls_fft_kc;
    int *recvcounts_fft_kc,*recvdspls_fft_kc;
 
-
-  /* FFT along kb  */
+   /* FFT along kb  */
    int nfft_kb,nfft_kb_proc; 
    int str_fft_kb_proc,end_fft_kb_proc;
    int ska_fft_kb_proc,eka_fft_kb_proc;
@@ -1541,6 +1544,10 @@ void para_fft_gen3d_init(PARA_FFT_PKG3D *para_fft_pkg3d)
   int nkf_a        = para_fft_pkg3d->nkf1;
   int igeneric_opt = para_fft_pkg3d->igeneric_opt;
   int scale_opt;
+#ifdef FFTW3
+  int nfft_size = para_fft_pkg3d->nfft_size;
+#endif 
+
 
   int nwork1;
   int nwork2;
@@ -1556,6 +1563,10 @@ void para_fft_gen3d_init(PARA_FFT_PKG3D *para_fft_pkg3d)
   double *work_1b_r,*work_2b_r;
   double *work_1c_f,*work_2c_f;
   double *work_1c_r,*work_2c_r;
+
+#ifdef FFTW3
+  double *dummy;
+#endif
 
 /*==========================================================================*/
 /* I) Hard-wired sizes of scratch arrays                                    */
@@ -1625,38 +1636,116 @@ void para_fft_gen3d_init(PARA_FFT_PKG3D *para_fft_pkg3d)
 /*==========================================================================*/
 /* IV) Initialize fwd FFT arrays                                            */
 
+#ifdef FFTW3
+  dummy = (double*)cmalloc(nfft_size*sizeof(double));
+#endif
+
   iopt = 1;  incn = nkf_c; num = nfft_kc_proc;
+#ifdef FFTW3
+  if(igeneric_opt==0) {
+  para_fft_pkg3d->plan_fftw_fc = fftw_plan_many_dft(1,&nkf_c,num,
+         dummy,NULL,incl,incn,dummy,NULL,incl,incn,iopt,FFTW_MEASURE);
+  } else {
+    fft_gen1d_init(nkf_c,incl,num,incn,iopt,&ier,
+                   work_1c_f,nwork1,work_2c_f,nwork2,ifax_c_f,&scale_opt,
+                   igeneric_opt);
+  }
+
+#else
   fft_gen1d_init(nkf_c,incl,num,incn,iopt,&ier,
                  work_1c_f,nwork1,work_2c_f,nwork2,ifax_c_f,&scale_opt,
                  igeneric_opt);
+#endif
 
   iopt = 1; incn = nkf_b; num = nfft_kb_proc;
+#ifdef FFTW3
+  if(igeneric_opt==0) {
+   para_fft_pkg3d->plan_fftw_fb = fftw_plan_many_dft(1,&nkf_b,num,
+        dummy,NULL,incl,incn,dummy,NULL,incl,incn,iopt,FFTW_MEASURE);
+  } else {
+    fft_gen1d_init(nkf_b,incl,num,incn,iopt,&ier,
+                   work_1b_f,nwork1,work_2b_f,nwork2,ifax_b_f,&scale_opt,
+                   igeneric_opt);
+  }
+#else
   fft_gen1d_init(nkf_b,incl,num,incn,iopt,&ier,
                  work_1b_f,nwork1,work_2b_f,nwork2,ifax_b_f,&scale_opt,
                  igeneric_opt);
+#endif
 
   iopt = 1; incn = nkf_a; num = nfft_ka_proc;
+#ifdef FFTW3
+  if(igeneric_opt==0) {
+  para_fft_pkg3d->plan_fftw_fa = fftw_plan_many_dft(1,&nkf_a,num,
+        dummy,NULL,incl,incn,dummy,NULL,incl,incn,iopt,FFTW_MEASURE);
+  } else {
+    fft_gen1d_init(nkf_a,incl,num,incn,iopt,&ier,
+                   work_1a_f,nwork1,work_2a_f,nwork2,ifax_a_f,&scale_opt,
+                   igeneric_opt);
+  }
+#else
   fft_gen1d_init(nkf_a,incl,num,incn,iopt,&ier,
                  work_1a_f,nwork1,work_2a_f,nwork2,ifax_a_f,&scale_opt,
                  igeneric_opt);
+  #endif
 
 /*==========================================================================*/
 /* V) Initialize bck FFT arrays                                            */
 
   iopt = -1; incn = nkf_a; num = nfft_ka_proc;
+#ifdef FFTW3
+  if(igeneric_opt==0) {
+    para_fft_pkg3d->plan_fftw_ba = fftw_plan_many_dft(1,&nkf_a,num,
+          dummy,NULL,incl,incn,dummy,NULL,incl,incn,iopt,FFTW_MEASURE);
+  } else {
+    fft_gen1d_init(nkf_a,incl,num,incn,iopt,&ier,
+                   work_1a_r,nwork1,work_2a_r,nwork2,ifax_a_r,&scale_opt,
+                   igeneric_opt);
+  }
+ 
+#else
   fft_gen1d_init(nkf_a,incl,num,incn,iopt,&ier,
                  work_1a_r,nwork1,work_2a_r,nwork2,ifax_a_r,&scale_opt,
                  igeneric_opt);
-
+#endif
+  
   iopt = -1; incn = nkf_b; num = nfft_kb_proc;
+#ifdef FFTW3
+  if(igeneric_opt==0) {
+    para_fft_pkg3d->plan_fftw_bb = fftw_plan_many_dft(1,&nkf_b,num,
+          dummy,NULL,incl,incn,dummy,NULL,incl,incn,iopt,FFTW_MEASURE);
+  } else {
+    fft_gen1d_init(nkf_b,incl,num,incn,iopt,&ier,
+                   work_1b_r,nwork1,work_2b_r,nwork2,ifax_b_r,&scale_opt,
+                   igeneric_opt);
+  }
+#else
   fft_gen1d_init(nkf_b,incl,num,incn,iopt,&ier,
                  work_1b_r,nwork1,work_2b_r,nwork2,ifax_b_r,&scale_opt,
                  igeneric_opt);
+#endif
 
   iopt = -1;  incn = nkf_c; num = nfft_kc_proc;
+  
+#ifdef FFTW3
+   if(igeneric_opt==0) {
+   para_fft_pkg3d->plan_fftw_bc = fftw_plan_many_dft(1,&nkf_c,num,
+        dummy,NULL,incl,incn,dummy,NULL,incl,incn,iopt,FFTW_MEASURE);
+   } else {
+     fft_gen1d_init(nkf_c,incl,num,incn,iopt,&ier,
+                    work_1c_r,nwork1,work_2c_r,nwork2,ifax_c_r,&scale_opt,
+                    igeneric_opt);
+   }
+#else
   fft_gen1d_init(nkf_c,incl,num,incn,iopt,&ier,
                  work_1c_r,nwork1,work_2c_r,nwork2,ifax_c_r,&scale_opt,
                  igeneric_opt);
+#endif
+  
+#ifdef FFTW3
+  cfree(dummy);
+#endif  
+
 
 /*==========================================================================*/
 /* VI) Tuck away scale option                                               */

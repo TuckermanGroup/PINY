@@ -23,7 +23,9 @@
 #include "../proto_defs/proto_friend_lib_entry.h"
 #include "../proto_defs/proto_energy_cp_local.h"
 #include "../proto_defs/proto_communicate_wrappers.h"
-
+#ifdef FFTW3
+#include "fftw3.h"
+#endif
 
 #define BLOCK_PACK
 #define DALLTOALL
@@ -146,6 +148,12 @@ void para_fft_gen3d_fwd_to_r(double *zfft, double *zfft_tmp,
  int *ifax_a_f            = para_fft_pkg3d->ifax_a_f;
  double *work_1a_f       = para_fft_pkg3d->work_1a_f;
  double *work_2a_f       = para_fft_pkg3d->work_2a_f;
+ 
+#ifdef FFTW3
+ fftw_plan plan_fa = para_fft_pkg3d->plan_fftw_fa;
+ fftw_plan plan_fb = para_fft_pkg3d->plan_fftw_fb;
+ fftw_plan plan_fc = para_fft_pkg3d->plan_fftw_fc;
+#endif
 
 /* MAPS */
  int *map_proc_post       = para_fft_pkg3d->map_proc_post;
@@ -186,8 +194,19 @@ void para_fft_gen3d_fwd_to_r(double *zfft, double *zfft_tmp,
 
   incn = nkf3;
 #ifdef FFT
+#ifdef FFTW3
+ /* forward ``c'' */
+ if(igeneric_opt==0) {
+   fftw_execute_dft(plan_fc,&(zfft[1]),&(zfft[1]));
+ } else {
+   fft_gen1d(zfft,nkf3,incl,nfft_kc_proc,incn,iopt,&ier,
+            work_1c_f,nwork1,work_2c_f,nwork2,ifax_c_f,igeneric_opt);
+ }
+
+#else
   fft_gen1d(zfft,nkf3,incl,nfft_kc_proc,incn,iopt,&ier,
             work_1c_f,nwork1,work_2c_f,nwork2,ifax_c_f,igeneric_opt);
+#endif
 #endif
 
 /*==========================================================================*/
@@ -296,8 +315,19 @@ void para_fft_gen3d_fwd_to_r(double *zfft, double *zfft_tmp,
   incn = nkf2;
 
 #ifdef FFT
+#ifdef FFTW3
+  /* forward ``b'' */
+ if(igeneric_opt==0) {
+ fftw_execute_dft(plan_fb,&(zfft_tmp[1]),&(zfft_tmp[1]));
+ } else {
+   fft_gen1d(zfft_tmp,nkf2,incl,nfft_kb_proc,incn,iopt,&ier,
+            work_1b_f,nwork1,work_2b_f,nwork2,ifax_b_f,igeneric_opt);
+ }
+
+#else
   fft_gen1d(zfft_tmp,nkf2,incl,nfft_kb_proc,incn,iopt,&ier,
             work_1b_f,nwork1,work_2b_f,nwork2,ifax_b_f,igeneric_opt);
+#endif
 #endif
 
 /*==========================================================================*/
@@ -389,8 +419,18 @@ void para_fft_gen3d_fwd_to_r(double *zfft, double *zfft_tmp,
   incn = nkf1;
 
 #ifdef FFT
+#ifdef FFTW3
+  /* forward ``a'' */
+ if(igeneric_opt==0) {
+ fftw_execute_dft(plan_fa,&(zfft[1]),&(zfft[1]));
+ } else {
+    fft_gen1d(zfft,nkf1,incl,nfft_ka_proc,incn,iopt,&ier,
+            work_1a_f,nwork1,work_2a_f,nwork2,ifax_a_f,igeneric_opt);
+ }
+#else
   fft_gen1d(zfft,nkf1,incl,nfft_ka_proc,incn,iopt,&ier,
             work_1a_f,nwork1,work_2a_f,nwork2,ifax_a_f,igeneric_opt);
+#endif
 #endif
 /*-----------------------------------------------------------------------*/
    }/*end routine*/ 
@@ -665,13 +705,30 @@ void para_fft_gen3d_bck_to_g(double *zfft, double *zfft_tmp,
  double *work_1a_r        = para_fft_pkg3d->work_1a_r;
  double *work_2a_r        = para_fft_pkg3d->work_2a_r;
 
+#ifdef FFTW3
+  fftw_plan plan_ba = para_fft_pkg3d->plan_fftw_ba;
+  fftw_plan plan_bb = para_fft_pkg3d->plan_fftw_bb;
+  fftw_plan plan_bc = para_fft_pkg3d->plan_fftw_bc;
+#endif
+
+
 /*==========================================================================*/
 /* Perform Inverse FFT along ``a'' using zfft                               */
 
   incn = nkf1;
 #ifdef FFT
+#ifdef FFTW3
+  /* backward ``a'' */
+ if(igeneric_opt==0) {
+   fftw_execute_dft(plan_ba,&(zfft[1]),&(zfft[1]));
+ } else {
+   fft_gen1d(zfft,nkf1,incl,nfft_ka_proc,incn,iopt,&ier,
+            work_1a_r,nwork1,work_2a_r,nwork2,ifax_a_r,igeneric_opt);
+ }
+#else
   fft_gen1d(zfft,nkf1,incl,nfft_ka_proc,incn,iopt,&ier,
             work_1a_r,nwork1,work_2a_r,nwork2,ifax_a_r,igeneric_opt);
+#endif
 #endif
 
 /*==========================================================================*/
@@ -760,8 +817,18 @@ void para_fft_gen3d_bck_to_g(double *zfft, double *zfft_tmp,
 
   incn = nkf2;
 #ifdef FFT
+#ifdef FFTW3
+  /* backward ``b'' */
+ if(igeneric_opt==0) {
+   fftw_execute_dft(plan_bb,&(zfft_tmp[1]),&(zfft_tmp[1]));
+ } else {
+   fft_gen1d(zfft_tmp,nkf2,incl,nfft_kb_proc,incn,iopt,&ier,
+            work_1b_r,nwork1,work_2b_r,nwork2,ifax_b_r,igeneric_opt);
+ }
+#else
   fft_gen1d(zfft_tmp,nkf2,incl,nfft_kb_proc,incn,iopt,&ier,
             work_1b_r,nwork1,work_2b_r,nwork2,ifax_b_r,igeneric_opt);
+#endif
 #endif
 
 /*==========================================================================*/
@@ -866,8 +933,18 @@ void para_fft_gen3d_bck_to_g(double *zfft, double *zfft_tmp,
 
   incn = nkf3;
 #ifdef FFT
+#ifdef FFTW3
+  /* backward ``c'' */
+ if(igeneric_opt==0) {
+   fftw_execute_dft(plan_bc,&(zfft[1]),&(zfft[1]));
+ } else {
+   fft_gen1d(zfft,nkf3,incl,nfft_kc_proc,incn,iopt,&ier,
+            work_1c_r,nwork1,work_2c_r,nwork2,ifax_c_r,igeneric_opt);
+ }
+#else
   fft_gen1d(zfft,nkf3,incl,nfft_kc_proc,incn,iopt,&ier,
             work_1c_r,nwork1,work_2c_r,nwork2,ifax_c_r,igeneric_opt);
+#endif
 #endif
 
 /*==========================================================================*/

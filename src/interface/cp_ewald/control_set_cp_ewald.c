@@ -1077,9 +1077,16 @@ void control_fft_pkg(PARA_FFT_PKG3D *cp_sclr_fft_pkg_sm,
 /* VI) Output */
 
   if(myid == 0){
-    printf("\n");PRINT_LINE_DASH;
+    #ifdef FFTW3
+    if (pme_fft_pkg->igeneric_opt == 0) {
+      printf("Using FFTW for PME\n");
+      printf("\n");
+    }
+    #endif
+    PRINT_LINE_DASH;
     printf("Finished setting up FFTs\n");
-    PRINT_LINE_STAR;printf("\n");
+    PRINT_LINE_STAR;
+    printf("\n");
   }/* endif myid */
 
 /*-------------------------------------------------------------------------*/

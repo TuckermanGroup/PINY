@@ -12,7 +12,9 @@
  /*==========================================================================*/
  /*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
  /*==========================================================================*/
-
+#ifdef FFTW3
+  #include "fftw3.h"
+#endif
 
 /*==========================================================================*/
 /*                  State point data                                        */
@@ -478,8 +480,11 @@ typedef struct para_fft_pkg3d {
    int *recv_counts_ioff_big_small;
    int *sdispls_ioff_big_small; /*Length nproc used in pme map parallel routine*/
    int *rdispls_ioff_big_small;
-
-
+   
+   #ifdef FFTW3
+     fftw_plan plan_fftw_fa, plan_fftw_fb, plan_fftw_fc;
+     fftw_plan plan_fftw_ba, plan_fftw_bb, plan_fftw_bc;
+   #endif
  } PARA_FFT_PKG3D;
 
 /*==========================================================================*/
