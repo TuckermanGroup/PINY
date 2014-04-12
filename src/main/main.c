@@ -35,7 +35,10 @@
 #include "../proto_defs/proto_communicate_entry.h"
 
 
-void Init_PINY(int argc, char *argv[], CLASS* class, GENERAL_DATA* general_data) {
+/*==========================================================================*/
+void Init_PINY(int argc, char *argv[],
+               CLASS* class, GENERAL_DATA* general_data) {
+/*==========================================================================*/
 
   Init(&argc, &argv, &((*class).communicate.world));
   Comm_size((*class).communicate.world, &((*class).communicate.np));
@@ -43,110 +46,99 @@ void Init_PINY(int argc, char *argv[], CLASS* class, GENERAL_DATA* general_data)
   (*general_data).error_check_on = ((*class).communicate.myid==0?1:0);
 
 }
+/*--------------------------------------------------------------------------*/
 
 
 /*==========================================================================*/
-/*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
+int main (int argc, char *argv[]) {
 /*==========================================================================*/
- int main (int argc, char *argv[])
-/*==========================================================================*/
-   {/* begin routine */ 
-/*==========================================================================*/
-/*   Local Variables */
 
-  int iii,is;
+  /* local variables */
   CLASS class;
   BONDED bonded;
   GENERAL_DATA general_data;
   CP cp;
   ANALYSIS analysis;
 
-/*=======================================================================*/
-/*  I)             Check for input file                                  */
+  /*======================*/
+  /* Check for input file */
 
   if(argc < 2) {
     printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
-    printf("No input file specified\n");
+    printf("No input file specified.\n");
     printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
     fflush(stdout);
     exit(1);
-  }/*endif*/
+  }
 
-/*=======================================================================*/
-/* II)            Initialize MPI                                         */
+  /*================*/
+  /* initialize MPI */
 
   Init_PINY(argc, argv, &class, &general_data);
 
-  TIMER_START("PINY");
+  /*=======================*/
+  /* invoke user interface */
 
-/*=======================================================================*/
-/* III)            Invoke User Interface                                 */
+  parse(&class, &bonded, &general_data, &cp, &analysis, argv[1]);
 
-  parse(&class,&bonded,&general_data,&cp,&analysis,argv[1]);
+  /*====================*/
+  /* perform simulation */
 
-/*========================================================================*/
-/* IV)              Perform Simulation                                    */
+  /*-----------------------*/
+  /* run MD/PIMD/CP/CPPIMD */
 
-  /*----------------------------------------------------------------------*/
-  /*  i) RUN MD/PIMD/CP/CPPIMD */
-  if(general_data.simopts.md==1){
-    control_md(&class,&bonded,&general_data,&analysis);
+  if (general_data.simopts.md ==1 ) {
+    control_md(&class, &bonded, &general_data, &analysis);
   }
-  if(general_data.simopts.pimd==1){
-    control_pimd(&class,&bonded,&general_data,&analysis);
+  if (general_data.simopts.pimd == 1) {
+    control_pimd(&class, &bonded, &general_data, &analysis);
   }
-  if((general_data.simopts.cp_wave+general_data.simopts.cp) ==1){
-      control_cp(&class,&bonded,&general_data,&cp,&analysis);
-  }/*endif*/
-  if(general_data.simopts.cp_pimd+general_data.simopts.cp_wave_pimd==1){
-      control_cp_pimd(&class,&bonded,&general_data,&cp,&analysis);
-  }/*endif*/
-
-  /*----------------------------------------------------------------------*/
-  /*  ii) DEBUG MD/PIMD/CP/CPPIMD */
-  if(general_data.simopts.debug==1){
-    control_debug(&class,&bonded,&general_data);
+  if (general_data.simopts.cp_wave + general_data.simopts.cp == 1) {
+    control_cp(&class, &bonded, &general_data, &cp, &analysis);
   }
-  if(general_data.simopts.debug_pimd==1){
-    control_debug_pimd(&class,&bonded,&general_data);
-  }
-  if(general_data.simopts.debug_cp==1){
-    control_debug_cp(&class,&bonded,&general_data,&cp);
-  }
-  if(general_data.simopts.debug_cp_pimd==1){
-    control_debug_cp_pimd(&class,&bonded,&general_data,&cp);
+  if (general_data.simopts.cp_pimd + general_data.simopts.cp_wave_pimd == 1) {
+      control_cp_pimd(&class, &bonded, &general_data, &cp, &analysis);
   }
 
-  /*----------------------------------------------------------------------*/
-  /*  iii) MINIMIZE MD/PIMD/CP/CPPIMD */
-  if(general_data.simopts.minimize==1){
-   control_min(&class,&bonded,&general_data,&analysis);  
+  /*-------------------------*/
+  /* debug MD/PIMD/CP/CPPIMD */
+
+  if (general_data.simopts.debug == 1) {
+    control_debug(&class, &bonded, &general_data);
   }
-  if((general_data.simopts.cp_wave_min+general_data.simopts.cp_min) ==1 ){
+  if (general_data.simopts.debug_pimd == 1) {
+    control_debug_pimd(&class, &bonded, &general_data);
+  }
+  if (general_data.simopts.debug_cp == 1) {
+    control_debug_cp(&class, &bonded, &general_data, &cp);
+  }
+  if (general_data.simopts.debug_cp_pimd == 1) {
+    control_debug_cp_pimd(&class, &bonded, &general_data, &cp);
+  }
+
+  /*----------------------------*/
+  /* minimize MD/PIMD/CP/CPPIMD */
+
+  if (general_data.simopts.minimize == 1) {
+    control_min(&class, &bonded, &general_data, &analysis);
+  }
+  if (general_data.simopts.cp_wave_min + general_data.simopts.cp_min == 1) {
     control_cp_min(&class,&bonded,&general_data,&cp,&analysis);
   }
-  if((general_data.simopts.cp_wave_min_pimd) ==1 ){
-    control_cp_pimd_min(&class,&bonded,&general_data,&cp,&analysis);
+  if (general_data.simopts.cp_wave_min_pimd == 1 ) {
+    control_cp_pimd_min(&class, &bonded, &general_data, &cp, &analysis);
   }
 
-/*==========================================================================*/
-/* V)                Exit Program                                           */
+  /*==============*/
+  /* exit program */
 
-  TIMER_STOP("PINY");
-
-  if(class.communicate.np>1){
-   Barrier(class.communicate.world);
-   Finalize();
-  }/*endif*/
+  if (class.communicate.np > 1) {
+    Barrier(class.communicate.world);
+    Finalize();
+  }
   fflush(stdout);
-
-  exit(0); 
   return 0;
 
-/*----------------------------------------------------------------------*/
-   }/*end routine*/
-/*==========================================================================*/
-
-
-
+}
+/*--------------------------------------------------------------------------*/
 
