@@ -28,6 +28,9 @@
 #include "../proto_defs/proto_pimd_entry.h"
 #include "../proto_defs/proto_pimd_local.h"
 #include "../proto_defs/proto_friend_lib_entry.h"
+#if defined PLUMED
+#include "../proto_defs/proto_plumed.h"
+#endif
 
 
 /*==========================================================================*/
@@ -189,6 +192,10 @@ void int_NVT_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
              {(class->energy_ctrl.iget_res_intra) = 1;}
 
           energy_control_pimd(class,bonded,general_data);
+
+          #if defined PLUMED
+          plumed_piny_calc(general_data, class);
+          #endif
 
       }else{
         for(ip=1;ip<=pi_beads_proc;ip++){
