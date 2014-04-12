@@ -3,17 +3,18 @@ EXE_NAME = piny-plumed
 LIB_NAME = libpiny.so
 
 # compilers and options
-PLUMED = /Users/andy/build/plumed-2.0.2
-include $(PLUMED)/src/lib/Plumed.inc.shared
+PLUMED = /Users/andy/opt/plumed-2.0.2
+#include $(PLUMED)/lib/plumed/src/lib/Plumed.inc.shared
 FC = gfortran
 CC = gcc
+#DEFINE = -DNO_CFREE -DPLUMED -DPLUMED_DEBUG
 DEFINE = -DNO_CFREE -DPLUMED
 OPT = -O2
 OPT_CARE = -O2
 OPT_GRP = -O2
-CFLAGS = -fPIC $(DEFINE) -I $(PLUMED)/src/wrapper
+CFLAGS = -fPIC $(DEFINE) -I $(PLUMED)/include/Plumed/wrapper
 FFLAGS = -fPIC $(DEFINE)
-LIBS = $(PLUMED_LOAD) -ldl
+LIBS = -L $(PLUMED)/lib -lplumed -ldl
 
 BASE = $(realpath ../..)
 CODE = $(BASE)/src
