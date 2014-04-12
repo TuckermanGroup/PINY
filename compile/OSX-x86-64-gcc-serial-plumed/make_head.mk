@@ -4,7 +4,6 @@ LIB_NAME = libpiny.so
 
 # compilers and options
 PLUMED = /Users/andy/opt/plumed-2.0.2
-#include $(PLUMED)/lib/plumed/src/lib/Plumed.inc.shared
 FC = gfortran
 CC = gcc
 #DEFINE = -DNO_CFREE -DPLUMED -DPLUMED_DEBUG
