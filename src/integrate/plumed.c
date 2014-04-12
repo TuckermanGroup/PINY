@@ -7,13 +7,12 @@
 
 
 // TODO
-// add finalize, probably in main function
-// make filenames configurable
 // make it work in the parallel case
 // test all quantities that are passed back and forth by prining from both PINY and PLUMED
 // make it work with RESPA, optionally with configurable depth in RESPA structure
 // make it work with PIMD
 // add support for virial
+// [LOW] make filenames configurable
 
 
 void plumed_piny_init(GENERAL_DATA *general_data, CLASS *class) {
@@ -65,14 +64,14 @@ void plumed_piny_calc(GENERAL_DATA *general_data, CLASS *class) {
   plumed_gcmd("setBox", hmat);
   //plumed_gcmd("setVirial", pvtens);  // TODO: get this right
   
-  plumed_gcmd("setMasses", clatoms_info->mass);
-  plumed_gcmd("setCharges", clatoms_info->q);
-  plumed_gcmd("setPositionsX", clatoms_pos->x);
-  plumed_gcmd("setPositionsY", clatoms_pos->y);
-  plumed_gcmd("setPositionsZ", clatoms_pos->z);
-  plumed_gcmd("setForcesX", clatoms_pos->fx);
-  plumed_gcmd("setForcesY", clatoms_pos->fy);
-  plumed_gcmd("setForcesZ", clatoms_pos->fz);
+  plumed_gcmd("setMasses", &clatoms_info->mass[1]);
+  plumed_gcmd("setCharges", &clatoms_info->q[1]);
+  plumed_gcmd("setPositionsX", &clatoms_pos->x[1]);
+  plumed_gcmd("setPositionsY", &clatoms_pos->y[1]);
+  plumed_gcmd("setPositionsZ", &clatoms_pos->z[1]);
+  plumed_gcmd("setForcesX", &clatoms_pos->fx[1]);
+  plumed_gcmd("setForcesY", &clatoms_pos->fy[1]);
+  plumed_gcmd("setForcesZ", &clatoms_pos->fz[1]);
 
   plumed_gcmd("calc", NULL);
 
