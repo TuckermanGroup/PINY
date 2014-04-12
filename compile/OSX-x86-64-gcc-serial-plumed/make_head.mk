@@ -13,7 +13,7 @@ OPT_CARE = -O2
 OPT_GRP = -O2
 CFLAGS = -fPIC $(DEFINE) -I $(PLUMED)/src/wrapper
 FFLAGS = -fPIC $(DEFINE)
-LIBS = $(PLUMED_LOAD) -ldl -Wl,-rpath,$(PLUMED)/src/lib
+LIBS = $(PLUMED_LOAD) -ldl
 
 BASE = $(realpath ../..)
 CODE = $(BASE)/src
