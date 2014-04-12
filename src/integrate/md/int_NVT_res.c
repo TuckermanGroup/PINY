@@ -21,6 +21,9 @@
 #include "../proto_defs/proto_integrate_md_local.h"
 #include "../proto_defs/proto_intra_con_entry.h"
 #include "../proto_defs/proto_energy_ctrl_entry.h"
+#if defined PLUMED
+#include "../proto_defs/proto_plumed.h"
+#endif
 
 /*==========================================================================*/
 /*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
@@ -120,7 +123,6 @@ void int_NVT_res(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
 
     int_0_to_dt2_nvt(class,bonded,general_data,ir_tra,ir_tor,ir_ter,dti);
 
-
 /*==========================================================================*/
 /* 2) Get the new energy/force                                              */
 
@@ -137,11 +139,18 @@ void int_NVT_res(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
 
           energy_control(class,bonded,general_data);
 
+          /* For now, PLUMED runs every step.
+           * In principle, it could have a configurable depth
+           * in the RESPA hierarchy.
+           */
+          #if defined PLUMED
+          plumed_piny_calc(general_data, class);
+          #endif
+
 /*==========================================================================*/
 /* 3) Evolve system from dt/2 to dt                                         */
 
         int_dt2_to_dt_nvt(class,bonded,general_data,ir_tra,ir_tor,ir_ter,dti);
-
 
 /*==========================================================================*/
         /*endfor:ir_tra*/}
