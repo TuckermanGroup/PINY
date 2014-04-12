@@ -451,6 +451,7 @@ void initial_fopen_cp(CLASS *class,GENERAL_DATA *general_data,
   NAME file_typ;
   FILE *fp_bond_free,*fp_bend_free,*fp_tors_free,*fp_rbar_free;
   FILE *fp_iname, *fp_cpname, *fp_cvname,*fp_dname,*fp_ccname,*fp_kseigs;
+  FILE *fp_cfname;
 
 /*==========================================================================*/
 /*     A) Open dump file                                          */
@@ -485,7 +486,18 @@ void initial_fopen_cp(CLASS *class,GENERAL_DATA *general_data,
   }/*endif*/
 
 /*==========================================================================*/
-/*     C) Open pos conf file                                           */
+/*     C) Open force conf file                                           */
+
+    ibinary    = general_data->filenames.iwrite_conf_binary;
+    iwrite_now = general_data->filenames.iwrite_atm_for;
+    strcpy(file_typ,"force_file");
+    fp_cfname  = cfopen(general_data->filenames.forcename,"w");
+    write_gen_header(class,general_data,fp_cfname,ibinary,
+                     iwrite_now,file_typ);
+    fclose(fp_cfname);
+
+/*==========================================================================*/
+/*     D) Open pos conf file                                           */
 
     ibinary    = general_data->filenames.iwrite_conf_binary;
     iwrite_now = general_data->filenames.iwrite_confp;
@@ -496,7 +508,7 @@ void initial_fopen_cp(CLASS *class,GENERAL_DATA *general_data,
     fclose(fp_cpname); 
 
 /*======================================================================*/
-/*     C) Open partial pos conf file                                    */
+/*     E) Open partial pos conf file                                    */
 
  if(general_data->simopts.cp==1){ 
   if((general_data->filenames.low_lim_par<=
@@ -512,7 +524,7 @@ void initial_fopen_cp(CLASS *class,GENERAL_DATA *general_data,
  }/*endif*/
 
 /*==========================================================================*/
-/*     E) Open bond free energy file                                   */
+/*     F) Open bond free energy file                                   */
 
  if(general_data->simopts.cp==1){ 
     if(bonded->bond_free.num>0){
@@ -522,7 +534,7 @@ void initial_fopen_cp(CLASS *class,GENERAL_DATA *general_data,
  }/*endif*/
 
 /*==========================================================================*/
-/*     F) Open bend free energy file                                    */
+/*     G) Open bend free energy file                                    */
 
  if(general_data->simopts.cp==1){ 
     if(bonded->bend_free.num>0){
@@ -532,7 +544,7 @@ void initial_fopen_cp(CLASS *class,GENERAL_DATA *general_data,
  }/*endif*/
 
 /*==========================================================================*/
-/*     G) Open tors free energy file                                    */
+/*     H) Open tors free energy file                                    */
 
  if(general_data->simopts.cp==1){ 
     if(bonded->tors_free.num>0){
@@ -542,7 +554,7 @@ void initial_fopen_cp(CLASS *class,GENERAL_DATA *general_data,
  }/*endif*/    
 
 /*==========================================================================*/
-/*     H) Open rbar_sig free energy file                                    */
+/*     I) Open rbar_sig free energy file                                    */
 
  if(general_data->simopts.cp==1){ 
     if(bonded->rbar_sig_free.nfree>0){
@@ -552,7 +564,7 @@ void initial_fopen_cp(CLASS *class,GENERAL_DATA *general_data,
  }/*endif*/        
 
 /*==========================================================================*/
-/*     H) Open CP conf file (Must be unformatted due to hugeness of         */
+/*     J) Open CP conf file (Must be unformatted due to hugeness of         */
 /*          wave functions)                                                 */
 
  if(general_data->simopts.cp == 1){
@@ -566,7 +578,7 @@ void initial_fopen_cp(CLASS *class,GENERAL_DATA *general_data,
  }
     
 /*==========================================================================*/
-/*  I) Open CP KS eigenvalues file                                          */
+/*  K) Open CP KS eigenvalues file                                          */
 
   if(cp->cpcoeffs_info.ks_rot_on == 1){
     fp_kseigs = cfopen(general_data->filenames.ksname,"w");
@@ -1296,7 +1308,7 @@ void write_config_files_cp(CLASS *class,BONDED *bonded,
   int cp_on            = general_data->simopts.cp;
 
   int cp_lsda = cp->cpopts.cp_lsda;
-  FILE *fp_cpname, *fp_cvname,*fp_ccname;
+  FILE *fp_cpname, *fp_cvname,*fp_ccname, *fp_cfname;
   int  ncoef  = cp->cpcoeffs_info.ncoef;
 
  int  istate_up_st  = cp->cpcoeffs_info.istate_up_st;
@@ -1480,6 +1492,49 @@ void write_config_files_cp(CLASS *class,BONDED *bonded,
        }/* endif myid */
        if(nproc>1){Barrier(world);}
     }/*endif*/
+
+
+/*=====================================================================*/
+/* IV) Write to the atm force file                          */
+
+  if(myid==0 ){
+    if((general_data->timeinfo.itime %
+        general_data->filenames.iwrite_atm_for) == 0 ){
+   if(general_data->filenames.iwrite_conf_binary==0){
+      fp_cfname = cfopen(general_data->filenames.forcename,"a");
+
+       for(i=1;i<=(class->clatoms_info.natm_tot);i++){
+       fprintf(fp_cfname,"%.12g  %.12g  %.12g\n",class->clatoms_pos[1].fx[i],
+              class->clatoms_pos[1].fy[i],class->clatoms_pos[1].fz[i]);
+       }/*endfor*/
+      for(i=0;i<3;i++) 
+       fprintf(fp_cfname,"%.12g %.12g %.12g\n",general_data->cell.hmat[1+i],
+              general_data->cell.hmat[4+i],general_data->cell.hmat[7+i]);
+      fflush(fp_cfname);
+      fclose(fp_cfname);
+    }/*endif*/
+
+   if(general_data->filenames.iwrite_conf_binary==1){
+    fp_cfname = cfopen(general_data->filenames.forcename,"a");
+    n=1;
+    for(i=1;i<=(class->clatoms_info.natm_tot);i++){
+     fwrite(&(class->clatoms_pos[1].fx)[i],sizeof(double),n,fp_cfname);
+     fwrite(&(class->clatoms_pos[1].fy)[i],sizeof(double),n,fp_cfname);
+     fwrite(&(class->clatoms_pos[1].fz)[i],sizeof(double),n,fp_cfname);
+    }/*endfor*/
+    for(i=0;i<3;i++){ 
+      fwrite(&(general_data->cell.hmat)[1+i],sizeof(double),n,fp_cfname);
+      fwrite(&(general_data->cell.hmat)[4+i],sizeof(double),n,fp_cfname);
+      fwrite(&(general_data->cell.hmat)[7+i],sizeof(double),n,fp_cfname);
+    }/*endfor*/ 
+      fflush(fp_cfname);
+      fclose(fp_cfname);
+   }/*endif*/
+   }
+  }/* endif myid==0 */
+  if(nproc>1){Barrier(world); }
+
+
 
 /*==========================================================================*/
    }/* end routine */

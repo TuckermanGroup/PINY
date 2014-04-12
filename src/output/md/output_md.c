@@ -321,7 +321,7 @@ void initial_fopen_md(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded)
   int n=1,iii,ibinary,iwrite_now;
   NAME file_typ;
   FILE *fp_bond_free,*fp_bend_free,*fp_tors_free,*fp_rbar_free;
-  FILE *fp_iname, *fp_cpname, *fp_cvname,*fp_dname;
+  FILE *fp_iname, *fp_cpname, *fp_cvname,*fp_dname,*fp_cfname;
 
 /*==========================================================================*/
 /*     A) Open dump file                                          */
@@ -352,7 +352,19 @@ void initial_fopen_md(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded)
   fclose(fp_cvname); 
 
 /*==========================================================================*/
-/*     C) Open pos conf file                                           */
+/*     C) Open force conf file                                           */
+
+  ibinary    = general_data->filenames.iwrite_conf_binary;
+  iwrite_now = general_data->filenames.iwrite_atm_for;
+  strcpy(file_typ,"force_file");
+  fp_cfname  = cfopen(general_data->filenames.forcename,"w");
+  write_gen_header(class,general_data,fp_cfname,ibinary,
+                   iwrite_now,file_typ);
+  fclose(fp_cfname);
+
+
+/*==========================================================================*/
+/*     D) Open pos conf file                                           */
 
   ibinary    = general_data->filenames.iwrite_conf_binary;
   iwrite_now = general_data->filenames.iwrite_confp;
@@ -363,7 +375,7 @@ void initial_fopen_md(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded)
   fclose(fp_cpname); 
 
 /*======================================================================*/
-/*     C) Open partial pos conf file                                    */
+/*     E) Open partial pos conf file                                    */
 
  if((general_data->filenames.low_lim_par<=general_data->filenames.high_lim_par)){
    ibinary    = general_data->filenames.iwrite_conf_binary;
@@ -376,7 +388,7 @@ void initial_fopen_md(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded)
  }/*endif*/
 
 /*==========================================================================*/
-/*     E) Open bond free energy file                                   */
+/*     F) Open bond free energy file                                   */
 
     if(bonded->bond_free.num>0){
       fp_bond_free  = cfopen(bonded->bond_free.file,"w");
@@ -384,7 +396,7 @@ void initial_fopen_md(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded)
     }/*endif*/
 
 /*==========================================================================*/
-/*     F) Open bend free energy file                                    */
+/*    G) Open bend free energy file                                    */
 
     if(bonded->bend_free.num>0){
       fp_bend_free  = cfopen(bonded->bend_free.file,"w");
@@ -392,7 +404,7 @@ void initial_fopen_md(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded)
     }/*endif*/
 
 /*==========================================================================*/
-/*     G) Open tors free energy file                                    */
+/*     H) Open tors free energy file                                    */
 
     if(bonded->tors_free.num>0){
       fp_tors_free  = cfopen(bonded->tors_free.file,"w");
@@ -400,7 +412,7 @@ void initial_fopen_md(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded)
     }/*endif*/
     
 /*==========================================================================*/
-/*     H) Open rbar_sig free energy file                                    */
+/*     I) Open rbar_sig free energy file                                    */
 
     if(bonded->rbar_sig_free.nfree>0){
       fp_rbar_free  = cfopen(bonded->rbar_sig_free.file,"w");
@@ -1019,7 +1031,7 @@ void write_config_files_md(CLASS *class,BONDED *bonded,
 
   int i,ip,n,iii;
   int pi_beads = class->clatoms_info.pi_beads;
-  FILE *fp_cpname, *fp_cvname;
+  FILE *fp_cpname, *fp_cvname, *fp_cfname;
 
 /*=====================================================================*/
 /* I) Write to the atm config file                          */
@@ -1060,7 +1072,7 @@ void write_config_files_md(CLASS *class,BONDED *bonded,
    }/*endif*/
 
 /*===================================================================*/
-/* I) Write to the partial atm config files                    */
+/* II) Write to the partial atm config files                    */
 
 if((general_data->timeinfo.itime%general_data->filenames.iwrite_par_confp)==0){
 
@@ -1105,7 +1117,7 @@ if((general_data->timeinfo.itime%general_data->filenames.iwrite_par_confp)==0){
 
 /*=====================================================================*/
 /*=====================================================================*/
- /* II) Write to the atm velocity config file                          */
+ /* III) Write to the atm velocity config file                          */
 
   if((general_data->timeinfo.itime % general_data->filenames.iwrite_confv)==0){
 
@@ -1146,6 +1158,45 @@ if((general_data->timeinfo.itime%general_data->filenames.iwrite_par_confp)==0){
    }/*endif:binary*/
 
   }/*endif:vel write*/
+
+/*=====================================================================*/
+/* IV) Write to the atm force file                          */
+
+  if((general_data->timeinfo.itime % general_data->filenames.iwrite_atm_for)==0){
+   if(general_data->filenames.iwrite_conf_binary==0){
+      fp_cfname  = cfopen(general_data->filenames.forcename,"a");
+      for(ip=1;ip<=pi_beads;ip++){
+       for(i=1;i<=(class->clatoms_info.natm_tot);i++){
+       fprintf(fp_cfname,"%.12g  %.12g  %.12g\n",class->clatoms_pos[ip].fx[i],
+              class->clatoms_pos[ip].fy[i],class->clatoms_pos[ip].fz[i]);
+       }/*endfor*/
+      }/*endfor*/
+      for(i=0;i<3;i++) 
+        fprintf(fp_cfname,"%.13g %.13g %.13g\n",general_data->cell.hmat[1+i],
+               general_data->cell.hmat[(4+i)],general_data->cell.hmat[(7+i)]);
+      fflush(fp_cfname);
+      fclose(fp_cfname);
+    }/*endif*/
+
+   if(general_data->filenames.iwrite_conf_binary==1){
+    fp_cfname = cfopen(general_data->filenames.forcename,"a");
+    n=1;
+   for(ip=1;ip<=pi_beads;ip++){
+    for(i=1;i<=(class->clatoms_info.natm_tot);i++){
+     fwrite(&(class->clatoms_pos[ip].fx)[i],sizeof(double),n,fp_cfname);
+     fwrite(&(class->clatoms_pos[ip].fy)[i],sizeof(double),n,fp_cfname);
+     fwrite(&(class->clatoms_pos[ip].fz)[i],sizeof(double),n,fp_cfname);
+    }/*endfor*/
+   }/*endfor*/
+    for(i=0;i<3;i++){ 
+      fwrite(&(general_data->cell.hmat)[1+i],sizeof(double),n,fp_cfname);
+      fwrite(&(general_data->cell.hmat)[4+i],sizeof(double),n,fp_cfname);
+      fwrite(&(general_data->cell.hmat)[7+i],sizeof(double),n,fp_cfname);
+    }/*endfor*/ 
+      fclose(fp_cfname);
+   }/*endif*/
+   }/*endif*/
+
   
 /*==========================================================================*/
   }/* end routine */

@@ -132,20 +132,18 @@ void cp_energy_control_pimd(CLASS *class,BONDED *bonded,
         }/*endfor*/
       }/*endfor*/
 
-      if(iget_full_inter == 1) {
-        if(pi_beads>1){
-          for(ip=1;ip<= pi_beads_proc;ip++){
-            fxt = class->clatoms_pos[ip].fxt;
-            fyt = class->clatoms_pos[ip].fyt;
-            fzt = class->clatoms_pos[ip].fzt;
-            for(i=1;i<= class->clatoms_info.natm_tot;i++){
-              fxt[i] /= pi_beads;
-              fyt[i] /= pi_beads;
-              fzt[i] /= pi_beads;
-            }/*endfor*/
-          }/*endfor*/
-        }/*endif*/
-      }/*endif*/
+/*==========================================================================*/
+/* XIV) Save the forces coming from the potential BEFORE transformation for */
+/*      use in constructing the fourth-order estimators a la Takahashi-Imada. */
+/*      These are also the forces that will be used to construct the virial dstimator */
+
+      for(ip=1;ip<= pi_beads_proc;ip++){
+        for(i=1;i<=natm_tot;i++){
+           class->clatoms_pos[ip].fxt[i] = class->clatoms_pos[ip].fx[i];
+           class->clatoms_pos[ip].fyt[i] = class->clatoms_pos[ip].fy[i];
+           class->clatoms_pos[ip].fzt[i] = class->clatoms_pos[ip].fz[i];
+        }/*endfor*/
+      }/*endfor*/
 
     }/*endif : myid_state == 0*/
 
