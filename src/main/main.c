@@ -33,6 +33,9 @@
 #include "../proto_defs/proto_parse_entry.h"
 #include "../proto_defs/proto_communicate_wrappers.h"
 #include "../proto_defs/proto_communicate_entry.h"
+#if defined PLUMED
+#include "../proto_defs/proto_plumed.h"
+#endif
 
 
 /*==========================================================================*/
@@ -80,6 +83,10 @@ int main (int argc, char *argv[]) {
   /* invoke user interface */
 
   parse(&class, &bonded, &general_data, &cp, &analysis, argv[1]);
+
+  #if defined PLUMED
+  plumed_piny_init(&general_data, &class);
+  #endif
 
   /*====================*/
   /* perform simulation */
@@ -129,13 +136,18 @@ int main (int argc, char *argv[]) {
     control_cp_pimd_min(&class, &bonded, &general_data, &cp, &analysis);
   }
 
-  /*==============*/
-  /* exit program */
+  /*===========================*/
+  /* finalize and exit program */
+
+  #if defined PLUMED
+  plumed_piny_finalize();
+  #endif
 
   if (class.communicate.np > 1) {
     Barrier(class.communicate.world);
     Finalize();
   }
+
   fflush(stdout);
   return 0;
 

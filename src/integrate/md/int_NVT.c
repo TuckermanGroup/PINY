@@ -22,6 +22,9 @@
 #include "../proto_defs/proto_intra_con_entry.h"
 #include "../proto_defs/proto_energy_ctrl_entry.h"
 #include "../proto_defs/proto_communicate_wrappers.h"
+#if defined PLUMED
+#include "../proto_defs/proto_plumed.h"
+#endif
 
 /*==========================================================================*/
 /*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
@@ -97,6 +100,10 @@ void int_NVT(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
     (class->energy_ctrl.iget_res_intra) = 0;
 
     energy_control(class,bonded,general_data);
+
+    #if defined PLUMED
+    plumed_piny_calc(general_data, class);
+    #endif
 
 /*==========================================================================*/
 /* 3) Evolve system from dt/2 to dt                                         */

@@ -619,7 +619,9 @@ void parse(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,CP *cp,
     printf("\n");
 
     #if defined PLUMED
-      printf("Interface to PLUMED is enabled.\n");
+
+      printf("Interface to PLUMED was enabled at compile time.\n");
+
       #if defined PARALLEL
         printf("Parallel version.\n");
         printf("Not yet implemented.\n");
@@ -646,12 +648,9 @@ void parse(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,CP *cp,
   fflush(stdout);
   fflush(stderr);
 
-
 /*------------------------------------------------------------------------*/
   }/*end routine*/ 
 /*==========================================================================*/
-
-
 
 
 /*==========================================================================*/
