@@ -44,6 +44,16 @@ void plumed_piny_init(GENERAL_DATA *general_data, CLASS *class) {
     exit(1);
   }
 
+  #if defined PLUMED_DEBUG
+  printf("DBG PLUMED | total n_atom = %d\n", class->clatoms_info.natm_tot);
+  printf("DBG PLUMED | %d %d\n", class->communicate.myid,
+                                 class->communicate.myid_forc);
+  printf("DBG PLUMED | myatm_start = %d\n", class->clatoms_info.myatm_start);
+  printf("DBG PLUMED | myatm_end = %d\n", class->clatoms_info.myatm_end);
+  printf("DBG PLUMED | n_RESPA_total = %d\n", n_RESPA_total);
+  printf("DBG PLUMED | dt = %12.6f\n", dt);
+  #endif
+
   plumed_gcreate();
   plumed_gcmd("setMDEngine", "PINY");
   plumed_gcmd("setRealPrecision", &real_precision);
@@ -51,6 +61,10 @@ void plumed_piny_init(GENERAL_DATA *general_data, CLASS *class) {
   plumed_gcmd("setMDLengthUnits", &lengthUnits);
   plumed_gcmd("setMDTimeUnits", &timeUnits);
   plumed_gcmd("setPlumedDat", &plumedInput);
+  #if defined PARALLEL
+  plumed_gcmd("setMPIComm", &class->communicate.comm_forc);
+  //plumed_gcmd("setMPIComm", &class->communicate.world);
+  #endif
   plumed_gcmd("setLogFile", &plumedLog);
   plumed_gcmd("setTimestep", &dt);
   plumed_gcmd("setNatoms", &class->clatoms_info.natm_tot);
@@ -70,6 +84,7 @@ void plumed_piny_calc(GENERAL_DATA *general_data, CLASS *class) {
   double vtot;
   int n_RESPA_total;
   int step;
+  int myatm_start, myatm_end, natom_local;
 
   /* calculate inner time step number */
   n_RESPA_total = timeinfo->nres_tra *
@@ -80,19 +95,37 @@ void plumed_piny_calc(GENERAL_DATA *general_data, CLASS *class) {
   /* total potential energy */
   vtot = general_data->stat_avg.vintert + general_data->stat_avg.vintrat;
 
+  myatm_start = class->clatoms_info.myatm_start;
+  myatm_end = class->clatoms_info.myatm_end;
+  natom_local = myatm_end - myatm_start + 1;
+
+  #if defined PLUMED_DEBUG
+  printf("DBG PLUMED | step = %d\n", step);
+  printf("DBG PLUMED | local n_atom = %d\n", natom_local);
+  printf("DBG PLUMED | n_RESPA_total = %d\n", n_RESPA_total);
+  printf("DBG PLUMED | vtot before = %12.6f\n", vtot);
+  #endif
+
   plumed_gcmd("setStep", &step);
   plumed_gcmd("setEnergy", &vtot);
   plumed_gcmd("setBox", hmat);
-  plumed_gcmd("setMasses", &clatoms_info->mass[1]);
-  plumed_gcmd("setCharges", &clatoms_info->q[1]);
-  plumed_gcmd("setPositionsX", &clatoms_pos->x[1]);
-  plumed_gcmd("setPositionsY", &clatoms_pos->y[1]);
-  plumed_gcmd("setPositionsZ", &clatoms_pos->z[1]);
-  plumed_gcmd("setForcesX", &clatoms_pos->fx[1]);
-  plumed_gcmd("setForcesY", &clatoms_pos->fy[1]);
-  plumed_gcmd("setForcesZ", &clatoms_pos->fz[1]);
+  plumed_gcmd("setAtomsNlocal", &natom_local);
+  plumed_gcmd("setAtomsContiguous", &myatm_start);
+  plumed_gcmd("setMasses", &clatoms_info->mass[myatm_start]);
+  plumed_gcmd("setCharges", &clatoms_info->q[myatm_start]);
+  plumed_gcmd("setPositionsX", &clatoms_pos->x[myatm_start]);
+  plumed_gcmd("setPositionsY", &clatoms_pos->y[myatm_start]);
+  plumed_gcmd("setPositionsZ", &clatoms_pos->z[myatm_start]);
+  plumed_gcmd("setForcesX", &clatoms_pos->fx[myatm_start]);
+  plumed_gcmd("setForcesY", &clatoms_pos->fy[myatm_start]);
+  plumed_gcmd("setForcesZ", &clatoms_pos->fz[myatm_start]);
 
   plumed_gcmd("calc", NULL);
+
+  #if defined PLUMED_DEBUG
+  printf("DBG PLUMED | vtot after  = %12.6f\n", vtot);
+  printf("DBG PLUMED |\n");
+  #endif
 
 }
 

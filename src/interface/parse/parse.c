@@ -623,11 +623,9 @@ void parse(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,CP *cp,
       printf("Interface to PLUMED was enabled at compile time.\n");
 
       #if defined PARALLEL
-        printf("Parallel version.\n");
-        printf("Not yet implemented.\n");
-        exit(1);
+        printf("Parallel build.\n");
       #else
-        printf("Serial version.\n");
+        printf("Serial build.\n");
       #endif
     #else
       printf("Interface to PLUMED was not enabled at compile time.\n");
