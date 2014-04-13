@@ -33,42 +33,24 @@ void verlist_create(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
 /*========================================================================*/ 
 /*            Local variable                                              */
 
-  int intact_now,ifdx,natm1_typ2,iii,nstart,nstart_res;
-  int isum,ibrk,jpart,num_brk;
-  int i2,i3,ivdx;
-  int iitemp,jjtemp,kktemp,mtemp,itemp,nver_now_loc;
-  int upper,lower;
-  int n2;
-  double q1t,q2t,qtemp,qsum,rtemp;
+  int intact_now, isum, ibrk, num_brk;
+
 
 /* Local Pointers */
 
   int *for_scr_i_index         = for_scr->i_index;
   int *for_scr_j_index         = for_scr->j_index;
   int *for_scr_i_indext        = for_scr->i_indext;
-  int *for_scr_j_indext        = for_scr->j_indext;
   int *atommaps_iatm_atm_typ   = atommaps->iatm_atm_typ;
   double *clatoms_x            = clatoms_pos->x;
   double *clatoms_y            = clatoms_pos->y;
   double *clatoms_z            = clatoms_pos->z;
-  double *intra_scr_x1         = intra_scr->x1;  
-  double *intra_scr_y1         = intra_scr->y1;  
-  double *intra_scr_z1         = intra_scr->z1;  
-  double *intra_scr_x2         = intra_scr->x2;  
-  double *intra_scr_y2         = intra_scr->y2;  
-  double *intra_scr_z2         = intra_scr->z2;  
-  double *intra_scr_dx12       = intra_scr->dx12;  
-  double *intra_scr_dy12       = intra_scr->dy12;  
-  double *intra_scr_dz12       = intra_scr->dz12;  
-  double *intra_scr_x5         = intra_scr->x5;  
-  double *intra_scr_y5         = intra_scr->y5;  
-  double *intra_scr_z5         = intra_scr->z5;  
-  double *intra_scr_x6         = intra_scr->x6;  
-  double *intra_scr_y6         = intra_scr->y6;  
-  double *intra_scr_z6         = intra_scr->z6;  
-  double *intra_scr_dx56       = intra_scr->dx56;  
-  double *intra_scr_dy56       = intra_scr->dy56;  
-  double *intra_scr_dz56       = intra_scr->dz56;  
+  double *intra_scr_dx12       = intra_scr->dx12;
+  double *intra_scr_dy12       = intra_scr->dy12;
+  double *intra_scr_dz12       = intra_scr->dz12;
+  double *intra_scr_dx56       = intra_scr->dx56;
+  double *intra_scr_dy56       = intra_scr->dy56;
+  double *intra_scr_dz56       = intra_scr->dz56;
   double *interact_cutskin     = interact->cutskin;
   double *interact_cutskin_res = interact->cutskin_res;
   double *interact_cutskin_root     = interact->cutskin_root;
@@ -94,70 +76,7 @@ void verlist_create(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
   int iver_fill  = nbr_list->verlist.iver_fill;
   int iver_count = nbr_list->verlist.iver_count;
   int int_res_ter = timeinfo->int_res_ter;
-  int ishave_opt,intact_use;
-  int icoul;
 
-  double *interact_cutoff         = interact->cutoff;
-  double *interact_cutoff_res     = interact->cutoff_res;
-  double *interact_rmin_spl       = interact->rmin_spl;
-  double *interact_dri_spl        = interact->dri_spl;
-  double *interact_dr_spl         = interact->dr_spl;
-  double *interact_vcut_coul      = interact->vcut_coul;
-  double interact_rheal_res       = interact->rheal_res;
-  double interact_rheal_resi;
-  double *interact_cv0            = interact->cv0;
-  double *interact_cv0_c          = interact->cv0_c;
-  double *interact_cdv0           = interact->cdv0;
-  double *interact_cdv0_c         = interact->cdv0_c;
-  int diele_opt = interact->dielectric_opt;
-
-  double *intra_scr_q2            = intra_scr->q2;
-  double *intra_scr_del_r         = intra_scr->del_r;
-  double *intra_scr_swit_hard     = intra_scr->dz43;
-  double *intra_scr_swit          = intra_scr->swit;
-  double *intra_scr_vcut_coul     = intra_scr->vcut_coul;
-  double *intra_scr_vpot          = intra_scr->vpot;
-  double *intra_scr_spl_tmp       = intra_scr->spl_tmp;
-  double *intra_scr_fx1           = intra_scr->fx1;
-  double *intra_scr_fy1           = intra_scr->fy1;
-  double *intra_scr_fz1           = intra_scr->fz1;
-  double *intra_scr_fx2           = intra_scr->fx2;
-  double *intra_scr_fy2           = intra_scr->fy2;
-  double *intra_scr_fz2           = intra_scr->fz2;
-  double *intra_scr_c_0           = intra_scr->c_0;
-  double * intra_scr_p11          = intra_scr->p11;
-  double * intra_scr_p22          = intra_scr->p22;
-  double * intra_scr_p33          = intra_scr->p33;
-  double * intra_scr_p12          = intra_scr->p12;
-  double * intra_scr_p21          = intra_scr->p21;
-  double * intra_scr_p13          = intra_scr->p13;
-  double * intra_scr_p31          = intra_scr->p31;
-  double * intra_scr_p23          = intra_scr->p23;
-  double * intra_scr_p32          = intra_scr->p32;
- 
-  int nchrg                       = clatoms_info->nchrg;
-  double *clatoms_fxt             = clatoms_pos->fxt;
-  double *clatoms_fyt             = clatoms_pos->fyt;
-  double *clatoms_fzt             = clatoms_pos->fzt;
-  double *clatoms_fx              = clatoms_pos->fx;
-  double *clatoms_fy              = clatoms_pos->fy;
-  double *clatoms_fz              = clatoms_pos->fz;
-  double *clatoms_q               = clatoms_info->q;
-  int interact_nsplin;
-  int interact_nsplin_m2;
-
-  double wght_res;
-  double wght_full;
-  double wght_lnk=1.0;
-  double wght_ter;
-  int energy_ctrl_iget_res_inter;
-  int energy_ctrl_iget_full_inter;
-  int energy_ctrl_int_res_ter;
-  int energy_ctrl_isep_vvdw;
-
-  interact_nsplin         = interact->nsplin;
-  interact_nsplin_m2      = interact->nsplin-2;
-  interact_rheal_resi     = 1.0/interact->rheal_res;
 
 /*========================================================================*/
 /* I) Error check                                                         */
@@ -317,17 +236,16 @@ void vercreate_posdata_fetch(double *dx12,double *dy12,double *dz12,
 /*=======================================================================*/
 /*            Local variable declarations                                */
 
-  int i,ibrk,lower,iii;
-  int jpart,ktemp,icoul;
-  int upper,n2;
-  double qsum,qtemp;
-  double x1t,y1t,z1t;
-  double x2t,y2t,z2t;
-  double x5t,y5t,z5t;
-  double x6t,y6t,z6t;
-  double q1t,q2t;
-  int natm1_typ2,i2,i3,jjtemp,iitemp,kktemp,itemp,jtemp;
-  int iatm_typt,jatm_typt;
+  int ibrk, lower;
+  int jpart, ktemp;
+  int upper;
+  double x1t, y1t, z1t;
+  double x2t, y2t, z2t;
+  double x5t, y5t, z5t;
+  double x6t, y6t, z6t;
+  int natm1_typ2, i2, i3, jjtemp, iitemp, kktemp, itemp, jtemp;
+  int iatm_typt, jatm_typt;
+
 
 /*=======================================================================*/
 /* I) Fetch the positions, get displacements and interaction number      */
@@ -471,8 +389,9 @@ void vercreate_list_count_fill(
 /*=======================================================================*/
 /*            Local variable declarations                                */
 
-  int jpart,ifdx,ibrk,upper,lower,nstart,nstart_res;
-  int iii;
+  int jpart, ifdx, ibrk, upper, lower, nstart, nstart_res;
+
+
 /*==========================================================================*/
 /* 0) Get distances and cutoffs                                             */
 
@@ -611,8 +530,10 @@ void vercreate_list_count_fill_root(
 /*=======================================================================*/
 /*            Local variable declarations                                */
 
-  int jpart,ifdx,ibrk,upper,lower,nstart,nstart_res;
-  int iii,jtemp,ntemp;
+  int jpart, ifdx, ibrk, upper, lower, nstart, nstart_res;
+  int ntemp;
+
+
 /*==========================================================================*/
 /* 0) Get distances and cutoffs                                             */
 
@@ -722,8 +643,8 @@ void vercreate_list_count(
 /*=======================================================================*/
 /*            Local variable declarations                                */
 
-   int jpart,ic,intact_use,ifdx,ivdx,iii;
-   double cutoff,r;
+   int jpart, ic, intact_use, ifdx;
+   double cutoff, r;
 
 /*=======================================================================*/
 /* II) Shrink and count the list no respa                               */
@@ -814,8 +735,9 @@ void vercreate_list_count_root(
 /*=======================================================================*/
 /*            Local variable declarations                                */
 
-   int jpart,ic,intact_use,ifdx,ivdx,ntemp,iii;
-   double cutoff,r;
+   int jpart, ic, intact_use, ifdx, ntemp;
+   double cutoff, r;
+
 
 /*=======================================================================*/
 /* II) Shrink and count the list no respa                               */
@@ -913,9 +835,9 @@ void vercreate_list_fill(
 /*=======================================================================*/
 /*            Local variable declarations                                */
 
-   int jpart,ic,intact_use,ifdx,ivdx;
-   double cutoff,r,cutoff_res;
-   int upper,lower,ibrk,iii;
+   int jpart, ic, intact_use, ifdx, ivdx;
+   double cutoff, r;
+
 
 /*=======================================================================*/
 /* II) Shrink and fill the list no respa                                 */
@@ -1019,10 +941,10 @@ void vercreate_list_fill_root(
 /*=======================================================================*/
 /*            Local variable declarations                                */
 
-   int jpart,ic,intact_use,ifdx,ivdx;
-   double cutoff,r,cutoff_res;
-   int upper,lower,ibrk;
+   int jpart, ic, intact_use, ifdx, ivdx;
+   double cutoff, r;
    int ntemp;
+
 
 /*=======================================================================*/
 /* II) Shrink and fill the list no respa                                 */
