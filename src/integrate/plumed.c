@@ -11,6 +11,7 @@
 - make it work with PIMD bead level parallelization
 
 - add support for virial tensor
+  check that we are getting only zero forces on box if it's not a NpT simulation
 
 - PLUMED on all beads would have to happen in energy_control_pimd.c
   around line 200 - before forces are transformed to modes
@@ -19,7 +20,17 @@
 
 */
 
+
+//#define PLUMED_DEBUG
+
+
+/*==========================================================================*/
 void plumed_piny_init(GENERAL_DATA *general_data, CLASS *class) {
+/*==========================================================================
+
+Initialize the PLUMED global object with all data that is needed.
+
+============================================================================*/
 
   TIMEINFO *timeinfo = &general_data->timeinfo;
   double dt;
@@ -65,7 +76,6 @@ void plumed_piny_init(GENERAL_DATA *general_data, CLASS *class) {
   plumed_gcmd("setPlumedDat", &plumedInput);
   #if defined PARALLEL
   plumed_gcmd("setMPIComm", &class->communicate.comm_forc);
-  //plumed_gcmd("setMPIComm", &class->communicate.world);
   #endif
   plumed_gcmd("setLogFile", &plumedLog);
   plumed_gcmd("setTimestep", &dt);
@@ -74,9 +84,20 @@ void plumed_piny_init(GENERAL_DATA *general_data, CLASS *class) {
   plumed_gcmd("init", NULL);
 
 }
+/*--------------------------------------------------------------------------*/
 
 
+/*==========================================================================*/
 void plumed_piny_calc(GENERAL_DATA *general_data, CLASS *class) {
+/*==========================================================================
+
+Pass pointers to all per-step data to PLUMED and run the PLUMED calculation.
+
+Currently, the pressure tensor is not modified and it seems that PLUMED will
+not complain even if you try to put bias on box vectors, so some care is
+probably needed.
+
+============================================================================*/
 
   CLATOMS_INFO *clatoms_info = &class->clatoms_info;
   CLATOMS_POS *clatoms_pos = &class->clatoms_pos[1];
@@ -143,6 +164,7 @@ void plumed_piny_calc(GENERAL_DATA *general_data, CLASS *class) {
 void plumed_piny_finalize() {
   plumed_gfinalize();
 }
+/*--------------------------------------------------------------------------*/
 
 #endif
 
