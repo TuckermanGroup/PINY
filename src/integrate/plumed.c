@@ -88,6 +88,8 @@ void plumed_piny_calc(GENERAL_DATA *general_data, CLASS *class) {
   int step;
   int myatm_start, myatm_start0, myatm_end, natom_local;
 
+  TIMER_START("PLUMED");
+
   /* calculate inner time step number */
   n_RESPA_total = timeinfo->nres_tra *
                   timeinfo->nres_tor *
@@ -129,6 +131,8 @@ void plumed_piny_calc(GENERAL_DATA *general_data, CLASS *class) {
   printf("DBG PLUMED | vtot after  = %12.6f\n", vtot);
   printf("DBG PLUMED |\n");
   #endif
+
+  TIMER_STOP("PLUMED");
 
 }
 
