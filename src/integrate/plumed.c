@@ -14,8 +14,10 @@
 
 - PLUMED on all beads would have to happen in energy_control_pimd.c
   around line 200 - before forces are transformed to modes
+  that would actually probably be a problem, as at that time, some things are not done - like pressure tensor
+  figure out details
 
-- Why does PLUMED not add the bias potential energy to this?
+- Why does PLUMED not add the bias potential energy to the energy it gets?
   I should be able to save the difference to keep track of energy conservation.
 
 */
@@ -84,7 +86,7 @@ void plumed_piny_calc(GENERAL_DATA *general_data, CLASS *class) {
   double vtot;
   int n_RESPA_total;
   int step;
-  int myatm_start, myatm_end, natom_local;
+  int myatm_start, myatm_start0, myatm_end, natom_local;
 
   /* calculate inner time step number */
   n_RESPA_total = timeinfo->nres_tra *
@@ -98,6 +100,7 @@ void plumed_piny_calc(GENERAL_DATA *general_data, CLASS *class) {
   myatm_start = class->clatoms_info.myatm_start;
   myatm_end = class->clatoms_info.myatm_end;
   natom_local = myatm_end - myatm_start + 1;
+  myatm_start0 = myatm_start - 1;
 
   #if defined PLUMED_DEBUG
   printf("DBG PLUMED | step = %d\n", step);
@@ -110,7 +113,7 @@ void plumed_piny_calc(GENERAL_DATA *general_data, CLASS *class) {
   plumed_gcmd("setEnergy", &vtot);
   plumed_gcmd("setBox", hmat);
   plumed_gcmd("setAtomsNlocal", &natom_local);
-  plumed_gcmd("setAtomsContiguous", &myatm_start);
+  plumed_gcmd("setAtomsContiguous", &myatm_start0);
   plumed_gcmd("setMasses", &clatoms_info->mass[myatm_start]);
   plumed_gcmd("setCharges", &clatoms_info->q[myatm_start]);
   plumed_gcmd("setPositionsX", &clatoms_pos->x[myatm_start]);
