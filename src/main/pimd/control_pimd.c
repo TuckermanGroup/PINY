@@ -33,9 +33,6 @@
 #include "../proto_defs/proto_energy_ctrl_entry.h"
 #include "../proto_defs/proto_pimd_entry.h"
 #include "../proto_defs/proto_communicate_wrappers.h"
-#if defined PLUMED
-#include "../proto_defs/proto_plumed.h"
-#endif
 
 
 /*==========================================================================*/
@@ -71,13 +68,8 @@ void control_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
 /*=======================================================================*/
 /* 0) Preliminary MD stuff                                               */
 
-
   prelim_pimd(class,bonded,general_data);
   if(num_proc>1){Barrier(world);}
-
-  #if defined PLUMED
-  plumed_piny_calc(general_data, class);
-  #endif
 
 /*======================================================================*/
 /* I) Write to Screen                                                   */
@@ -511,12 +503,4 @@ void prelim_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
 /*-----------------------------------------------------------------------*/
    }/*end routine*/
 /*==========================================================================*/
-
-
-
-
-
-
-
-
 

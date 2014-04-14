@@ -139,14 +139,6 @@ void int_NVT_res(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
 
           energy_control(class,bonded,general_data);
 
-          /* For now, PLUMED runs every step.
-           * In principle, it could have a configurable depth
-           * in the RESPA hierarchy.
-           */
-          #if defined PLUMED
-          plumed_piny_calc(general_data, class);
-          #endif
-
 /*==========================================================================*/
 /* 3) Evolve system from dt/2 to dt                                         */
 
