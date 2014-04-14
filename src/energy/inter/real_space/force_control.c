@@ -94,12 +94,11 @@ void force_control(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
        excl,intra_scr,vreal,vvdw,vcoul,class_comm_forc_pkg);
   }/*endif*/
 
+  #if defined H2
+  force_H2(clatoms_info, clatoms_pos, cell, vreal, vcoul);
+  #endif
+
 /*---------------------------------------------------------------------*/
   }/*end routine */
 /*==========================================================================*/
-
-
-
-
-
 

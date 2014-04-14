@@ -1075,7 +1075,7 @@ void assign_thermo_forc(CLASS *class)
 /* III) Compress the thermostat information and make the share map   */
 
    ic = 0;
-   is = 0;
+   is = 1;
    mytherm_start = 1;
    mytherm_end = 0;
    itherm_share_min_old = -1;

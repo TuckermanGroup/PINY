@@ -139,10 +139,11 @@ typedef struct clatoms_info{
   int nchrg_mall;
   int hess_calc;               /* Num: Calculate the atomic hessian     */
   int natm_proc;               /* Num: # of atms per processor */
+  int N_H2;                    /* Num: number of H2 molecules            */
+  int i_H2_start;              /* Num: index of first atom of H2 block   */
   int nab_initio;              /* Num: # ab inito atms     Lth:<=natm_tot*/
   int myatm_start,myatm_end;   /* Num: Start and ending index for atoms on 
                                        processors   */
-
 
   double gamma_adb;            /* Num: Adiabaticity parameter            */
   double wght_pimd;            /* Num: bead harmonic RESPA wght          */

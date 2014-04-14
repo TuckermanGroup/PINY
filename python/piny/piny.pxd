@@ -36,6 +36,8 @@ cdef extern from 'typ_defs/typedefs_class.h':
         int nchrg_mall
         int hess_calc
         int natm_proc
+        int N_H2
+        int i_H2_start
         int nab_initio
         int myatm_start, myatm_end
         double gamma_adb

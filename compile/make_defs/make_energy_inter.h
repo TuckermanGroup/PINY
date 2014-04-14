@@ -125,6 +125,20 @@ force_npol.o     :       $(STANDARD) $(DEFINES) \
 	$(COBJ) $(CODE)/energy/inter/real_space/force_npol.c
 
 #------------------------------------------------------------------
+force_H2.o: $(STANDARD) $(DEFINES) \
+            $(TYP_CLASS) $(TYP_BND) $(TYP_GEN) \
+            $(REAL_LOC) $(ENR_CTRL_ENT) $(MATH) \
+            $(CODE)/energy/inter/real_space/force_H2.c
+	$(ECHO) $@
+	$(COBJ) $(CODE)/energy/inter/real_space/force_H2.c
+
+#------------------------------------------------------------------
+H2_pot.o: $(STANDARD) $(DEFINES) $(FRND_ENT) \
+          $(CODE)/energy/inter/real_space/H2_pot.c
+	$(ECHO) $@
+	$(COBJ) $(CODE)/energy/inter/real_space/H2_pot.c
+
+#------------------------------------------------------------------
 period.o     :           $(STANDARD) $(DEFINES) \
                          $(TYP_GEN) $(TYP_CLASS) $(TYP_BND) \
                          $(ENR_CTRL_ENT) \
