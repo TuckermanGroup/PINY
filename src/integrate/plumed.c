@@ -8,17 +8,14 @@
 
 /* TODO
 
-- make it work in the parallel case
+- make it work with PIMD bead level parallelization
 
-- add support for virial
+- add support for virial tensor
 
 - PLUMED on all beads would have to happen in energy_control_pimd.c
   around line 200 - before forces are transformed to modes
   that would actually probably be a problem, as at that time, some things are not done - like pressure tensor
   figure out details
-
-- Why does PLUMED not add the bias potential energy to the energy it gets?
-  I should be able to save the difference to keep track of energy conservation.
 
 */
 
@@ -38,9 +35,11 @@ void plumed_piny_init(GENERAL_DATA *general_data, CLASS *class) {
                   timeinfo->nres_ter;
   dt = timeinfo->dt / n_RESPA_total;
 
+  /* file names, hard-wired for now */
   char plumedInput[] = "plumed.dat";
   char plumedLog[] = "plumed.out";
 
+  /* check if PLUMED is available */
   if (!plumed_installed()) {
     printf("Error: PLUMED enabled but not found.\n");
     exit(1);
@@ -56,6 +55,7 @@ void plumed_piny_init(GENERAL_DATA *general_data, CLASS *class) {
   printf("DBG PLUMED | dt = %12.6f\n", dt);
   #endif
 
+  /* create and initialize global PLUMED object */
   plumed_gcreate();
   plumed_gcmd("setMDEngine", "PINY");
   plumed_gcmd("setRealPrecision", &real_precision);
@@ -71,7 +71,6 @@ void plumed_piny_init(GENERAL_DATA *general_data, CLASS *class) {
   plumed_gcmd("setTimestep", &dt);
   plumed_gcmd("setNatoms", &class->clatoms_info.natm_tot);
   plumed_gcmd("setNoVirial", NULL);
-
   plumed_gcmd("init", NULL);
 
 }
@@ -83,7 +82,7 @@ void plumed_piny_calc(GENERAL_DATA *general_data, CLASS *class) {
   CLATOMS_POS *clatoms_pos = &class->clatoms_pos[1];
   TIMEINFO *timeinfo = &general_data->timeinfo;
   double *hmat = &general_data->cell.hmat[1];
-  double vtot;
+  double vtot, vbias;
   int n_RESPA_total;
   int step;
   int myatm_start, myatm_start0, myatm_end, natom_local;
@@ -108,9 +107,9 @@ void plumed_piny_calc(GENERAL_DATA *general_data, CLASS *class) {
   printf("DBG PLUMED | step = %d\n", step);
   printf("DBG PLUMED | local n_atom = %d\n", natom_local);
   printf("DBG PLUMED | n_RESPA_total = %d\n", n_RESPA_total);
-  printf("DBG PLUMED | vtot before = %12.6f\n", vtot);
   #endif
 
+  /* pass pointers to all data to PLUMED */
   plumed_gcmd("setStep", &step);
   plumed_gcmd("setEnergy", &vtot);
   plumed_gcmd("setBox", hmat);
@@ -125,10 +124,15 @@ void plumed_piny_calc(GENERAL_DATA *general_data, CLASS *class) {
   plumed_gcmd("setForcesY", &clatoms_pos->fy[myatm_start]);
   plumed_gcmd("setForcesZ", &clatoms_pos->fz[myatm_start]);
 
+  /* run PLUMED */
   plumed_gcmd("calc", NULL);
 
+  /* get bias energy and store it, for example in intermolecular */
+  plumed_gcmd("getBias",&vbias);
+  general_data->stat_avg.vintert += vbias;
+
   #if defined PLUMED_DEBUG
-  printf("DBG PLUMED | vtot after  = %12.6f\n", vtot);
+  printf("DBG PLUMED | vbias = %12.6f\n", vbias);
   printf("DBG PLUMED |\n");
   #endif
 
