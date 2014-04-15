@@ -411,5 +411,6 @@ void H2_pot_for(double *, double *, double *, double *,
 /*--------------------------------------------------------------------------*/
 /* force_H2.c - all H2-H2 interactions */
 
-void force_H2(CLATOMS_INFO *, CLATOMS_POS *, CELL *, double *, double *);
+void force_H2(CLATOMS_INFO *, CLATOMS_POS *, INTERACT *, CELL *,
+              double *, double *);
 

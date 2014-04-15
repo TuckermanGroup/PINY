@@ -9,19 +9,18 @@
 //#define DEBUG_H2
 
 // TODO
-// - get cutoff and healing length from settings
+// - get cutoff from settings
 // - what about the pressure tensor - is it enough that I update the forces?
 // - do I need to modify vcoul and vvdw as well?
 // - double check sign of elstat correction forces - sign on energy is correct,
 //   but then it seems forces should be the other way around
-// - only run this as often as non-bonded interactions (in force control)
 // - possibly take advantage of neighbor lists
 // - add "if more than 0 H2 molecules" to force control
 
 
 /*==========================================================================*/
 void elstat_corr(double *r1, double *ff1, double *r2, double *ff2,
-                 double qq, double *v_H2_pair) {
+                 double qq, double *v_H2_pair, double *vcoul) {
 /*============================================================================
 
 Subtract direct electrostatic interaction of two particles from forces
@@ -31,7 +30,7 @@ and energy.
 
   double dx, dy, dz;
   double fx, fy, fz;
-  double dinv, qqdinv3;
+  double dinv, qqdinv3, vcorr;
 
   /* relative vector and some helpers */
   dx = r2[0] - r1[0];
@@ -54,13 +53,16 @@ and energy.
   ff2[2] += fz;
 
   /* subtract interaction energy */
-  *v_H2_pair -= qq * dinv;
+  vcorr = qq * dinv;
+  *v_H2_pair -= vcorr;
+  *vcoul -= vcorr;
 }
 
 
 /*==========================================================================*/
 void force_H2(CLATOMS_INFO *clatoms_info,
               CLATOMS_POS *clatoms_pos,
+              INTERACT *interact,
               CELL *cell,
               double *vreal, double *vcoul) {
 /*============================================================================
@@ -139,9 +141,11 @@ ordering [H H F].
   fzt_ip = clatoms_pos->fzt;
 
   // TODO: extract cutoff and healing length for F-F interactions from settings
-  rcut = 8.5;
-  rsw = 7.5;
-  rheal = rcut - rsw;
+  //int icutoff = 10;                 // TODO: find this out once
+  //rcut = interact->cutoff[icutoff];
+  rcut = 15.0;
+  rheal = interact->rheal_res;
+  rsw = rcut - rheal;
 
   /* loop over all H2 molecules */
   for (i1=0; i1<N_H2; ++i1) {
@@ -239,15 +243,15 @@ ordering [H H F].
       ffF2[0] = 0.0;
       ffF2[1] = 0.0;
       ffF2[2] = 0.0;
-      elstat_corr(r1, ff1,  r3,  ff3,  qHH, &v_H2_pair);
-      elstat_corr(r1, ff1,  r4,  ff4,  qHH, &v_H2_pair);
-      elstat_corr(r1, ff1,  rF2, ffF2, qHF, &v_H2_pair);
-      elstat_corr(r2, ff2,  r3,  ff3,  qHH, &v_H2_pair);
-      elstat_corr(r2, ff2,  r4,  ff4,  qHH, &v_H2_pair);
-      elstat_corr(r2, ff2,  rF2, ffF2, qHF, &v_H2_pair);
-      elstat_corr(r0, ffF1, r3,  ff3,  qHF, &v_H2_pair);
-      elstat_corr(r0, ffF1, r4,  ff4,  qHF, &v_H2_pair);
-      elstat_corr(r0, ffF1, rF2, ffF2, qFF, &v_H2_pair);
+      elstat_corr(r1, ff1,  r3,  ff3,  qHH, &v_H2_pair, vcoul);
+      elstat_corr(r1, ff1,  r4,  ff4,  qHH, &v_H2_pair, vcoul);
+      elstat_corr(r1, ff1,  rF2, ffF2, qHF, &v_H2_pair, vcoul);
+      elstat_corr(r2, ff2,  r3,  ff3,  qHH, &v_H2_pair, vcoul);
+      elstat_corr(r2, ff2,  r4,  ff4,  qHH, &v_H2_pair, vcoul);
+      elstat_corr(r2, ff2,  rF2, ffF2, qHF, &v_H2_pair, vcoul);
+      elstat_corr(r0, ffF1, r3,  ff3,  qHF, &v_H2_pair, vcoul);
+      elstat_corr(r0, ffF1, r4,  ff4,  qHF, &v_H2_pair, vcoul);
+      elstat_corr(r0, ffF1, rF2, ffF2, qFF, &v_H2_pair, vcoul);
 
       /* apply switch if needed */
       if (dFF > rsw) {

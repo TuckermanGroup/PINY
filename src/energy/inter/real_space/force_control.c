@@ -95,7 +95,9 @@ void force_control(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
   }/*endif*/
 
   #if defined H2
-  force_H2(clatoms_info, clatoms_pos, cell, vreal, vcoul);
+  if (energy_ctrl->iget_full_inter == 1) {
+    force_H2(clatoms_info, clatoms_pos, interact, cell, vreal, vcoul);
+  }
   #endif
 
 /*---------------------------------------------------------------------*/
