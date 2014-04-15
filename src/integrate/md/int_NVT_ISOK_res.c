@@ -99,7 +99,6 @@ void int_NVT_ISOK_res(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
     zero_constrt_iters(&(general_data->stat_avg));
     general_data->timeinfo.exit_flag = 0;
     
-    energy_control(class,bonded,general_data);
 
 /*==========================================================================*/
 /*==========================================================================*/
