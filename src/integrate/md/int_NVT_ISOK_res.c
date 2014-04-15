@@ -151,9 +151,16 @@ void int_NVT_ISOK_res(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
       /*endfor:ir_tor*/}
     /*endfor:ir_ter*/}
 
+/* 4) Scale by annealing factor                                             */
+
+  iflag=0;
+    if(anneal_opt == 1){
+        anneal_class(class,ann_rate,iflag,iflag_mass,anneal_target_temp,&exit_flag);
+        general_data->timeinfo.exit_flag = exit_flag;
+      }/*endif*/
 
 /*==========================================================================*/
-/* 4) Finalize                                                              */
+/* 5) Finalize                                                              */
 
    int_final_class(class,bonded,general_data,iflag);
 
