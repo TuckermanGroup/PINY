@@ -1120,7 +1120,6 @@ void assign_thermo_forc(CLASS *class)
     displs_therm[i] = recv_count_therm[(i-1)] + displs_therm[(i-1)];
   }/*endfor*/
 
-  #define DEBUG
   #if defined DEBUG
   for(i=0; i<=np_forc-1; i++) {
     Dbx_Barrier(world);
