@@ -12,11 +12,10 @@
 
 // TODO
 // - get cutoff from settings
-// - what about the pressure tensor - is it enough that I update the forces?
 // - do I need to modify vcoul and vvdw as well?
 // - double check sign of elstat correction forces - sign on energy is correct,
 //   but then it seems forces should be the other way around
-// - possibly take advantage of neighbor lists
+// - possibly take advantage of neighbor lists - seems difficult, as they are opaque
 // - add "if more than 0 H2 molecules" to force control
 
 
@@ -142,8 +141,7 @@ ordering [H H F].
   fyt_ip = clatoms_pos->fyt;
   fzt_ip = clatoms_pos->fzt;
 
-  // TODO: extract cutoff and healing length for F-F interactions from settings
-  //int icutoff = 10;                 // TODO: find this out once
+  // set cutoff and healing length for F-F interactions
   //rcut = interact->cutoff[icutoff];
   rcut = 15.0;
   rheal = interact->rheal_res;
