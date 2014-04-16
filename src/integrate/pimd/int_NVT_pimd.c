@@ -58,6 +58,9 @@ void int_NVT_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
     int iflag_mass;
     int myid = class->communicate.myid;
     int num_proc = class->communicate.np;
+    #if defined PLUMED
+    int itimei;
+    #endif
     double pkin;
     double *class_clatoms_mass;
     double *class_clatoms_x;
@@ -194,7 +197,12 @@ void int_NVT_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
           energy_control_pimd(class,bonded,general_data);
 
           #if defined PLUMED
-          plumed_piny_calc(general_data, class);
+          itimei = nres_ter * nres_tor * nres_tra *
+                   (general_data->timeinfo.itime - 1) +
+                   nres_tor * nres_tra * (ir_ter - 1) +
+                   nres_tra * (ir_tor - 1) +
+                   ir_tra;
+          plumed_piny_calc(general_data, class, itimei);
           #endif
 
       }else{

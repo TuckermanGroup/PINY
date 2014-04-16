@@ -33,6 +33,9 @@
 #include "../proto_defs/proto_energy_ctrl_entry.h"
 #include "../proto_defs/proto_pimd_entry.h"
 #include "../proto_defs/proto_communicate_wrappers.h"
+#if defined PLUMED
+#include "../proto_defs/proto_plumed.h"
+#endif
 
 
 /*==========================================================================*/
@@ -381,7 +384,7 @@ void prelim_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
   }/*endif*/
 
 /*========================================================================*/
-/* VI) Initialize free energy stuff                                       */
+/* V) Initialize free energy stuff                                        */
 
   if(bonded->bond_free.num != 0){
     for(i=1;i<= (bonded->bond_free.num);i++){
@@ -409,7 +412,7 @@ void prelim_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
 
 
 /*=======================================================================*/
-/*  IV) Write Energy to screen                                           */
+/* VI) Write Energy to screen                                            */
 /*=======================================================================*/
 
   general_data->filenames.ifile_open = 1;
@@ -489,9 +492,16 @@ void prelim_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
    output_pimd(class,general_data,bonded);
   }/*endif*/
 
+/*=======================================================================*/
+/* VII) run PLUMED at step 0 */
+
+  #if defined PLUMED
+  plumed_piny_calc(general_data, class, 0);
+  #endif
+
 
 /*=======================================================================*/
-/*   VII) Write to Screen         */
+/* VIII) Write to Screen */
 
   if(error_check_on==1){
    printf("\n");

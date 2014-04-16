@@ -26,9 +26,6 @@
 #include "../proto_defs/proto_friend_lib_entry.h"
 #include "../proto_defs/proto_communicate_wrappers.h"
 #include "../proto_defs/proto_math.h"
-#if defined PLUMED
-#include "../proto_defs/proto_plumed.h"
-#endif
 
 /*=======================================================================*/
 /*ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
@@ -222,15 +219,9 @@ void energy_control_final(CLASS *class, BONDED *bonded,
 
   }/* endif */
 
-/*========================================================================*/
-/* VI) run PLUMED                                                         */
-
-  #if defined PLUMED
-  plumed_piny_calc(general_data, class);
-  #endif
 
 /*========================================================================*/
-/* VII) Allreduce forces if force level par is on                          */
+/* VI) Allreduce forces if force level par is on                          */
 
   if( (iget_full_inter+iget_res_inter)>=1){
 

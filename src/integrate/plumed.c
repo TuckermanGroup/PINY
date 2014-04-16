@@ -88,7 +88,7 @@ Initialize the PLUMED global object with all data that is needed.
 
 
 /*==========================================================================*/
-void plumed_piny_calc(GENERAL_DATA *general_data, CLASS *class) {
+void plumed_piny_calc(GENERAL_DATA *general_data, CLASS *class, int step) {
 /*==========================================================================
 
 Pass pointers to all per-step data to PLUMED and run the PLUMED calculation.
@@ -101,20 +101,13 @@ probably needed.
 
   CLATOMS_INFO *clatoms_info = &class->clatoms_info;
   CLATOMS_POS *clatoms_pos = &class->clatoms_pos[1];
-  TIMEINFO *timeinfo = &general_data->timeinfo;
   double *hmat = &general_data->cell.hmat[1];
   double vtot, vbias;
-  int n_RESPA_total;
-  int step;
   int myatm_start, myatm_start0, myatm_end, natom_local;
 
   TIMER_START("PLUMED");
 
-  /* calculate inner time step number */
-  n_RESPA_total = timeinfo->nres_tra *
-                  timeinfo->nres_tor *
-                  timeinfo->nres_ter;
-  step = general_data->timeinfo.itime;
+  //#define PLUMED_DEBUG
 
   /* total potential energy */
   vtot = general_data->stat_avg.vintert + general_data->stat_avg.vintrat;
@@ -127,7 +120,6 @@ probably needed.
   #if defined PLUMED_DEBUG
   printf("DBG PLUMED | step = %d\n", step);
   printf("DBG PLUMED | local n_atom = %d\n", natom_local);
-  printf("DBG PLUMED | n_RESPA_total = %d\n", n_RESPA_total);
   #endif
 
   /* pass pointers to all data to PLUMED */
@@ -149,11 +141,11 @@ probably needed.
   plumed_gcmd("calc", NULL);
 
   /* get bias energy and store it, for example in intermolecular */
-  plumed_gcmd("getBias",&vbias);
+  plumed_gcmd("getBias", &vbias);
   general_data->stat_avg.vintert += vbias;
 
   #if defined PLUMED_DEBUG
-  printf("DBG PLUMED | vbias = %12.6f\n", vbias);
+  printf("DBG PLUMED | vbias = %18.12f Ha\n", vbias);
   printf("DBG PLUMED |\n");
   #endif
 

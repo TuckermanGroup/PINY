@@ -43,6 +43,9 @@ void int_NVT_res(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
     int int_res_ter,iii;
     int natm_tot,ichain,inhc;
     int iflag_mass = 1;
+    #if defined PLUMED
+    int itimei;
+    #endif
     int anneal_opt = general_data->simopts.anneal_opt;
     double anneal_target_temp = general_data->simopts.ann_target_temp;
     double ann_rate = general_data->simopts.ann_rate;
@@ -138,6 +141,15 @@ void int_NVT_res(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
              {(class->energy_ctrl.iget_full_intra) = 1;}
 
           energy_control(class,bonded,general_data);
+
+          #if defined PLUMED
+          itimei = nres_ter * nres_tor * nres_tra *
+                   (general_data->timeinfo.itime - 1) +
+                   nres_tor * nres_tra * (ir_ter - 1) +
+                   nres_tra * (ir_tor - 1) +
+                   ir_tra;
+          plumed_piny_calc(general_data, class, itimei);
+          #endif
 
 /*==========================================================================*/
 /* 3) Evolve system from dt/2 to dt                                         */
