@@ -1,3 +1,5 @@
+#if defined H2
+
 #include "standard_include.h"
 #include "../typ_defs/typedefs_class.h"
 #include "../typ_defs/typedefs_gen.h"
@@ -336,3 +338,4 @@ ordering [H H F].
 
 }
 
+#endif

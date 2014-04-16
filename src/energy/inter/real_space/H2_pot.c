@@ -1,4 +1,5 @@
-/*=======================================================================================*/
+#if defined H2
+
 #include "standard_include.h"
 #include "../proto_defs/proto_friend_lib_entry.h"
 
@@ -978,4 +979,6 @@ double H2H2pot(double rr, double theta1, double theta2, double phi12)
 
   return pot;
 }
+
+#endif
 
