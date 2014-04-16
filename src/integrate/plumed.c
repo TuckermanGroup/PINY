@@ -57,13 +57,30 @@ Initialize the PLUMED global object with all data that is needed.
   }
 
   #if defined PLUMED_DEBUG
-  printf("DBG PLUMED | total n_atom = %d\n", class->clatoms_info.natm_tot);
-  printf("DBG PLUMED | %d %d\n", class->communicate.myid,
-                                 class->communicate.myid_forc);
-  printf("DBG PLUMED | myatm_start = %d\n", class->clatoms_info.myatm_start);
-  printf("DBG PLUMED | myatm_end = %d\n", class->clatoms_info.myatm_end);
-  printf("DBG PLUMED | n_RESPA_total = %d\n", n_RESPA_total);
-  printf("DBG PLUMED | dt = %12.6f\n", dt);
+  char c;
+  int i;
+  for (i=0; i<class->communicate.np; ++i) {
+    if (class->communicate.myid == i) {
+      printf("DBG PLUMED | total n_atom = %d\n", class->clatoms_info.natm_tot);
+      printf("DBG PLUMED | my ID global = %d\n", class->communicate.myid);
+      printf("DBG PLUMED | my ID force  = %d\n", class->communicate.myid_forc);
+      printf("DBG PLUMED | my ID beads  = %d\n", class->communicate.myid_bead);
+      printf("DBG PLUMED | myatm_start = %d\n", class->clatoms_info.myatm_start);
+      printf("DBG PLUMED | myatm_end = %d\n", class->clatoms_info.myatm_end);
+      printf("DBG PLUMED | n_RESPA_total = %d\n", n_RESPA_total);
+      printf("DBG PLUMED | dt = %6.4f a.u.\n", dt);
+      printf("DBG PLUMED |\n");
+    }
+    Barrier(class->communicate.world);
+    fflush(stdout);
+  }
+  if (class->communicate.myid == 0) {
+    printf("Press enter to continue.");
+    fflush(stdout);
+    scanf("%c", &c);
+    printf("\n");
+  }
+
   #endif
 
   /* create and initialize global PLUMED object */
@@ -107,8 +124,6 @@ probably needed.
 
   TIMER_START("PLUMED");
 
-  //#define PLUMED_DEBUG
-
   /* total potential energy */
   vtot = general_data->stat_avg.vintert + general_data->stat_avg.vintrat;
 
@@ -116,11 +131,6 @@ probably needed.
   myatm_end = class->clatoms_info.myatm_end;
   natom_local = myatm_end - myatm_start + 1;
   myatm_start0 = myatm_start - 1;
-
-  #if defined PLUMED_DEBUG
-  printf("DBG PLUMED | step = %d\n", step);
-  printf("DBG PLUMED | local n_atom = %d\n", natom_local);
-  #endif
 
   /* pass pointers to all data to PLUMED */
   plumed_gcmd("setStep", &step);
@@ -145,6 +155,8 @@ probably needed.
   general_data->stat_avg.vintert += vbias;
 
   #if defined PLUMED_DEBUG
+  printf("DBG PLUMED | step = %d\n", step);
+  printf("DBG PLUMED | local n_atom = %d\n", natom_local);
   printf("DBG PLUMED | vbias = %18.12f Ha\n", vbias);
   printf("DBG PLUMED |\n");
   #endif
@@ -152,9 +164,15 @@ probably needed.
   TIMER_STOP("PLUMED");
 
 }
+/*--------------------------------------------------------------------------*/
 
+
+/*==========================================================================*/
 void plumed_piny_finalize() {
+/*==========================================================================*/
+
   plumed_gfinalize();
+
 }
 /*--------------------------------------------------------------------------*/
 
