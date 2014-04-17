@@ -8,7 +8,13 @@
 
 /* TODO
 
-- make it work with PIMD bead level parallelization
+- PIMD
+  Positions are almost always in real-space repre, rather than mode repre
+  they are only transformed to modes to propagate positions, then they are transformed back immediately.
+  That means coupling to beads (and possibly centroid using colvars) is actually easier.
+  We need to check that the forces when we couple are the correct real-space forces that are actually used in the next step.
+
+- make it work with PIMD bead and/or force level parallelization
 
 - add support for virial tensor
   check that we are getting only zero forces on box if it's not a NpT simulation
@@ -34,11 +40,15 @@ Initialize the PLUMED global object with all data that is needed.
 
   TIMEINFO *timeinfo = &general_data->timeinfo;
   double dt;
+  int natoms;
   int n_RESPA_total;
   int real_precision = 8;                 /* number of bytes for reals */
   double energyUnits = 2625.49962;        /* Hartree to kJ/mol */
   double lengthUnits = 0.052917721092;    /* Bohr to nm */
   double timeUnits = 2.418884326505e-5;   /* atomic time unit to ps */
+
+
+  natoms = class->clatoms_info.natm_tot;
 
   /* with RESPA, PLUMED runs with the inner time step, excluding PIMD RESPA */
   n_RESPA_total = timeinfo->nres_tra *
@@ -59,16 +69,26 @@ Initialize the PLUMED global object with all data that is needed.
   #if defined PLUMED_DEBUG
   char c;
   int i;
+  if (class->communicate.myid == 0) {
+    printf("DBG PLUMED | np       = %d\n", class->communicate.np);
+    printf("DBG PLUMED | np_forc  = %d\n", class->communicate.np_forc);
+    printf("DBG PLUMED | np_beads = %d\n", class->communicate.np_beads);
+    printf("DBG PLUMED | total n_atom = %d\n", natoms);
+    printf("DBG PLUMED | n_RESPA_total = %d\n", n_RESPA_total);
+    printf("DBG PLUMED | dt = %6.4f a.u.\n", dt);
+    printf("\n");
+    fflush(stdout);
+  }
   for (i=0; i<class->communicate.np; ++i) {
     if (class->communicate.myid == i) {
-      printf("DBG PLUMED | total n_atom = %d\n", class->clatoms_info.natm_tot);
-      printf("DBG PLUMED | my ID global = %d\n", class->communicate.myid);
-      printf("DBG PLUMED | my ID force  = %d\n", class->communicate.myid_forc);
-      printf("DBG PLUMED | my ID beads  = %d\n", class->communicate.myid_bead);
+      printf("DBG PLUMED | my ID - global, force, beads, beads prime = %d %d %d %d\n",
+             class->communicate.myid,
+             class->communicate.myid_forc,
+             class->communicate.myid_bead,
+             class->communicate.myid_bead_prime);
+      printf("DBG PLUMED | pi_atm_proc_use = %d\n", class->clatoms_tran.pi_atm_proc_use);
       printf("DBG PLUMED | myatm_start = %d\n", class->clatoms_info.myatm_start);
       printf("DBG PLUMED | myatm_end = %d\n", class->clatoms_info.myatm_end);
-      printf("DBG PLUMED | n_RESPA_total = %d\n", n_RESPA_total);
-      printf("DBG PLUMED | dt = %6.4f a.u.\n", dt);
       printf("DBG PLUMED |\n");
     }
     Barrier(class->communicate.world);
@@ -80,7 +100,6 @@ Initialize the PLUMED global object with all data that is needed.
     scanf("%c", &c);
     printf("\n");
   }
-
   #endif
 
   /* create and initialize global PLUMED object */
@@ -92,11 +111,11 @@ Initialize the PLUMED global object with all data that is needed.
   plumed_gcmd("setMDTimeUnits", &timeUnits);
   plumed_gcmd("setPlumedDat", &plumedInput);
   #if defined PARALLEL
-  plumed_gcmd("setMPIComm", &class->communicate.comm_forc);
+  plumed_gcmd("setMPIComm", &class->communicate.world);
   #endif
   plumed_gcmd("setLogFile", &plumedLog);
   plumed_gcmd("setTimestep", &dt);
-  plumed_gcmd("setNatoms", &class->clatoms_info.natm_tot);
+  plumed_gcmd("setNatoms", &natoms);
   plumed_gcmd("setNoVirial", NULL);
   plumed_gcmd("init", NULL);
 
@@ -127,6 +146,7 @@ probably needed.
   /* total potential energy */
   vtot = general_data->stat_avg.vintert + general_data->stat_avg.vintrat;
 
+  /* index range of atoms on this process */
   myatm_start = class->clatoms_info.myatm_start;
   myatm_end = class->clatoms_info.myatm_end;
   natom_local = myatm_end - myatm_start + 1;
