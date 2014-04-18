@@ -89,13 +89,12 @@ void control_md(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
     PRINT_LINE_DASH;
   }/*endif*/
 
-  (general_data->stat_avg.cpu_now) = 0.0;
-  (general_data->stat_avg.acpu) += 0.0;
-  simpavg_md(&(general_data->timeinfo),&(general_data->stat_avg),
-               &(general_data->cell),&(bonded->constrnt),
-	       &(general_data->ensopts),&(general_data->simopts),
-	       &(general_data->ptens),&(class->communicate),
-               &(class->nbr_list.verlist),&(class->energy_ctrl));
+  general_data->stat_avg.cpu_now = 0.0;
+  simpavg_md(&general_data->timeinfo, &general_data->stat_avg,
+             &general_data->cell, &bonded->constrnt,
+             &general_data->ensopts, &general_data->simopts,
+             &general_data->ptens, &class->communicate,
+             &class->nbr_list.verlist, &class->energy_ctrl);
 
   output_md(class,general_data,bonded);
 
