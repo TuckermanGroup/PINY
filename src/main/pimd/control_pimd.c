@@ -33,9 +33,6 @@
 #include "../proto_defs/proto_energy_ctrl_entry.h"
 #include "../proto_defs/proto_pimd_entry.h"
 #include "../proto_defs/proto_communicate_wrappers.h"
-#if defined PLUMED
-#include "../proto_defs/proto_plumed.h"
-#endif
 
 
 /*==========================================================================*/
@@ -316,7 +313,7 @@ void prelim_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
     mode_energy_control(class,general_data);
     control_pimd_trans_pos(class,general_data);
 
-  energy_control_pimd(class,bonded,general_data);
+  energy_control_pimd(class, bonded, general_data, 0);
 
   get_tvten_pimd(class,general_data);
 
@@ -492,16 +489,9 @@ void prelim_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
    output_pimd(class,general_data,bonded);
   }/*endif*/
 
-/*=======================================================================*/
-/* VII) run PLUMED at step 0 */
-
-  #if defined PLUMED
-  plumed_piny_calc(general_data, class, 0);
-  #endif
-
 
 /*=======================================================================*/
-/* VIII) Write to Screen */
+/* VII) Write to Screen */
 
   if(error_check_on==1){
    printf("\n");

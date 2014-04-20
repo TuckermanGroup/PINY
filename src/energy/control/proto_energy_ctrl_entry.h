@@ -14,7 +14,7 @@ void energy_control_surf(CLASS *, BONDED *, GENERAL_DATA *);
 /*--------------------------------------------------------------------------*/
 /* Energy_control_pimd.c */
 
-void energy_control_pimd(CLASS *, BONDED *, GENERAL_DATA *);
+void energy_control_pimd(CLASS *, BONDED *, GENERAL_DATA *, int);
 
 /*--------------------------------------------------------------------------*/
 

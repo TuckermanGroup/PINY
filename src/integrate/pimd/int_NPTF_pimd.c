@@ -172,7 +172,7 @@ void int_NPTF_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
           if(ir_pimd == nres_pimd)
              {(class->energy_ctrl.iget_res_intra) = 1;}
 
-          energy_control_pimd(class,bonded,general_data);
+          energy_control_pimd(class,bonded,general_data, 0);
 
 /*==========================================================================*/
 /* 3) Evolve system dt/2 to dt                                              */

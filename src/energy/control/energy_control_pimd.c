@@ -27,6 +27,9 @@
 #include "../proto_defs/proto_pimd_local.h"
 #include "../proto_defs/proto_math.h"
 #include "../proto_defs/proto_communicate_wrappers.h"
+#if defined PLUMED
+#include "../proto_defs/proto_plumed.h"
+#endif
 
 #define DEBUG_OFF
 
@@ -34,8 +37,8 @@
 /*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
 /*==========================================================================*/
 
-void energy_control_pimd(CLASS *class, BONDED *bonded, 
-                         GENERAL_DATA *general_data)
+void energy_control_pimd(CLASS *class, BONDED *bonded,
+                         GENERAL_DATA *general_data, int itimei)
 
 /*==========================================================================*/
 {/*Begin Routine*/
@@ -45,7 +48,7 @@ void energy_control_pimd(CLASS *class, BONDED *bonded,
   /*=======================================================================*/
   /*         Local Variable declarations                                   */
   
-  int    i,iii,ip,ipart;
+  int    i,ip,ipart;
   double akvirx;
   double vbond_free,vbend_free,vtors_free;
   double *fx,*fy,*fz,*fxm,*fym,*fzm,*fxt,*fyt,*fzt;
@@ -63,7 +66,6 @@ void energy_control_pimd(CLASS *class, BONDED *bonded,
   int    myatm_start     = class->clatoms_info.myatm_start;
   int    myatm_end       = class->clatoms_info.myatm_end;
   int    np_forc         = class->communicate.np_forc;
-  MPI_Comm comm_beads    = class->communicate.comm_beads;
   MPI_Comm comm_forc     = class->communicate.comm_forc;
   int iget_full_inter    = class->energy_ctrl.iget_full_inter;
   int iget_res_inter     = class->energy_ctrl.iget_res_inter;
@@ -142,6 +144,10 @@ void energy_control_pimd(CLASS *class, BONDED *bonded,
    pvten[i]     /= pi_beads;
    pvten_tot[i] /= pi_beads;
   }/*endfor*/
+
+  #if defined PLUMED
+  plumed_piny_calc(general_data, class, itimei);
+  #endif
 
   /*----------------------------------------------------------------------*/
   /*  Add in mode forces and correct pressure tensor                      */
