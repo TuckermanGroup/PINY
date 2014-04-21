@@ -2498,10 +2498,10 @@ void set_sim_params_pimd(CLASS *class,GENERAL_DATA *general_data,
       index=2;
       if((class->clatoms_info.gamma_adb<0.0))
        keyarg_barf(dict,filename_parse->input_name,fun_key,index);
-      if(class->clatoms_info.gamma_adb<1.0){
+      if(class->clatoms_info.gamma_adb>1.0){
       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
       printf("You have requested a path integral                \n");
-      printf("adiabaticity parameter less than one.             \n");
+      printf("adiabaticity parameter more than one.             \n");
       printf("Are you certain this is what you would like to do?\n");
       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
       }/*endif*/
