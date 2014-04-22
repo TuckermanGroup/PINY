@@ -503,15 +503,21 @@ void screen_write_md(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
 /*==========================================================================*/
 
   int npairs,iprint;
+  int updates_now;
   double atime,vol_div,atm_div,eu_conv=1.0;
-  double updates_t,updates_true,updates_now; 
+  double updates_t,updates_true;
   double time_fact = general_data->timeinfo.dt * TIME_CONV / 1000.0;
 
   char hat[3], hat_p[3];
-  iprint = 0;strcpy(hat,"  ");strcpy(hat_p,"  ");
-  if(general_data->timeinfo.iget_pe_real_inter_freq>1){
-   iprint=1;strcpy(hat,"^*");
-   if(general_data->timeinfo.int_res_ter==1){strcpy(hat_p,"^*");}
+  iprint = 0;
+  strcpy(hat, "  ");
+  strcpy(hat_p, "  ");
+  if (general_data->timeinfo.iget_pe_real_inter_freq > 1) {
+    iprint = 1;
+    strcpy(hat, "^*");
+    if (general_data->timeinfo.int_res_ter == 1) {
+      strcpy(hat_p, "^*");
+    }
   }
 
 /*=======================================================================*/
@@ -527,6 +533,7 @@ void screen_write_md(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
   /* standard */
 
   #define FMT "%18.10f"
+  #define FMT_INT "%18d"
 
   printf("\n");
   printf("****************************************************************************\n");
@@ -669,7 +676,7 @@ void screen_write_md(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
   /*========*/
   /* timing */
 
-  printf("Cpu time          = "FMT" "FMT"\n",
+  printf("CPU time          = "FMT" "FMT"\n",
          general_data->stat_avg.cpu_now,
          general_data->stat_avg.acpu/atime);
   printf("\n");
@@ -680,21 +687,20 @@ void screen_write_md(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
   if(class->nbr_list.iver == 1){
     updates_t = general_data->stat_avg.updates;
     if(updates_t == 0) updates_t = 1;
-    updates_now = (double ) (general_data->timeinfo.itime-
-                          general_data->stat_avg.itime_update);
+    updates_now = general_data->timeinfo.itime -
+                  general_data->stat_avg.itime_update;
     updates_true = updates_t;
     npairs = class->nbr_list.verlist.nver_lst_now;
-    printf("Inst steps/update = "FMT"\n",updates_now);
-    printf("Avg. steps/update = "FMT"\n",(atime/updates_t));
-    printf("Total list updates= "FMT"\n",updates_true);
-    printf("Number of pairs   = %d \n",npairs);
-    if(general_data->timeinfo.int_res_ter==1){
+    printf("Inst steps/update = "FMT_INT"\n", updates_now);
+    printf("Avg. steps/update = "FMT"\n", (atime/updates_t));
+    printf("Total updates     = "FMT_INT"\n", (int)updates_true);
+    printf("Number of pairs   = "FMT_INT"\n", npairs);
+    if (general_data->timeinfo.int_res_ter==1) {
       npairs = class->nbr_list.verlist.nver_lst_now_res;
-      printf("Number RESPA pairs= %d\n",npairs);
+      printf("Number RESPA pairs= "FMT_INT"\n", npairs);
     }/*endif*/
     printf("\n");
   }/*endif*/
-  printf("\n");
 
   /*=====================*/
   /* pressure/vol matrix */
@@ -741,9 +747,8 @@ void screen_write_md(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
     printf("\n");
 }
 
-  printf("----------------------------------------------------------------------------\n");
   if(iprint==1){
-   printf("^* Calculation frequency of position dependence = %d\n",
+   printf("^* Calculation frequency of position dependence = %d\n\n",
              general_data->timeinfo.iget_pe_real_inter_freq); 
   }/*endif*/
   printf("****************************************************************************\n");
