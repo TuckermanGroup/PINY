@@ -259,7 +259,6 @@ void initial_output_cp_pimd(CLASS *class,GENERAL_DATA *general_data,BONDED *bond
   int ncons,np_tot,npairs,nsh_tot;
   double nhc_div,c_nhc_div;
   double c_div = cp->cpcoeffs_info.cp_nfree;
-
   double eu_conv=1.0;
 
   if(general_data->filenames.iwrite_units==0){eu_conv=1.0;}
@@ -713,7 +712,9 @@ void screen_write_cp_pimd(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded
 
  double eu_conv=1.0;
  double dpi_beads = (double)(class->clatoms_info.pi_beads);
-/*==========================================================================*/
+ double time_fact = general_data->timeinfo.dt * TIME_CONV / 1000.0;
+
+ /*==========================================================================*/
 /* Write to screen                                                          */
 
       atime = (double)(general_data->timeinfo.itime);
@@ -736,50 +737,56 @@ void screen_write_cp_pimd(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded
 
 /*==========================================================================*/
 /*     A) Standard                                                   */
+
+  #define FMT "%18.10f" 
+
   printf("\n");
-  printf("********************************************************\n");
-  printf("QUANTITY          =  INSTANTANEOUS    AVERAGE           \n");
-  printf("--------------------------------------------------------\n");
-  if(general_data->ensopts.nve==1)  printf("Ensemble          = NVE     \n");
-  if(general_data->ensopts.nvt==1)  printf("Ensemble          = NVT     \n");
-  if(general_data->ensopts.npt_i==1)printf("Ensemble          = NPT-ISO \n");
+  printf("****************************************************************************\n");
+  printf("\n");
+  if(general_data->ensopts.nve==1)  printf("Ensemble          = NVE\n");
+  if(general_data->ensopts.nvt==1)  printf("Ensemble          = NVT\n");
+  if(general_data->ensopts.npt_i==1)printf("Ensemble          = NPT-ISO\n");
   if(general_data->ensopts.npt_f==1)printf("Ensemble          = NPT-FLEX\n");
-  printf("Time step         = %.10g\n",(double)(general_data->timeinfo.itime));
-  printf("----------------- \n");
-  printf("Econv             = %.10g %.10g\n",( econv_now ),
+  printf("Time step         = %d\n", general_data->timeinfo.itime);
+  printf("Time              = %.4f ps\n", atime * time_fact);
+  printf("\n");
+  printf("QUANTITY                 INSTANTANEOUS            AVERAGE\n");
+  printf("---------------------------------------------------------\n");
+  printf("\n");
+  printf("Econv             = "FMT" "FMT"\n",( econv_now ),
 	 ( general_data->stat_avg.econv/atime));
   if(cp->cpopts.cp_isok_opt == 1)
-     printf("CP KE conv        = %.10g %.10g \n",
+     printf("CP KE conv        = "FMT" "FMT"\n",
 	    fabs((general_data->stat_avg.kinet_cp - general_data->stat_avg.cp_kconv0)/
 		 general_data->stat_avg.cp_kconv0),general_data->stat_avg.cp_kconv/atime);
-  printf("----------------- \n");
-  printf("Tot Energy        = %.10g %.10g\n",(general_data->stat_avg.kinet+vtot+eelec)*eu_conv,
+  printf("\n");
+  printf("Total Energy      = "FMT" "FMT"\n",(general_data->stat_avg.kinet+vtot+eelec)*eu_conv,
          (general_data->stat_avg.akinet+avtot+aelec)/atime)*eu_conv;
 
-  printf("----------------- \n");
-  printf("Energy            = %.10g %.10g\n",(general_data->stat_avg.kinet+vtot)*eu_conv,
+  printf("\n");
+  printf("Energy            = "FMT" "FMT"\n",(general_data->stat_avg.kinet+vtot)*eu_conv,
 	 (general_data->stat_avg.akinet+avtot)/atime*eu_conv);
-  printf("Total PE          = %.10g %.10g\n",(vtot)*eu_conv,(avtot/atime)*eu_conv);
-  printf("Intermol PE       = %.10g %.10g\n",(general_data->stat_avg.vintert)*eu_conv,
+  printf("Total PE          = "FMT" "FMT"\n",(vtot)*eu_conv,(avtot/atime)*eu_conv);
+  printf("Intermol PE       = "FMT" "FMT"\n",(general_data->stat_avg.vintert)*eu_conv,
 	 (general_data->stat_avg.avintert/atime)*eu_conv);
-  printf("Intramol PE       = %.10g %.10g\n",(general_data->stat_avg.vintrat)*eu_conv,
+  printf("Intramol PE       = %"FMT" "FMT"\n",(general_data->stat_avg.vintrat)*eu_conv,
 	 (general_data->stat_avg.avintrat/atime)*eu_conv);
-  printf("Fict. Atm KE      = %.10g %.10g\n",(general_data->stat_avg.kinet)*eu_conv/dpi_beads,
+  printf("Fict. Atm KE      = "FMT" "FMT"\n",(general_data->stat_avg.kinet)*eu_conv/dpi_beads,
 	 (general_data->stat_avg.akinet/(atime*dpi_beads))*eu_conv);
-  printf("Prim KE           = %.10g %.10g\n",(general_data->stat_avg.pi_ke_prim)*eu_conv,
+  printf("Prim KE           = "FMT" "FMT"\n",(general_data->stat_avg.pi_ke_prim)*eu_conv,
 	 (general_data->stat_avg.api_ke_prim/atime)*eu_conv);
-  printf("Vir KE            = %.10g %.10g\n",(general_data->stat_avg.pi_ke_vir)*eu_conv,
+  printf("Vir KE            = "FMT" "FMT"\n",(general_data->stat_avg.pi_ke_vir)*eu_conv,
 	 (general_data->stat_avg.api_ke_vir/atime)*eu_conv);
-  printf("----------------- \n");
+  printf("\n");
   atm_div = (double)(class->clatoms_info.nfree);
-  printf("Atm Deg. Free     = %.10g\n",atm_div); 
+  printf("Atm Deg. Free     = "FMT"\n",atm_div); 
   atm_div = (double)(class->clatoms_info.nfree_pimd);
-  printf("Fict. Atm Temperature   = %.10g %.10g \n",
+  printf("Fict. Atm Temperature   = "FMT" "FMT"\n",
 	 (general_data->stat_avg.kinet*2.0*BOLTZ/(atm_div)),
 	 (general_data->stat_avg.akinet*2.0*BOLTZ/(atm_div*atime)));
 
-      printf("----------------- \n");
-      printf("e-Energy          = %.10g %.10g\n",
+      printf("\n");
+      printf("e-Energy          = "FMT" "FMT"\n",
                                 (general_data->stat_avg.cp_ehart
 			       + general_data->stat_avg.cp_exc
 			       + general_data->stat_avg.cp_eext
@@ -791,25 +798,25 @@ void screen_write_cp_pimd(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded
 			       + general_data->stat_avg.acp_eke
 			       + general_data->stat_avg.acp_enl)
                                  /atime);
-      printf("e-Hartree + XC    = %.10g %.10g\n",(general_data->stat_avg.cp_ehart
+      printf("e-Hartree + XC    = "FMT" "FMT"\n",(general_data->stat_avg.cp_ehart
 				 	  + general_data->stat_avg.cp_exc),
                                            (general_data->stat_avg.acp_ehart
 					  + general_data->stat_avg.acp_exc)
 		                              /atime);
-      printf("e-External PE     = %.10g %.10g\n",(general_data->stat_avg.cp_eext),
+      printf("e-External PE     = "FMT" "FMT"\n",(general_data->stat_avg.cp_eext),
 		                           (general_data->stat_avg.acp_eext)
 		                              /atime);
-      printf("e-Nonlocal PE     = %.10g %.10g\n",(general_data->stat_avg.cp_enl),
+      printf("e-Nonlocal PE     = "FMT" "FMT"\n",(general_data->stat_avg.cp_enl),
 		                            (general_data->stat_avg.acp_enl)
 		                              /atime);
-      printf("e-Kinetic         = %.10g %.10g\n",(general_data->stat_avg.cp_eke),
+      printf("e-Kinetic         = "FMT" "FMT"\n",(general_data->stat_avg.cp_eke),
 		                            (general_data->stat_avg.acp_eke)
 		                              /atime);
-      printf("----------------- \n");
-      printf("CP Fict KE        = %g %g\n",(general_data->stat_avg.kinet_cp),
+      printf("\n");
+      printf("CP Fict KE        = "FMT" "FMT"\n",(general_data->stat_avg.kinet_cp),
                                            (general_data->stat_avg.akinet_cp/atime));
 
-      printf("CP Temperature    = %.10g %.10g\n",(general_data->stat_avg.kinet_cp
+      printf("CP Temperature    = "FMT" "FMT"\n",(general_data->stat_avg.kinet_cp
 					       *2.0*BOLTZ/c_div),
                                            (general_data->stat_avg.akinet_cp
  					       *2.0*BOLTZ/(c_div*atime)));
@@ -827,25 +834,26 @@ void screen_write_cp_pimd(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded
        }/*endif*/
       }/* endif */
 
-     printf("CP Up Force:   avg: %g max: %g\n",general_data->stat_avg.fc_mag_up,
+     printf("CP Up Force:   avg: "FMT" max: "FMT"\n",general_data->stat_avg.fc_mag_up,
                                              general_data->stat_avg.fc_max_up);
      if(cp_lsda==1){
-      printf("CP Dn Force:   avg: %g max: %g\n",general_data->stat_avg.fc_mag_dn,
+      printf("CP Dn Force:   avg: "FMT" max: "FMT"\n",general_data->stat_avg.fc_mag_dn,
                                              general_data->stat_avg.fc_max_dn);
      }/*endif*/
 
-  printf("----------------- \n");
+   printf("\n");
+
 /*==========================================================================*/
 /*     B) Extended Class                                          */
      if(general_data->simopts.cp==1||general_data->simopts.cp_pimd==1){
       if((general_data->ensopts.nvt + general_data->ensopts.npt_i
 	  + general_data->ensopts.npt_f == 1) ){
-	printf("NHC Temperature   = %.10g %.10g\n",
+	printf("NHC Temperature   = "FMT" "FMT"\n",
 	       (general_data->stat_avg.kinet_nhc*2.0*BOLTZ/nhc_div),
 	       (general_data->stat_avg.akinet_nhc*2.0*BOLTZ
 		/(nhc_div*atime)));
         if(class->clatoms_info.pi_beads>1){
-	 printf("Bead NHC Temperature   = %.10g %.10g\n",
+	 printf("Bead NHC Temperature   = "FMT" "FMT"\n",
 	       (general_data->stat_avg.kinet_nhc_bead*2.0*BOLTZ/nhc_div_bead),
 	       (general_data->stat_avg.akinet_nhc_bead*2.0*BOLTZ
 		/(nhc_div_bead*atime)));
@@ -854,13 +862,13 @@ void screen_write_cp_pimd(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded
       if((general_data->ensopts.npt_i +general_data->ensopts.npt_f == 1)){
         vol_div = 1.0;
         if(general_data->ensopts.npt_f == 1) vol_div = 6.0;
-	printf("Vol Temperature   = %.10g %.10g\n",
+	printf("Vol Temperature   = "FMT" "FMT"\n",
 	       (general_data->stat_avg.kinet_v*2.0*BOLTZ/vol_div),
 	       (general_data->stat_avg.akinet_v*2.0*BOLTZ/(atime*vol_div)));}
-        printf("----------------- \n");
+        printf("\n");
      if(cp->cptherm_info.num_c_nhc != 0) {
     printf("%.10g\n",c_nhc_div);
-        printf("CP NHC Temp       = %.10g %.10g\n",
+        printf("CP NHC Temp       = "FMT" "FMT"\n",
                 (general_data->stat_avg.kinet_nhc_cp*2.0*BOLTZ)/c_nhc_div,
                 (general_data->stat_avg.akinet_nhc_cp*2.0*BOLTZ)/(c_nhc_div*atime));
      } /* endif */
@@ -870,46 +878,11 @@ void screen_write_cp_pimd(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded
        if(((general_data->simopts.cp+general_data->simopts.cp_pimd) == 1)
           && cp->cpopts.cp_ptens_calc == 1
           &&(general_data->cell.iperd>=2)) {
-       printf("Pressure          = %.10g %.10g\n",(pnow),( apnow));
-       printf("Avg  P11,P22,P33  = %.10g %.10g %.10g \n",
-              (general_data->stat_avg.apten[1]/(PCONV*atime)),
-              (general_data->stat_avg.apten[5]/(PCONV*atime)),
-              (general_data->stat_avg.apten[9]/(PCONV*atime)));
-       printf("Inst P11,P22,P33  = %.10g %.10g %.10g \n",
-              (general_data->stat_avg.apten_out[1]),
-              (general_data->stat_avg.apten_out[5]),
-              (general_data->stat_avg.apten_out[9]));
-       printf("Avg  P12,P13,P23  = %.10g %.10g %.10g \n",
-              (general_data->stat_avg.apten[4])/(PCONV*atime),
-              (general_data->stat_avg.apten[7])/(PCONV*atime),
-              (general_data->stat_avg.apten[8])/(PCONV*atime));
-       printf("Inst P12,P13,P23  = %.10g %.10g %.10g \n",
-              (general_data->stat_avg.apten_out[4]),
-              (general_data->stat_avg.apten_out[7]),
-              (general_data->stat_avg.apten_out[8]));
-       printf("Avg  P21,P31,P32  = %.10g %.10g %.10g \n",
-              (general_data->stat_avg.apten[2])/(PCONV*atime),
-              (general_data->stat_avg.apten[3])/(PCONV*atime),
-              (general_data->stat_avg.apten[6])/(PCONV*atime));
-       printf("Inst P21,P31,P32  = %.10g %.10g %.10g \n",
-              (general_data->stat_avg.apten_out[2]),
-              (general_data->stat_avg.apten_out[3]),
-              (general_data->stat_avg.apten_out[6]));
-       printf("----------------- \n");
-       printf("Volume            = %.10g %.10g\n",(deth*BOHR*BOHR*BOHR),
+       printf("Pressure          = "FMT" "FMT"\n",(pnow),( apnow));
+       printf("Volume            = "FMT" "FMT"\n",(deth*BOHR*BOHR*BOHR),
               (general_data->stat_avg.avol/atime)*BOHR*BOHR*BOHR);
-       printf("Inst cell lths    = %.10g %.10g %.10g\n",(a*BOHR),(b*BOHR),(c*BOHR));
-       printf("Avg  cell lths    = %.10g %.10g %.10g\n",    
-              (general_data->stat_avg.acella/atime)*BOHR,
-              (general_data->stat_avg.acellb/atime)*BOHR,
-              (general_data->stat_avg.acellc/atime)*BOHR);
-       printf("Inst cell angs    = %.10g %.10g %.10g\n",(tab),(tac),(tbc));
-       printf("Avg  cell angs    = %.10g %.10g %.10g\n",
-              (general_data->stat_avg.acellab/atime),
-              (general_data->stat_avg.acellac/atime),
-              (general_data->stat_avg.acellbc/atime));
-       printf("----------------- \n");
       }/* endif */
+      printf("\n");
 
 /*==========================================================================*/
 /*     D)Constraint                                                  */
@@ -917,54 +890,54 @@ void screen_write_cp_pimd(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded
       if(bonded->constrnt.iconstrnt == 1) {
        if(general_data->simopts.cp==1||general_data->simopts.cp_pimd==1){
         if(bonded->bond.ncon > 0) {
-         printf("Shake iter        = %.10g %.10g\n",
+         printf("Shake iter        = "FMT" "FMT"\n",
                (double)(general_data->stat_avg.iter_shake),
                (general_data->stat_avg.aiter_shake/atime));
-         printf("Rattle iter       = %.10g %.10g\n",
+         printf("Rattle iter       = "FMT" "FMT"\n",
                (double)(general_data->stat_avg.iter_ratl),
                (general_data->stat_avg.aiter_ratl/atime));
         }
         if(bonded->grp_bond_con.num_23 > 0) {
-	 printf("Grp_23 shake iter = %.10g %.10g\n",
+	 printf("Grp_23 shake iter = "FMT" "FMT"\n",
 		 general_data->stat_avg.iter_23,
 		 general_data->stat_avg.aiter_23/atime);
-         printf("Grp_23 ratl iter = %.10g %.10g\n",
+         printf("Grp_23 ratl iter = "FMT" "FMT"\n",
 		 general_data->stat_avg.iter_23r,
 		 general_data->stat_avg.aiter_23r/atime);
         }
         if(bonded->grp_bond_con.num_33 > 0) {
-         printf("Grp_33 shake iter = %.10g %.10g\n",
+         printf("Grp_33 shake iter = "FMT" "FMT"\n",
 		 general_data->stat_avg.iter_33,
 		 general_data->stat_avg.aiter_33/atime);
-         printf("Grp_33 ratl iter = %.10g %.10g\n",
+         printf("Grp_33 ratl iter = "FMT" "FMT"\n",
 		 general_data->stat_avg.iter_33r,
 		 general_data->stat_avg.aiter_33r/atime);
         }
         if(bonded->grp_bond_con.num_46 > 0) {
-         printf("Grp_46 shake iter = %.10g %.10g\n",
+         printf("Grp_46 shake iter = "FMT" "FMT"\n",
 		 general_data->stat_avg.iter_46,
 		 general_data->stat_avg.aiter_46/atime);
-         printf("Grp_46 ratl iter = %.10g %.10g\n",
+         printf("Grp_46 ratl iter = "FMT" "FMT"\n",
 		 general_data->stat_avg.iter_46r,
 		 general_data->stat_avg.aiter_46r/atime);
         }
-         printf("----------------- \n");
+         printf("\n");
        }/*endif*/
       }/*endif*/
       if(!cp->cpopts.cp_norb) {
-          printf("Orb shake iter    = %.10g %.10g\n",
+          printf("Orb shake iter    = "FMT" "FMT"\n",
                                     (double)(general_data->stat_avg.iter_shake_cp),
                                       (general_data->stat_avg.aiter_shake_cp/atime));
-          printf("Orb rattle iter   = %.10g %.10g\n",
+          printf("Orb rattle iter   = "FMT" "FMT"\n",
                                     (double) (general_data->stat_avg.iter_ratl_cp),
                                       (general_data->stat_avg.aiter_ratl_cp/atime));
       }
      if(cp->cpopts.cp_norb > 0) {
        if(cp->cpopts.cp_norb == 2 || cp->cpopts.cp_norb == 3)
-          printf("Max off diag      = %.10g\n",
+          printf("Max off diag      = "FMT"\n",
 		                    cp->cpcoeffs_info.max_off_diag);
        if(cp->cpopts.cp_norb == 3)
-          printf("Max diag          = %.10g\n",
+          printf("Max diag          = "FMT"\n",
 		                    cp->cpcoeffs_info.max_diag);
       if(cp->cpcoeffs_info.max_off_diag > cp->cpconstrnt.c_tolnorb){
        ++count_norb;
@@ -973,6 +946,16 @@ void screen_write_cp_pimd(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded
 		                    count_norb);
      }
 /*==========================================================================*/
+
+   /*========*/
+   /* timing */
+
+   printf("Cpu time          = "FMT" "FMT"\n",
+         general_data->stat_avg.cpu_now,
+         general_data->stat_avg.acpu/atime);
+   printf("\n");
+
+/*=======================================================================*/
 /*     D)Misc                                                         */
 
       if(class->nbr_list.iver == 1 
@@ -984,18 +967,63 @@ void screen_write_cp_pimd(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded
           updates_true = updates_t;
           npairs = class->nbr_list.verlist.nter[(class->clatoms_info.natm_tot)] 
 	       + class->nbr_list.verlist.jver_off[(class->clatoms_info.natm_tot)];
-          printf("Inst steps/update = %.10g\n",updates_now);
-          printf("Avg. steps/update = %.10g\n",(atime/updates_t));
+          printf("Inst steps/update = "FMT"\n",updates_now);
+          printf("Avg. steps/update = "FMT"\n",(atime/updates_t));
           printf("Total list updates= %.10g\n",updates_true);
           printf("Number of pairs   = %d \n",npairs);
-	  printf("----------------- \n");
+	  printf("\n");
       }/*endif*/
-      printf("Cpu time          = %.10g %.10g\n",(general_data->stat_avg.cpu_now),
-	     (general_data->stat_avg.acpu/atime));
-      printf("--------------------------------------------------------\n");
-      printf("\n"); 
-      printf("********************************************************\n");
-      fflush(stdout);
+      printf("\n");
+  /*=====================*/
+  /* pressure/vol matrix */
+
+  if (general_data->cell.iperd >= 2) {
+    printf("QUANTITY\n");
+    printf("----------------------------------------------------------------------------\n");
+    printf("\n");
+       printf("Inst P11,P22,P33  = "FMT" "FMT" "FMT"\n",
+              (general_data->stat_avg.apten_out[1]),
+              (general_data->stat_avg.apten_out[5]),
+              (general_data->stat_avg.apten_out[9]));
+       printf("Avg  P11,P22,P33  = "FMT" "FMT" "FMT"\n",
+              (general_data->stat_avg.apten[1]/(PCONV*atime)),
+              (general_data->stat_avg.apten[5]/(PCONV*atime)),
+              (general_data->stat_avg.apten[9]/(PCONV*atime)));
+       printf("Inst P12,P13,P23  = "FMT" "FMT" "FMT"\n",
+              (general_data->stat_avg.apten_out[4]),
+              (general_data->stat_avg.apten_out[7]),
+              (general_data->stat_avg.apten_out[8]));
+       printf("Avg  P12,P13,P23  = "FMT" "FMT" "FMT"\n",
+              (general_data->stat_avg.apten[4])/(PCONV*atime),
+              (general_data->stat_avg.apten[7])/(PCONV*atime),
+              (general_data->stat_avg.apten[8])/(PCONV*atime));
+       printf("Inst P21,P31,P32  = "FMT" "FMT" "FMT"\n",
+              (general_data->stat_avg.apten_out[2]),
+              (general_data->stat_avg.apten_out[3]),
+              (general_data->stat_avg.apten_out[6]));
+       printf("Avg  P21,P31,P32  = "FMT" "FMT" "FMT"\n",
+              (general_data->stat_avg.apten[2])/(PCONV*atime),
+              (general_data->stat_avg.apten[3])/(PCONV*atime),
+              (general_data->stat_avg.apten[6])/(PCONV*atime));
+       printf("\n");
+       printf("Inst cell lths    = "FMT" "FMT" "FMT"\n",(a*BOHR),(b*BOHR),(c*BOHR));
+       printf("Avg  cell lths    = "FMT" "FMT" "FMT"\n",    
+              (general_data->stat_avg.acella/atime)*BOHR,
+              (general_data->stat_avg.acellb/atime)*BOHR,
+              (general_data->stat_avg.acellc/atime)*BOHR);
+       printf("Inst cell angs    = "FMT" "FMT" "FMT"\n",(tab),(tac),(tbc));
+       printf("Avg  cell angs    = "FMT" "FMT" "FMT"\n",
+              (general_data->stat_avg.acellab/atime),
+              (general_data->stat_avg.acellac/atime),
+              (general_data->stat_avg.acellbc/atime));
+    printf("\n");
+}
+
+   printf("--------------------------------------------------------\n");
+   printf("\n"); 
+   printf("****************************************************************************\n");
+   printf("\n");
+   fflush(stdout);
 
 /*==========================================================================*/
 }/* end routine */
