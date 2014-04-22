@@ -785,7 +785,6 @@ void screen_write_cp(CLASS *class,GENERAL_DATA *general_data,
             (general_data->stat_avg.akinet/atime));
       printf("\n");
       atm_div = (double)(class->clatoms_info.nfree);
-      printf("Atm Deg. Free     = "FMT"\n",atm_div); 
       printf("Atm Temperature   = "FMT" "FMT"\n",
             (general_data->stat_avg.kinet*2.0*BOLTZ/atm_div),
             (general_data->stat_avg.akinet*2.0*BOLTZ/(atm_div*atime)));
@@ -839,13 +838,6 @@ void screen_write_cp(CLASS *class,GENERAL_DATA *general_data,
      fflush(stdout);
     }/*endif*/
    }/* endif */
-
-   printf("CP Up Force:   avg: "FMT" max: "FMT"\n",general_data->stat_avg.fc_mag_up,
-                                             general_data->stat_avg.fc_max_up);
-   if(cp_lsda==1){
-    printf("CP Dn Force:   avg: "FMT" max: "FMT"\n",general_data->stat_avg.fc_mag_dn,
-                                             general_data->stat_avg.fc_max_dn);
-   }/*endif*/
 
    printf("\n");
 
@@ -999,10 +991,18 @@ void screen_write_cp(CLASS *class,GENERAL_DATA *general_data,
   /*=====================*/
   /* pressure/vol matrix */
 
+  printf("QUANTITY\n");
+  printf("----------------------------------------------------------------------------\n");
+  printf("\n");
+
+   printf("CP Up Force max   = "FMT"\n", general_data->stat_avg.fc_max_up);
+   printf("CP Up Force avg   = "FMT"\n", general_data->stat_avg.fc_mag_up);
+   if(cp_lsda==1){
+     printf("CP Dn Force max   = "FMT"\n", general_data->stat_avg.fc_max_dn);
+     printf("CP Dn Force avg   = "FMT"\n", general_data->stat_avg.fc_mag_dn);
+   }
+
   if (general_data->cell.iperd >= 2) {
-    printf("QUANTITY\n");
-    printf("----------------------------------------------------------------------------\n");
-    printf("\n");
        printf("Inst P11,P22,P33  = "FMT" "FMT" "FMT"\n",
               (general_data->stat_avg.apten_out[1]),
               (general_data->stat_avg.apten_out[5]),
@@ -1038,14 +1038,13 @@ void screen_write_cp(CLASS *class,GENERAL_DATA *general_data,
               (general_data->stat_avg.acellab/atime),
               (general_data->stat_avg.acellac/atime),
               (general_data->stat_avg.acellbc/atime));
-       printf("\n");
-}
+  }
 
-   printf("----------------------------------------------------------------------------\n");
-   printf("\n"); 
-   printf("****************************************************************************\n");
-   printf("\n"); 
-   fflush(stdout);
+  printf("\n");
+
+  printf("****************************************************************************\n");
+  printf("\n"); 
+  fflush(stdout);
 
 /*==========================================================================*/
     }/* end routine */
