@@ -835,11 +835,11 @@ void screen_write_cp(CLASS *class,GENERAL_DATA *general_data,
      printf("and/or employ coefficient thermostats to control \n");
      printf("this quantity.\n");
      printf("$$$$$$$$$$$$$$$$-WARNING-$$$$$$$$$$$$$$$$$$$\n");
+     printf("\n");
      fflush(stdout);
     }/*endif*/
    }/* endif */
 
-   printf("\n");
 
 /*==========================================================================*/
 /*     B.1) Extended Class                                          */
@@ -942,10 +942,10 @@ void screen_write_cp(CLASS *class,GENERAL_DATA *general_data,
 /*     D.2)Constraint Coef                                                 */
 
    if(!cp->cpopts.cp_norb) {
-       printf("Orb shake iter    = "FMT" "FMT"\n",
+       printf("Orb SHAKE iter    = "FMT" "FMT"\n",
                         (double)(general_data->stat_avg.iter_shake_cp),
                                 (general_data->stat_avg.aiter_shake_cp/atime));
-      printf("Orb rattle iter   = "FMT" "FMT"\n",
+      printf("Orb RATTLE iter   = "FMT" "FMT"\n",
                         (double) (general_data->stat_avg.iter_ratl_cp),
                                  (general_data->stat_avg.aiter_ratl_cp/atime));
    }/*endif*/
@@ -965,7 +965,9 @@ void screen_write_cp(CLASS *class,GENERAL_DATA *general_data,
 /*==========================================================================*/
    /* timing */
 
-   printf("Cpu time          = "FMT" "FMT"\n",
+   printf("\n");
+
+   printf("CPU time          = "FMT" "FMT"\n",
          general_data->stat_avg.cpu_now,
          general_data->stat_avg.acpu/atime);
    printf("\n");
