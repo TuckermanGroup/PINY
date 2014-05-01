@@ -23,7 +23,6 @@
 #include "../proto_defs/proto_coords_local.h"
 #include "../proto_defs/proto_friend_lib_entry.h"
 #include "../proto_defs/proto_communicate_wrappers.h"
-#define DEBUG_OFF
 
 
 /*==========================================================================*/
@@ -1121,32 +1120,31 @@ void assign_thermo_forc(CLASS *class)
     displs_therm[i] = recv_count_therm[(i-1)] + displs_therm[(i-1)];
   }/*endfor*/
 
-
-#ifdef DEBUG
-  for(i=0;i<=np_forc-1;i++){
-   Dbx_Barrier(world);
-   if(myid_forc==i){
-     printf("Mytherm_start and Mythermend %d %d\n",
-                         class->therm_info_class.mytherm_start,
-                         class->therm_info_class.mytherm_end);
-    for(j=1;j<=np_forc;j++){
-     printf("Displs and Recv %d %d %d\n",displs_therm[j],
-                                         recv_count_therm[j],j);
-    }/*endfor*/
-     printf("num_nhc_proc %d\n",num_nhc_proc);
-     printf("num_nhc_share %d\n",num_nhc_share);
-    for(j=1;j<=num_nhc_share;j++){
-     printf("Share map %d %d\n",map_share[j],j);
-    }/*endfor*/
-    for(j=1;j<=num_nhc;j++){
-     printf("itherm's %d %d %d %d\n",itherm_share_min[j],
-                               itherm_proc[j],itherm_nshare[j],j);
-    }/*endfor*/
-    
-    scanf("%d",&iii);
-   }/*endif*/
-  }/*endfor*/
-#endif
+  #if defined DEBUG
+  for(i=0; i<=np_forc-1; i++) {
+    Dbx_Barrier(world);
+    if (myid_forc == i) {
+      printf("DBG | assign_thermo_forc\n");
+      printf("DBG | myid_forc = %d\n", myid_forc);
+      printf("DBG | mytherm_start = %d\n", class->therm_info_class.mytherm_start);
+      printf("DBG | mytherm_end = %d\n", class->therm_info_class.mytherm_end);
+      for(j=1; j<=np_forc; j++) {
+        printf("DBG | displs_therm[%d] = %d | recv_count_therm[%d] = %d\n",
+               j, displs_therm[j], j, recv_count_therm[j]);
+      }
+      printf("DBG | num_nhc_proc = %d\n", num_nhc_proc);
+      printf("DBG | num_nhc_share = %d\n", num_nhc_share);
+      for(j=1; j<=num_nhc_share+1; j++) {
+        printf("map_share[%d] = %d\n", j, map_share[j]);
+      }
+      for(j=1; j<=num_nhc; j++) {
+        printf("DBG | j, itherm_share_min[j], itherm_proc[j], itherm_nshare[j]: %d %d %d %d\n",
+               j, itherm_share_min[j], itherm_proc[j], itherm_nshare[j]);
+      }
+      scanf("%d",&iii);
+    }
+  }
+  #endif
 
   cfree(&itherm_share_min[1]);
   cfree(&itherm_proc[1]);
@@ -1427,13 +1425,4 @@ void molecule_decomp_err(int ierr,char *type,int myid_forc)
 /*========================================================================*/
 } /* end routine */
 /*==========================================================================*/
-
-
-
-
-
-
-
-
-
 
