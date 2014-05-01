@@ -193,7 +193,7 @@ void path_integral_init(
         if ((ip == 1) && (pi_beads_proc_st == 1)) {
           bead_mass[ipart] = mass[ipart] * veig[ioff];
         } else {
-          bead_mass[ipart] = mass[ipart] * veig[ioff] / (gamma * gamma);
+          bead_mass[ipart] = mass[ipart] * veig[ioff] * gamma * gamma;
         }
       }
     }
@@ -225,7 +225,7 @@ void path_integral_init(
         if((ip == 1) && (pi_beads_proc_st == 1)) {
           bead_mass[ipart] = mass[ipart] * veig[ioff];
         } else {
-          bead_mass[ipart] = mass[ipart] * veig[ioff] / (gamma * gamma);
+          bead_mass[ipart] = mass[ipart] * veig[ioff] * gamma * gamma;
         }
       }
     }
