@@ -25,126 +25,113 @@
 #include "../proto_defs/proto_math.h"
 #include "../proto_defs/proto_communicate_wrappers.h"
 
-/*==========================================================================*/
-/*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
-/*==========================================================================*/
-
-void output_md(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded)
 
 /*==========================================================================*/
-  {/*begin routine*/
-/*=======================================================================*/
-/*            Local variable declarations                                */
+void output_md(CLASS *class, GENERAL_DATA *general_data, BONDED *bonded) {
+/*==========================================================================*/
+
+  /*=============================*/
+  /* Local variable declarations */
 
   int iii;
+  FILENAMES *filenames = &general_data->filenames;
   int exit_flag = general_data->timeinfo.exit_flag;
-  double etot,econv_now; 
-  double vtot,avtot,pnow; 
-  double pnow_inter,apnow_inter,pnow_intra,apnow_intra;
-  double pnow_kin,apnow_kin;
+  int itime = general_data->timeinfo.itime;
+  double etot, econv_now;
+  double vtot, avtot, pnow;
+  double pnow_inter, apnow_inter, pnow_intra, apnow_intra;
+  double pnow_kin, apnow_kin;
   double apnow;
   double nhc_div;
-  double a,b,c,tab,tac,tbc; 
+  double a, b, c, tab, tac, tbc;
   double deth;
-
-  int myid    = class->communicate.myid;
+  int myid = class->communicate.myid;
   int np_forc = class->communicate.np_forc;
 
-/*=====================================================================*/
-/*        Output_md routine                                            */
-/*=====================================================================*/
-/*  0)Open File option :                                               */
 
-  if((general_data->timeinfo.itime==0)&&(myid==0)&&
-     (general_data->filenames.ifile_open==1)){
-    initial_fopen_md(class,general_data,bonded);
-  }/*endif*/
+  /*====================================*/
+  /* All gather velocities if necessary */
 
-/*=======================================================================*/
-/* I) All gather velocities if necessary */ 
+  if ((itime != 0) && (np_forc > 1)) {
+    if(((itime % filenames->iwrite_confv) == 0) ||
+       ((itime % filenames->iwrite_dump) == 0)) {
+      forc_level_vel_gather(class);
+    }
+  }
 
- if(general_data->timeinfo.itime!=0 && (np_forc>1)){
-  if(((general_data->timeinfo.itime%general_data->filenames.iwrite_confv)==0)||
-     ((general_data->timeinfo.itime%general_data->filenames.iwrite_dump)==0)){
-    forc_level_vel_gather(class);
-  }/*endif*/
- }/*endif*/
+  if (myid == 0) {
 
-/*=======================================================================*/
-/*  II) Write Initial Energies to screen                                 */
+    /*==================*/
+    /* Open File option */
 
-  if( (general_data->timeinfo.itime==0) && (myid==0) &&
-      (general_data->simopts.debug == 0)){
-     initial_output_md(class,general_data,bonded);
-  }/*endif*/
+    if ((itime == 0) && (filenames->ifile_open == 1)) {
+      initial_fopen_md(class, general_data, bonded);
+    }
 
-/*=======================================================================*/
-/* III) Calculate some dinky quantities                                   */
+    /*==================================*/
+    /* Write Initial Energies to screen */
 
-  if((general_data->timeinfo.itime!=0) && (myid==0) ){
-   if(((general_data->timeinfo.itime%general_data->filenames.iwrite_screen)==0)
-    ||((general_data->timeinfo.itime%general_data->filenames.iwrite_inst)==0)
-    || (exit_flag == 1)){
-      get_cell(general_data->cell.hmat,&a,&b,&c,&tab,&tbc,&tac);
+    //if ((itime == 0) && (general_data->simopts.debug == 0)) {
+    //  initial_output_md(class, general_data, bonded);
+    //}
+
+    /*=================================*/
+    /* Calculate some dinky quantities */
+
+    if (((itime % filenames->iwrite_screen) == 0) ||
+        ((itime % filenames->iwrite_inst) == 0) ||
+        (exit_flag == 1)) {
+      get_cell(general_data->cell.hmat, &a, &b, &c, &tab, &tbc, &tac);
       etot = general_data->stat_avg.econv_now;
-      dink_quant_calc_md(class, general_data,&etot,&econv_now,&vtot, &avtot,
-                         &deth,&pnow, &apnow, &pnow_inter, &apnow_inter,
-                         &pnow_intra,&apnow_intra,&pnow_kin,&apnow_kin,
+      dink_quant_calc_md(class, general_data, &etot, &econv_now, &vtot, &avtot,
+                         &deth, &pnow, &apnow, &pnow_inter, &apnow_inter,
+                         &pnow_intra, &apnow_intra, &pnow_kin, &apnow_kin,
                          &nhc_div);
-    }/*endif*/
-  }/*endif*/
+    }
 
-/*=======================================================================*/
-/*  IV) Write to the output to screen                                   */
+    /*===============================*/
+    /* Write to the output to screen */
 
-  if((general_data->timeinfo.itime != 0)&& (myid==0) ){
-   if((general_data->timeinfo.itime%general_data->filenames.iwrite_screen)==0 ||
-      (exit_flag == 1)){
-      screen_write_md(class,general_data,bonded,
-                      etot,econv_now,vtot,avtot,deth,pnow, apnow,
+    if (((itime % filenames->iwrite_screen) == 0) ||
+        (exit_flag == 1)) {
+      screen_write_md(class, general_data, bonded,
+                      etot, econv_now, vtot, avtot, deth, pnow, apnow,
                       pnow_inter, apnow_inter, pnow_intra, apnow_intra,
-                      pnow_kin, apnow_kin, 
-                      nhc_div,a,b,c,tab,tbc,tac);
-    }/*endif*/
-  }/*endif*/
+                      pnow_kin, apnow_kin,
+                      nhc_div, a, b, c, tab, tbc, tac);
+    }
 
-/*======================================================================*/
-/* V) Write to the output to dump file                                  */ 
+    /*==================================*/
+    /* Write to the output to dump file */
 
-  if((general_data->timeinfo.itime!=0)&& (myid==0) ){
-   if((general_data->timeinfo.itime % general_data->filenames.iwrite_dump)==0 ||
-      (exit_flag == 1)){
-    write_dump_file_md(class,bonded,general_data);
-   }/*endif*/
-  }/*endif*/
+    if (((itime % filenames->iwrite_dump) == 0) ||
+        (exit_flag == 1)) {
+      write_dump_file_md(class, bonded, general_data);
+    }
 
-/*======================================================================*/
-/* VI) Write to the output to free energy                                */ 
+    /*====================================*/
+    /* Write to the output to free energy */
 
-  if((general_data->timeinfo.itime!=0)&& (myid==0) ){
-   if((general_data->timeinfo.itime % general_data->filenames.iwrite_dump)==0){
-     write_free_energy_file(class,bonded,general_data);
-   }/*endif*/
-  }/*endif*/
+    if (((itime % filenames->iwrite_dump) == 0) ||
+        (exit_flag == 1)) {
+      write_free_energy_file(class,bonded,general_data);
+     }
 
-/*====================================================================*/
-/* VII) Write to the config files                                      */
+    /*===========================*/
+    /* Write to the config files */
 
-  if((general_data->timeinfo.itime!=0)&& (myid==0) ){
     write_config_files_md(class,bonded,general_data);
-  }/*endif*/
 
-/*======================================================================*/
-/* VIII) Write to the inst avgs to inst file                            */
+    /*=====================================*/
+    /* Write to the inst avgs to inst file */
 
-  if((general_data->timeinfo.itime!=0)&& (myid==0) ){
-   if((general_data->timeinfo.itime % general_data->filenames.iwrite_inst)==0){
-      write_inst_file_md(class,general_data,etot,a,b,c,tac,tab,tbc);
-    }/*endif*/
-  }/*endif*/
+    if ((itime % filenames->iwrite_inst) == 0) {
+      write_inst_file_md(class, general_data, etot, a, b, c, tac, tab, tbc);
+    }
 
-/*==========================================================================*/
-}/*end routine*/
+  }
+
+}
 /*==========================================================================*/
 
 
@@ -441,13 +428,19 @@ void dink_quant_calc_md(CLASS *class, GENERAL_DATA *general_data,double *etot,
 /*==========================================================================*/
 
   int i,iii;
+  double atime;
 
-/*=======================================================================*/
-/*  Energy */
-
-  (*econv_now) = fabs((*etot)-general_data->stat_avg.econv0)/
+  if (general_data->timeinfo.itime == 0) {
+    atime = 1.0;
+    *econv_now = 0.0;
+  } else {
+    atime = (double)(general_data->timeinfo.itime);
+    *econv_now = fabs((*etot)-general_data->stat_avg.econv0) /
                  fabs(general_data->stat_avg.econv0);
+  }
+
   if(general_data->ensopts.nvt_isok==1) *econv_now=*etot;
+
 /*=======================================================================*/
 /*  Volume and pressure                                                    */
   
@@ -460,16 +453,16 @@ void dink_quant_calc_md(CLASS *class, GENERAL_DATA *general_data,double *etot,
   (*pnow)  = (general_data->stat_avg.apten_out[1]
              +  general_data->stat_avg.apten_out[5]
              +  general_data->stat_avg.apten_out[9])/(3.0);
-  (*apnow) =general_data->stat_avg.apress/(PCONV*((double)(general_data->timeinfo.itime)));
+  (*apnow) =general_data->stat_avg.apress/(PCONV*atime);
   (*pnow_inter)  = general_data->stat_avg.press_inter/PCONV;
   (*apnow_inter) = general_data->stat_avg.apress_inter
-                       /(PCONV*((double)(general_data->timeinfo.itime)));
+                       /(PCONV*atime);
   (*pnow_intra)  = general_data->stat_avg.press_intra/PCONV;
   (*apnow_intra) = general_data->stat_avg.apress_intra
-                       /(PCONV*((double)(general_data->timeinfo.itime)));
+                       /(PCONV*atime);
   (*pnow_kin)  = general_data->stat_avg.press_kin/PCONV;
   (*apnow_kin) = general_data->stat_avg.apress_kin
-                       /(PCONV*((double)(general_data->timeinfo.itime)));
+                       /(PCONV*atime);
 
   /*======================================================================*/
   /*  NHC degrees of freedom                                              */
@@ -516,7 +509,11 @@ void screen_write_md(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
 /*=======================================================================*/
 /* Write to screen                                                       */
   
-  atime = (double)(general_data->timeinfo.itime);
+  if (general_data->timeinfo.itime == 0) {
+    atime = 1.0;
+  } else {
+    atime = (double)(general_data->timeinfo.itime);
+  }
   if(general_data->filenames.iwrite_units==0){eu_conv=1.0;}
   if(general_data->filenames.iwrite_units==1){eu_conv=KCAL;}
   if(general_data->filenames.iwrite_units==2){eu_conv=BOLTZ;}
