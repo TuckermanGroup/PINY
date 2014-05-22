@@ -58,9 +58,7 @@ void int_NVT_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
     int iflag_mass;
     int myid = class->communicate.myid;
     int num_proc = class->communicate.np;
-    #if defined PLUMED
-    int itimei;
-    #endif
+    int itimei = 0;
     double pkin;
     double *class_clatoms_mass;
     double *class_clatoms_x;
