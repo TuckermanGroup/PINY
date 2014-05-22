@@ -62,11 +62,12 @@ void set_sim_params_list(CLASS *class,GENERAL_DATA *general_data,
        if(class->nbr_list.verlist.jver_pad <= 0) 
        keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if((class->nbr_list.verlist.jver_pad < 10)||
-                    (class->nbr_list.verlist.jver_pad > ilimit) ){ 
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+                    (class->nbr_list.verlist.jver_pad > ilimit) ){
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a verlist_padding < 10 or > %d \n",ilimit);
        printf("Are you certain this is what you would like to do?   \n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 2)\verlist_mem_safe{#} */
@@ -78,11 +79,12 @@ void set_sim_params_list(CLASS *class,GENERAL_DATA *general_data,
        index=2;
        if(class->nbr_list.verlist.mem_safe <= 0) 
           keyarg_barf(dict,filename_parse->input_name,fun_key,index);
-       if(class->nbr_list.verlist.mem_safe > 1.5){ 
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       if(class->nbr_list.verlist.mem_safe > 1.5){
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a verlist_mem_safe > 1.5      \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 3)\verlist_mem_min{#} */
@@ -99,10 +101,11 @@ void set_sim_params_list(CLASS *class,GENERAL_DATA *general_data,
        keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        }
        if(class->interact.skin>2.5){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a verlist skin > 2.5A         \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
        class->interact.skin /= BOHR;
   /*-----------------------------------------------------------------------*/ 
@@ -113,10 +116,11 @@ void set_sim_params_list(CLASS *class,GENERAL_DATA *general_data,
        if(class->nbr_list.lnklist.ncell_div_avg <= 0) 
           keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(class->nbr_list.lnklist.ncell_div_avg>40){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a lnk cell with > 40s per side \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 9)\lnk_cell_excl_safe{#} */
@@ -133,10 +137,11 @@ void set_sim_params_list(CLASS *class,GENERAL_DATA *general_data,
        if(class->nbr_list.lnklist.lnk_vol_safe <= 0) 
        keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(class->nbr_list.lnklist.lnk_vol_safe > 1.1){ 
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a lnk_cell_vol_safe > 1.1  \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 11)\lnkcell_force_odd{on,off} */
@@ -198,9 +203,9 @@ void set_sim_params_list(CLASS *class,GENERAL_DATA *general_data,
        index=5;
   if(ifound == 0) keyarg_barf(dict,filename_parse->input_name,fun_key,index);
   if(class->nbr_list.iver ==0 && class->nbr_list.brnch_root_list_opt > 0){
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        printf("Brnch-root list option only implemented for verlet lists.\n");
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        fflush(stdout);
        exit(1);
        }/*endif*/
@@ -223,10 +228,11 @@ void set_sim_params_list(CLASS *class,GENERAL_DATA *general_data,
        keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        }
        if(class->interact.brnch_root_cut > 1.112){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a brnch root cutoff > 1.112A \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
        class->interact.brnch_root_cut /= BOHR;
 
@@ -332,11 +338,11 @@ int iii;
        if(strcasecmp(dict[2].keyarg,"debug97x")==0)  {
         if(general_data->simopts.debug_cp != 1 || 
                            general_data->simopts.debug_cp_pimd != 1){
-         printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");    
+         printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
          printf("You may not choose the debug97x functional unless you \n");
          printf("actually doing a debug_cp or debug_cp_pimd\n");
          printf("simulation. It isn't a real functional\n");
-         printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+         printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
          fflush(stdout);
          exit(1);
         }/* endif */
@@ -364,18 +370,18 @@ int iii;
          ifound++;cp->cpopts.cp_gga=1;
 #ifdef JUNK
          if(strcasecmp(cp->pseudo.vxc_typ,"pade_lda")==0){ 
-           printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n"); 
+           printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
            printf("You may not choose the LYP functional with the Pade \n");
            printf("approximation to Perdew-Wang 1992 LDA functional\n");
-           printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+           printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
            fflush(stdout);
            exit(1);
          }/* endif */
          if(strcasecmp(cp->pseudo.vxc_typ,"pade_lsda")==0){ 
-           printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n"); 
+           printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
            printf("You may not choose the LYP functional with the Pade \n");
            printf("approximation to Perdew-Wang 1992 LSDA functional\n");
-           printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+           printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
            fflush(stdout);
            exit(1);
          }/* endif */
@@ -426,11 +432,12 @@ int iii;
     if(strcasecmp(dict[6].keyarg,"no_constrnt")==0) {
        cp->cpopts.cp_norb = 3;
        ifound++;
-       printf("$$$$$$$$$$$$$$$$$$$$_WARNING_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("Without constraints on the non-orthgonal orbitals\n");
        printf("they will probably develop large dependencies.\n");
        printf("Use at your own risk!");
-       printf("$$$$$$$$$$$$$$$$$$$$_WARNING_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
     }
     if(strcasecmp(dict[6].keyarg,"off")==0){cp->cpopts.cp_norb = 0;ifound++;}
        index=6;
@@ -476,9 +483,10 @@ int iii;
         if(cp->cpopts.te_ext <= 0. ) 
         keyarg_barf(dict,filename_parse->input_name,fun_key,index);
         if((cp->cpopts.te_ext > 3000.0) || (cp->cpopts.te_ext <100.0)) {
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+        printf("\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
         printf("The recommended fictious cp_fict_KE range is 100K - 3000K\n"); 
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
         }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /*  14)\cp_ptens{on,off} */
@@ -552,20 +560,20 @@ int iii;
         general_data->simopts.cp_wave_min_pimd == 1 || 
               cp->cpopts.cp_init_orthog == 1){
         if(cp->cpopts.cp_normalize == 1 && cp->cpopts.cp_norb !=2){
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");    
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
        printf("You may only use the normalization option under\n");
        printf("norb minimization or md with the norm_only option\n");
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
        fflush(stdout);
        exit(1);
        }/* endif */
        cp_orth_sum = cp->cpopts.cp_gs + cp->cpopts.cp_low 
                + cp->cpopts.cp_normalize;
        if(cp_orth_sum == 0 && cp->cpopts.cp_norb !=3){
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");    
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
        printf("You may only use the none option under\n");
        printf("norb minimization or md with the none option\n");
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
        fflush(stdout);
        exit(1);
        }/* endif */
@@ -644,10 +652,11 @@ int iii;
 
       if( (cp->cpopts.tol_edge_dist < 3.0) 
         || (cp->cpopts.tol_edge_dist > 6.0) ) {
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$$$$$$\n");    
+        printf("\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$$$$$$\n");
         printf("The recommended value of the CP cluster size tolerance\n");
         printf("is 3-6 A\n"); 
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$$$$$$\n");
       }/*endif*/
       cp->cpopts.tol_edge_dist /= BOHR;
 
@@ -707,9 +716,10 @@ int iii;
         keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if( cp->pseudo.alpha_conv_dual < 7.0 ||
            cp->pseudo.alpha_conv_dual > 10.0){
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$$$$$$\n");    
+        printf("\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$$$$$$\n");
         printf("The recommended range of cp_alpha_conv_dual is 7-10 \n");
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$$$$$$\n");
        }
   /*-----------------------------------------------------------------------*/ 
   /* 33)\interp_pme_dual{#} */
@@ -865,10 +875,11 @@ void set_sim_params_gen(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
         if(general_data->timeinfo.ntime<0)
            keyarg_barf(dict,filename_parse->input_name,fun_key,index);
         if(general_data->timeinfo.ntime>10000000){
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+        printf("\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
         printf("You have requested over 10 million time steps    \n");
         printf("Are you certain this is what you would like to do?\n");
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
         }/*endif*/
 
   /*-----------------------------------------------------------------------*/ 
@@ -879,10 +890,11 @@ void set_sim_params_gen(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
        if(general_data->timeinfo.dt==0.0)
           keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(general_data->timeinfo.dt>50.0){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a time step greater than 50fs\n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
        general_data->timeinfo.dt /= TIME_CONV;
 
@@ -894,10 +906,11 @@ void set_sim_params_gen(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
        if(general_data->statepoint.t_ext<0.0)
           keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(general_data->statepoint.t_ext>1000.0){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a temperature greater than 1000K\n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
        class->clatoms_info.pi_temperature = general_data->statepoint.t_ext;
 
@@ -909,10 +922,11 @@ void set_sim_params_gen(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
        if(general_data->statepoint.pext<0.0)
           keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(general_data->statepoint.pext>100000.0){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a pressure greater than 0.1Mbar\n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
        general_data->statepoint.pext *= PCONV;
   /*-----------------------------------------------------------------------*/  
@@ -978,10 +992,10 @@ void set_sim_params_gen(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
       if(nproc_tot< 1)
          keyarg_barf(dict,filename_parse->input_name,fun_key,index);
       if(class->communicate.np != nproc_tot){
-        printf("@@@@@@@@@@@@@@@@@@@@_ERROR_@@@@@@@@@@@@@@@@@@@@\n");
+        printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
         printf("The number of processors expected %d\n",class->communicate.np);
         printf("not equal to the number of processors given %d\n",nproc_tot);
-        printf("@@@@@@@@@@@@@@@@@@@@_ERROR_@@@@@@@@@@@@@@@@@@@@\n");      
+        printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
         fflush(stdout);
         exit(1);
       }/*endif*/
@@ -1030,10 +1044,11 @@ void set_sim_params_gen(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
         keyarg_barf(dict,filename_parse->input_name,fun_key,index);}
       if( (general_data->ewald.alp_clus < 7.0) || 
           (general_data->ewald.alp_clus > 22.0) ) {
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+        printf("\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
         printf("The recommended value of the dimensionless parameter\n");
         printf("alp_clus is 8-22\n"); 
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 18)\ecut_clus{#}   */
@@ -1048,10 +1063,11 @@ void set_sim_params_gen(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
        general_data->statepoint.stens_ext= real_key_arg;
        index=19;
        if(general_data->statepoint.stens_ext>1000.0){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a surface tension greater than 1000 N/m\n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
        general_data->statepoint.stens_ext*= STENS_CONV;
 
@@ -1086,9 +1102,9 @@ void set_sim_params_gen(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
   /*-----------------------------------------------------------------------*/
       if((class->communicate.np_forc_trg)*(class->communicate.np_forc_src)
          !=class->communicate.np_forc){
-         printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+         printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
          printf("Num_proc_src*Num_proc_trg != Num_proc_forc\n");
-         printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+         printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
          fflush(stdout);
          exit(1);
       }/*endif*/
@@ -1115,11 +1131,11 @@ void set_sim_params_gen(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
       if(ifound != 1) keyarg_barf(dict,filename_parse->input_name,fun_key,index);
 
       if((general_data->simopts.anneal_opt == 1) && (general_data->simopts.ann_rate == 1.0)){
-         printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+         printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
          printf("Dude, you selected the annealing option but have an \n");
          printf("annealing rate of 1.0.  Maybe you want to reconsider \n");
          printf("something more sensible for the latter\n");
-         printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+         printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
          fflush(stdout);
          exit(1);
       }/*endif*/
@@ -1182,14 +1198,16 @@ void set_sim_params_vpot(CLASS *class,GENERAL_DATA *general_data,
       index=1;
       if(ifound != 1) keyarg_barf(dict,filename_parse->input_name,fun_key,index);
       if(class_parse->ishift_pot==0){
-         printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+         printf("\n");
+         printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
          printf("Potential shift is off.  Energy conservation will degrade.\n");
-         printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+         printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       }/*endif*/
       if(class_parse->ishift_pot==1){
-         printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+         printf("\n");
+         printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
          printf("Potential shift is on.  Potential energy will change.\n");
-         printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+         printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 2)\inter_spline_pts{#} */
@@ -1201,10 +1219,11 @@ void set_sim_params_vpot(CLASS *class,GENERAL_DATA *general_data,
       if(class->interact.nsplin <= 0) 
          keyarg_barf(dict,filename_parse->input_name,fun_key,index);
       if(class->interact.nsplin > 2000 ){
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+      printf("\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       printf("You have requested more than 1000 spline points   \n");
       printf("Are you certain this is what you would like to do?\n");
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 3)\intra_block_min{} */
@@ -1214,10 +1233,11 @@ void set_sim_params_vpot(CLASS *class,GENERAL_DATA *general_data,
       if(class->energy_ctrl.nblock_min<0)
          keyarg_barf(dict,filename_parse->input_name,fun_key,index);
       if(class->energy_ctrl.nblock_min<25){
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+      printf("\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       printf("You have requested a memory blocking length less than 25.\n");
       printf("Are you certain this is what you would like to do?\n");
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 4)\pten_inter_respa{#} */
@@ -1260,16 +1280,18 @@ void set_sim_params_vpot(CLASS *class,GENERAL_DATA *general_data,
        if(bonded->intra_scr.nlen<=0)
           keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(bonded->intra_scr.nlen < 50 ){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a scratch length < 50   \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
        if(bonded->intra_scr.nlen > 1500 ){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a scratch length < 1500   \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 8)\ewald_alpha{#} */
@@ -1278,10 +1300,11 @@ void set_sim_params_vpot(CLASS *class,GENERAL_DATA *general_data,
        if(general_data->ewald.alp_ewd <= 0.)
        keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(general_data->ewald.alp_ewd>40){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested an alpha ewald parameter > 40\n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 9)\ewald_kmax{#} */
@@ -1291,17 +1314,19 @@ void set_sim_params_vpot(CLASS *class,GENERAL_DATA *general_data,
        if(class_parse->kmax_ewd <0) 
           keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(class_parse->kmax_ewd>40){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a kmax ewald parameter > 40\n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
        if((double)(class_parse->kmax_ewd)<general_data->ewald.alp_ewd){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a kmax ewald parameter < alpha ewald\n");
        printf("Are you certain this is what you would like to do?\n");
        printf("For well converged forces kmax ewald >= alpha ewald \n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 10)\ewald_respa_kmax{#} */
@@ -1330,16 +1355,19 @@ void set_sim_params_vpot(CLASS *class,GENERAL_DATA *general_data,
           keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(class->part_mesh.pme_on == 1){
         if(class->part_mesh.kmax_pme >40){
-          printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+          printf("\n");
+          printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
           printf("You have requested a PME kmax ewald parameter > 40\n");
           printf("Are you certain this is what you would like to do?\n");
-          printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+          printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
         }/*endif*/
         if(class_parse->kmax_ewd>class->part_mesh.kmax_pme){
-          printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+          printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
           printf("The ewald PME kmax parameter < ewald kmax\n");
           printf("This is not allowed\n");
-          printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+          printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+          fflush(stdout);
+          exit(1);
         }/*endif*/
        }/*endif*/
   /*-----------------------------------------------------------------------*/ 
@@ -1360,16 +1388,19 @@ void set_sim_params_vpot(CLASS *class,GENERAL_DATA *general_data,
           keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(class->part_mesh.pme_res_on == 1){
         if(class->part_mesh.kmax_pme_res >40){
-         printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+         printf("\n");
+         printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
          printf("You have requested a RESPA PME kmax ewald parameter > 40\n");
          printf("Are you certain this is what you would like to do?\n");
-         printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+         printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
         }/*endif*/
         if(class_parse->kmax_res>class->part_mesh.kmax_pme_res){
-         printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+         printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
          printf("The RESPA PME kmax parameter assigned < ewald respa kmax\n");
-         printf("This is not allowed\n");      
-         printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+         printf("This is not allowed\n");
+         printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+         fflush(stdout);
+         exit(1);
         }/*endif*/
        }/*endif*/
   /*-----------------------------------------------------------------------*/ 
@@ -1431,10 +1462,11 @@ void set_sim_params_vpot(CLASS *class,GENERAL_DATA *general_data,
    if(ifound == 0) keyarg_barf(dict,filename_parse->input_name,fun_key,index);
 #ifndef NO_PRAGMA
        if(class->energy_ctrl.block_std_on == 1){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested the blocking option on a scalar machine \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
 #endif
   /*-----------------------------------------------------------------------*/
@@ -1458,10 +1490,11 @@ void set_sim_params_vpot(CLASS *class,GENERAL_DATA *general_data,
        if(general_data->timeinfo.iget_pe_real_inter_freq < 1) 
        keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(general_data->timeinfo.iget_pe_real_inter_freq > 10){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested an inter PE calc freq > 10 steps \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
   /*-----------------------------------------------------------------------*/
   /*  25)\pme_paralell_opt{#} */
@@ -1562,14 +1595,15 @@ void set_sim_params_run(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
         class->energy_ctrl.int_res_ter=1;
  
         if(general_data->timeinfo.nres_ter==1){
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+        printf("\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
         printf("You have requested one long-range forces RESPA step.  \n");
         printf(
       "This will result in additional overhead with no gain in efficiency \n");
         printf("Are you certain this is what you would like to do?\n");
         printf("It would be better not to specify the key word or      \n");
         printf("give it the value zero.                                \n");
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
         }
         if(general_data->timeinfo.nres_ter==0){
         general_data->timeinfo.int_res_ter=0;
@@ -1609,10 +1643,11 @@ void set_sim_params_run(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
        if(class->interact.rheal_res<=0)
        keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(class->interact.rheal_res>2.5){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested RESPA healing length > 2.5A   \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
        class->interact.rheal_res  /= BOHR;
   /*-----------------------------------------------------------------------*/ 
@@ -1622,10 +1657,11 @@ void set_sim_params_run(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
       if(bonded->constrnt.tolshake<=0)
       keyarg_barf(dict,filename_parse->input_name,fun_key,index);
       if(bonded->constrnt.tolshake<1.0e-08) {
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+      printf("\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       printf("You have requested a SHAKE tolerence < 1.0e-08    \n");
       printf("Are you certain this is what you would like to do?\n");
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       }
   /*-----------------------------------------------------------------------*/ 
   /* 10)\rattle_tol{#} */
@@ -1634,10 +1670,11 @@ void set_sim_params_run(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
       if(bonded->constrnt.tolratl <= 0)
       keyarg_barf(dict,filename_parse->input_name,fun_key,index);
       if(bonded->constrnt.tolratl<1.0e-08) {
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+      printf("\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       printf("You have requested a RATTLE tolerence < 1.0e-08    \n");
       printf("Are you certain this is what you would like to do?\n");
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       }
   /*-----------------------------------------------------------------------*/ 
   /* 11)\max_constrnt_iter{#} */
@@ -1648,10 +1685,11 @@ void set_sim_params_run(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
       keyarg_barf(dict,filename_parse->input_name,fun_key,index);
       bonded->grp_bond_con.max_iter = bonded->constrnt.max_iter;
       if(bonded->constrnt.max_iter<100){ 
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+      printf("\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       printf("You have requested a max_constrnt_iter < 100  \n");
       printf("Are you certain this is what you would like to do?\n");
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 12)\init_rescale_atm_vel{on,off} */
@@ -1680,11 +1718,12 @@ void set_sim_params_run(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
       cp_parse->ivc_scale = 0;ifound++;}
       index=14;
       if((cp->cpopts.cp_isok_opt == 1) && (cp_parse->ivc_scale != 1)){
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+      printf("\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       printf("When using the CP isokinetic method, it is advisable\n");
       printf("to do an initial rescale of your CP velocities\n");
       printf("Therefore, I am setting this flag for you.\n");
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       }/* endif */
       if(cp->cpopts.cp_isok_opt == 1) cp_parse->ivc_scale = 1;
    if(ifound != 1) keyarg_barf(dict,filename_parse->input_name,fun_key,index);
@@ -1702,10 +1741,11 @@ void set_sim_params_run(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
       if(bonded->grp_bond_con.tol <= 0)
       keyarg_barf(dict,filename_parse->input_name,fun_key,index);
       if(bonded->grp_bond_con.tol<1.0e-08) {
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+      printf("\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       printf("You have requested a GROUP CONSTRAINT tolerence < 1.0e-08\n");
       printf("Are you certain this is what you would like to do?\n");
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       }
   /*-----------------------------------------------------------------------*/ 
   /* 17)\cp_norb_tol{#} */
@@ -1715,12 +1755,12 @@ void set_sim_params_run(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
       keyarg_barf(dict,filename_parse->input_name,fun_key,index);
 
       if(cp->cpconstrnt.c_tolnorb>0.01&&cp->cpopts.cp_norb==2){
-         printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");    
+         printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
          printf("The tolerence must be quite low with the    \n");
          printf("norm_only norb option. The rotation does not\n");
          printf("preserve the individual norms only the sum.  \n");
          printf("Work is in progress to overcome this.        \n");
-         printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+         printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
          fflush(stdout);
          exit(1);
       }/*endif*/
@@ -1738,11 +1778,11 @@ void set_sim_params_run(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
       cp->cpcoeffs_info.n_ks_rot=1;
       }
       if(cp->cpcoeffs_info.ks_rot_on == 1 && cp->cpopts.cp_norb > 0){
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");    
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
       printf("You are studying the Kohn-Sham eigenvalues under cp_norb \n");
       printf("Eigenvalues are not guaranteed to be correct\n");
       printf("Turn norb off to insure the correct eigenvalues\n");
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
       fflush(stdout);
       exit(1);
       }
@@ -1773,21 +1813,23 @@ void set_sim_params_run(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
        if(cp->cpopts.tol_coef<=0)
        keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(cp->cpopts.tol_coef < general_data->minopts.tol_coef ){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a cp run tolerence less than your \n");
        printf("minimization tolerence %g %g \n",cp->cpopts.tol_coef,
                                              general_data->minopts.tol_coef);
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
        if(cp->cpopts.tol_coef > 10000.0*general_data->minopts.tol_coef ){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a cp run tolerence greater than  \n");
        printf("10000 times the minimization tolerence %g %g \n",
                                              cp->cpopts.tol_coef,
                                              general_data->minopts.tol_coef);
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
   /*-----------------------------------------------------------------------*/
   /* 22)\zero_com_vel{yes,no}*/
@@ -1819,7 +1861,8 @@ void set_sim_params_run(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
 /*        class->clatoms_info.hess_calc=0; */
           iii=0;
       if((general_data->minopts.min_cg == 1) &&  class->clatoms_info.hess_calc > 0 ){
-         printf("$$$$$$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$$$$\n");    
+         printf("\n");
+         printf("$$$$$$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$$$$\n");
          printf("You have chosen to do a conjugate gradient minimization \n");
          printf("with a nonunit hessian preconditioner.                  \n");
          printf("There is no rigorous basis for this approach, and it    \n");
@@ -1827,7 +1870,7 @@ void set_sim_params_run(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
          printf("experiment, however, if you find that the minimizer is  \n");
          printf("is not behaving well, consider choosing the \"unit\" option\n");
          printf("for the \"hess_opt\" keyword\n");
-         printf("$$$$$$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$$$$\n");
+         printf("$$$$$$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
   /*-----------------------------------------------------------------------*/
   /* 27)\class_mass_scale_fact{#} */
@@ -1837,11 +1880,12 @@ void set_sim_params_run(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
        keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if((general_data->simopts.cp_min + general_data->simopts.minimize == 0) &&
          class->clatoms_info.mass_sc_fact != 1.0 ){
-         printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+         printf("\n");
+         printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
          printf("Dude, if you are not doing a minimization run     \n");
          printf("then, like, why are you scaling your atom masses??\n");
          printf("It's cool!  I'll reset the scaling factor for you!\n");
-         printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+         printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
          class->clatoms_info.mass_sc_fact = 1.0;
        }/*endif*/
   /*-----------------------------------------------------------------------*/ 
@@ -1855,11 +1899,11 @@ void set_sim_params_run(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
 
       if(general_data->ensopts.npt_f==1){
         if((pimd_on>0)&&(general_data->cell.hmat_int_typ==0)){
-          printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+          printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
           printf("You are running a path integral simulation under\n");
           printf("NPTF.  You must use the upper diagonal form of the\n");
           printf("cell matrix.\n");
-          printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+          printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
           fflush(stdout);
           Finalize();
           exit(1);
@@ -1918,14 +1962,16 @@ void set_sim_params_run(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
       if(cp->vel_samp_cp.vc_scal_tol<=1.0){
       keyarg_barf(dict,filename_parse->input_name,fun_key,index);}
       if(cp->vel_samp_cp.vc_scal_tol<3.0){
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+        printf("\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
         printf("Coef velocity Rescale tolerence set less than 3kT\n");
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       }/*endif*/
       if(cp->vel_samp_cp.vc_scal_tol>10.0){
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+        printf("\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
         printf("Coef velocity Rescale tolerence set greater than 10kT\n");
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       }/*endif*/
 
 /*========================================================================*/
@@ -1960,10 +2006,11 @@ void set_sim_params_nhc(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
       if(class->therm_info_class.nres_nhc < 1) 
       keyarg_barf(dict,filename_parse->input_name,fun_key,index);
       if(class->therm_info_class.nres_nhc>5){
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+      printf("\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       printf("You have requested more than 5 NHC RESPA steps    \n");
       printf("Are you certain this is what you would like to do?\n");
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 2)\yosh_steps_nhc{#} */
@@ -1984,10 +2031,11 @@ void set_sim_params_nhc(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
       if(class_parse->tau_nhc_def <= 0) 
       keyarg_barf(dict,filename_parse->input_name,fun_key,index);
       if(class_parse->tau_nhc_def < 10.0 ){
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+      printf("\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       printf("You have requested a NHC particle default tau < 10fs\n");
       printf("Are you certain this is what you would like to do?\n");
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 4)\cp_nhc_len{#} */
@@ -2037,13 +2085,6 @@ void set_sim_params_nhc(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
        index=9;
        if(class->therm_info_bead.len_nhc < 0){ 
        keyarg_barf(dict,filename_parse->input_name,fun_key,index);}
-       if(class->therm_info_bead.therm_typ == 1
-              && class->therm_info_bead.len_nhc > 3 ){
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
-        printf("You have requested a NHC length > 3      \n");
-        printf("Are you certain this is what you would like to do?\n");
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
-       }/*endif*/
   /*-----------------------------------------------------------------------*/
   /* 10)\cp_nhc_tau_def{#} */
        sscanf(dict[10].keyarg,"%lg",&(cp_parse->cp_tau_nhc_def));
@@ -2075,11 +2116,12 @@ void set_sim_params_nhc(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
                   || general_data->timeinfo.ix_respa > 5) 
         keyarg_barf(dict,filename_parse->input_name,fun_key,index);
         if(general_data->timeinfo.ix_respa>1) {
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+        printf("\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
         printf("WARNING: xi respa option chosen!\n");
         printf("energy drifts may occur if the number \n");
         printf("of respa steps is taken too large\n");
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
         }
   /*-----------------------------------------------------------------------*/
   /* 14)\thermostat_type{#} */
@@ -2100,12 +2142,21 @@ void set_sim_params_nhc(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
         keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        }
 
+       if(class->therm_info_bead.therm_typ == 1
+              && class->therm_info_bead.len_nhc > 3 ){
+        printf("\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
+        printf("You have requested a NHC length > 3      \n");
+        printf("Are you certain this is what you would like to do?\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
+       }/*endif*/
+
        if(class->therm_info_bead.therm_typ == 2
          && class->therm_info_bead.len_nhc > 3 ){
-        printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+        printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
         printf("You have requested a GGMT length > 3      \n");
         printf("Available GGMT lengths are 2 or 3    \n");
-        printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+        printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
         exit(1);
        }/*endif*/
    /*-----------------------------------------------------------------------*/ 
@@ -2149,16 +2200,18 @@ void set_sim_params_vol(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
        if(class_parse->tau_vol <= 0) 
        keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(class_parse->tau_vol > 10000.0){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a volume tau > 10ps           \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
        if(class_parse->tau_vol < 100.0 ){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a volume tau < 100fs           \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 2)\volume_nhc_tau{#} */
@@ -2167,16 +2220,18 @@ void set_sim_params_vol(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
        if(class_parse->tau_vol_nhc <= 0) 
        keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(class_parse->tau_vol_nhc > 10000.0){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a NHC volume tau  > 10ps      \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
        if(class_parse->tau_vol_nhc < 100.0 ){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a NHC volume tau < 100fs      \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 3)\periodicity{0,1,2,3} */
@@ -2188,9 +2243,9 @@ void set_sim_params_vol(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
        }/*endif*/
        index=3;
        if(general_data->cell.iperd == 4 && cp_dual_grid_opt_on >= 1){
-          printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+          printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
           printf("cluster ewald  not supported for dualed systems yet. \n");
-          printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+          printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
           fflush(stdout);
           Finalize();
           exit(1);
@@ -2259,10 +2314,11 @@ void set_sim_params_write(CLASS *class,GENERAL_DATA *general_data,
        if(general_data->filenames.iwrite_screen < 1) 
        keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(general_data->filenames.iwrite_screen > 1000){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a write screen freq > 1000 steps \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 4)\write_dump_freq */
@@ -2272,10 +2328,11 @@ void set_sim_params_write(CLASS *class,GENERAL_DATA *general_data,
        if(general_data->filenames.iwrite_dump < 1) 
          keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(general_data->filenames.iwrite_dump > 2000){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a write dump freq > 2000 steps \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 5)\write_inst_freq */
@@ -2285,10 +2342,11 @@ void set_sim_params_write(CLASS *class,GENERAL_DATA *general_data,
         if(general_data->filenames.iwrite_inst < 1) 
         keyarg_barf(dict,filename_parse->input_name,fun_key,index);
         if(general_data->filenames.iwrite_inst > 2000){
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+        printf("\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
         printf("You have requested a write inst freq > 2000 steps \n");
         printf("Are you certain this is what you would like to do?\n");
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
         }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 6)\write_pos_freq */
@@ -2298,10 +2356,11 @@ void set_sim_params_write(CLASS *class,GENERAL_DATA *general_data,
        if(general_data->filenames.iwrite_confp < 1) 
            keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(general_data->filenames.iwrite_confp > 2000){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a write position freq > 2000 steps \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 7)\write_vel_freq */
@@ -2311,10 +2370,11 @@ void set_sim_params_write(CLASS *class,GENERAL_DATA *general_data,
        if(general_data->filenames.iwrite_confv < 1) 
            keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(general_data->filenames.iwrite_confv > 2000){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a write velocity freq > 2000 steps \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 8)\write_cp_c_freq */
@@ -2360,10 +2420,11 @@ void set_sim_params_write(CLASS *class,GENERAL_DATA *general_data,
        if(general_data->filenames.iwrite_par_confp < 1) 
        keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(general_data->filenames.iwrite_par_confp > 2000){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a partial write pos freq > 2000 steps \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 15)\path_cent_freq */
@@ -2373,10 +2434,11 @@ void set_sim_params_write(CLASS *class,GENERAL_DATA *general_data,
        if(general_data->filenames.iwrite_path_cent < 1) 
        keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(general_data->filenames.iwrite_path_cent > 2000){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a write centroid freq > 2000 steps \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 16)\conf_partial_limits */
@@ -2389,10 +2451,11 @@ void set_sim_params_write(CLASS *class,GENERAL_DATA *general_data,
        keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if((general_data->filenames.low_lim_par > general_data->filenames.high_lim_par)&&
        (dict[16].iuset==1)){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested a lower limit higher than your \n");
        printf("upper limit in the conf_partial_limits keyarg     \n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
   /*-----------------------------------------------------------------------*/ 
    /* 17)\read_binary_cp_coef{on,off} */
@@ -2483,10 +2546,10 @@ void set_sim_params_pimd(CLASS *class,GENERAL_DATA *general_data,
       cp->cpcoeffs_info.pi_beads_proc =   class->clatoms_info.pi_beads_proc;
 
       if((class->clatoms_info.pi_beads%class->communicate.np_beads)!=0){
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       printf("The number of processors does not evenly divide \n");
       printf("the number of path integral beads.\n");
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       fflush(stdout);
       Finalize();
       exit(1);
@@ -2498,12 +2561,13 @@ void set_sim_params_pimd(CLASS *class,GENERAL_DATA *general_data,
       index=2;
       if((class->clatoms_info.gamma_adb<0.0))
        keyarg_barf(dict,filename_parse->input_name,fun_key,index);
-      if(class->clatoms_info.gamma_adb<1.0){
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+      if(class->clatoms_info.gamma_adb>1.0){
+      printf("\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       printf("You have requested a path integral                \n");
-      printf("adiabaticity parameter less than one.             \n");
+      printf("adiabaticity parameter more than one.             \n");
       printf("Are you certain this is what you would like to do?\n");
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       }/*endif*/
   /*-----------------------------------------------------------------------*/ 
   /* 3)\path_int_md_typ{staging,centroid} */
@@ -2567,10 +2631,11 @@ void set_sim_params_pimd(CLASS *class,GENERAL_DATA *general_data,
        if(class->clatoms_info.rcut_spread<0)
        keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(class->clatoms_info.rcut_spread<1.0){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested an initial spread size < 1 Bohr \n");
        printf("Are you certain this is what you would like to do?\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
   /*-----------------------------------------------------------------------*/
   /* 10)\initial_spread_opt{on,off} */
@@ -2583,10 +2648,11 @@ void set_sim_params_pimd(CLASS *class,GENERAL_DATA *general_data,
    if(ifound == 0) keyarg_barf(dict,filename_parse->input_name,fun_key,index);
        if(general_data->simopts.initial_spread_opt == 1 &&   
                            general_data->simopts.pimd == 0){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You have requested the initial spread option \n");
        printf("\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
   /*-----------------------------------------------------------------------*/
   /*  11)\pimd_freeze_type{centroid,all_mode} */
@@ -3213,63 +3279,63 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
             + general_data->simopts.cp_wave_min_pimd;
 
  if((class->clatoms_info.pi_beads > 1)&&(pimd_on == 0)){
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        printf("The number of path integral beads is > 1, but \n");
        printf("you have not turned on a path integral simulation\n");
        printf("type.  Therefore, this run will terminate, now.\n");
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        fflush(stdout);
        exit(1);
  }/*endif*/
 
  if((general_data->ensopts.nve==1)&&(pimd_on == 1)){
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        printf("You are doing a path integral calculation .  The \n");
        printf("microcanonical ensemble (NVE) is meaningless\n");
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        fflush(stdout);
        exit(1);
  }/*endif*/
 
  if(class->nbr_list.verlist.nmem_min_lst < bonded->intra_scr.nlen){
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        printf("Your scr_length is greater than your verlist_mem_min\n");
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        fflush(stdout);
        exit(1);
  }
 
  if(class->energy_ctrl.nblock_min > bonded->intra_scr.nlen){
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        printf("Your scr_length is less than your minimum block size \n");
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        fflush(stdout);
        exit(1);
  }
 
  if(pimd_on==0&&general_data->timeinfo.ix_respa==5){
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        printf("The xi_respa option must be 1,2,3, or 4 under \n");
        printf("classical MD \n");
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        fflush(stdout);
        exit(1);
  }
 
  if(class_parse->istart>2&&general_data->simopts.initial_spread_opt==1){
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        printf("Spread option is supported only for restart_pos and\n");
        printf("initial restart types\n");
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        fflush(stdout);
        exit(1);
  }
 
  if(class->interact.dielectric_opt==1 && general_data->cell.iperd != 0){
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        printf("Position dependent dielectric constant only    \n");
        printf("supported under cluster boundary conditions    \n");
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        fflush(stdout);
        exit(1);
  }
@@ -3279,34 +3345,34 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
 
   if(general_data->timeinfo.int_res_ter==1 && 
                      general_data->timeinfo.int_res_tra == 0){
-    printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@\n");
     printf("Having inter molecular respa on and intra molecular respa off\n");
     printf("doesn't makes sense.\n");
     printf("The program therefore insists that if int_res_ter=1\n");
     printf("then int_res_tra=1\n");
-    printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@\n");
     fflush(stdout);
     exit(1);
   }
   if(general_data->timeinfo.int_res_ter==1 &&
                      general_data->timeinfo.int_res_tor == 0){
-    printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@\n");
     printf("Having inter molecular respa on and torsion respa off\n");
     printf("doesn'tmakes sense. \n");
     printf("The program therefore insists that if int_res_ter=1\n");
     printf("then int_res_tor=1\n");
-    printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@\n");
     fflush(stdout);
     exit(1);
   }
   if(general_data->timeinfo.int_res_tor==1 && 
                      general_data->timeinfo.int_res_tra == 0){
-    printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@\n");
     printf("Having torsional respa on and intra molecular respa off\n");
     printf("doesn't makes sense.\n");
     printf("The program therefore insists that if int_res_tor=1\n");
     printf("then int_res_tra=1\n");
-    printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@\n");
     fflush(stdout);
     exit(1);
   }
@@ -3315,17 +3381,17 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
 /* II.V) Thermostat Consistency Checks                                          */
 
   if((class->therm_info_class.therm_typ == 2) && general_data->simopts.anneal_opt == 1){
-    printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@\n");
     printf("Annealing with GGMT thermostats not available\n");
-    printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@\n");
     fflush(stdout);
     exit(1);
   }
   
   if((class->therm_info_bead.therm_typ == 2) && general_data->simopts.anneal_opt == 1){
-    printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@\n");
     printf("Annealing with GGMT thermostats not available\n");
-    printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@\n");
     fflush(stdout);
     exit(1);
   }
@@ -3339,11 +3405,11 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
     if(cp->cpopts.cp_lda == 1){
       if((strcasecmp(cp->pseudo.vxc_typ,"pz_lsda")==0)||
 	 (strcasecmp(cp->pseudo.vxc_typ,"pw_lsda")==0)){
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@\n");
        printf("If you are doing a cp calculation using lda you\n");
        printf("cannot use an lsda vxc.\n"); 
        printf("you have selected vxc type %s\n",cp->pseudo.vxc_typ);
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@\n");
         fflush(stdout);
        exit(1);
       } /*endif*/
@@ -3353,34 +3419,35 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
                    general_data->simopts.cp_wave_min==1 || 
        general_data->simopts.cp_wave_min_pimd==1){
      if(cp->cpopts.cp_ptens_calc == 1){
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("There really is not much use in computing the\n");
        printf("pressure tensor under CP minimization.  I will\n"); 
        printf("allow you to continue, but you might want to turn off\n");
        printf("the cp_ptens option.\n");
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
-        fflush(stdout);
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
+       fflush(stdout);
       } /*endif*/
     }/*endif*/
 
     if(cp->cpopts.cp_lsda==1){
       if(strcasecmp(cp->pseudo.vxc_typ,"pz_lda")==0 ||
         strcasecmp(cp->pseudo.vxc_typ,"pw_lda")==0){
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@\n");
        printf("If you are doing a cp calculation using lsda you\n");
        printf("cannot use an lda vxc, you have selected vxc type %s\n",
               cp->pseudo.vxc_typ);
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@\n");
        fflush(stdout);
        exit(1);
       }/*endif*/
     }/*endif*/
 
     if(cp->cpopts.cp_sic==1 && cp->cpopts.cp_norb > 0){
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@\n");
       printf("If you are doing a CP calculation using sic\n");
       printf("you cannot use norb integration\n");
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@\n");
       fflush(stdout);
       exit(1);
     }/*endif*/
@@ -3391,11 +3458,11 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
             + general_data->simopts.cp_wave_min_pimd;
 
   if(cp_min_on == 1 && cp->cpopts.cp_norb > 0) {
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        printf("Norb minimization not supported yet.  Sorry, but\n");
        printf("technical support is overworked and underpaid.  \n");
        printf("See Dawn, she'll give you the references!!\n");
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        fflush(stdout);
        exit(1);
   }/*endif*/
@@ -3406,21 +3473,21 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
          +general_data->simopts.debug_cp+general_data->simopts.debug_cp_pimd;
 
   if( (cp_parse->istart_cp == 0) && (cp_on==1)){
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       printf("Dude, you are doing a full CP calculation with a \n");
       printf("GEN_WAVE restart?????? NO WAY!!!\n");
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       fflush(stdout);
       exit(1);
   }/*enddif*/
 
  if(cp_on ==1 && cp->cpopts.cp_ptens_calc != 0){
    if(general_data->cell.iperd == 0 || general_data->cell.iperd == 4){ 
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       printf("Dude, you are doing a CP calculation with cluster \n");
       printf("boundary conditions. Why are you calculating the\n");
       printf("the pressure tensor as well?\n");
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       fflush(stdout);
       exit(1);
    }/*endif*/
@@ -3439,41 +3506,42 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
   }/* endif */
 
   if( (cp->cpcoeffs_info.cp_elf_calc_frq > 0)&&(cp_min_on>0)){
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       printf("NO ELFing during cp-minimization \n");
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       fflush(stdout);
       exit(1);
   }/*endif*/
 
   if( (cp->cpcoeffs_info.cp_elf_calc_frq > 0)&& 
       (cp->cpopts.cp_dual_grid_opt >= 1)){
-    printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
     printf("NO ELFing with dual gridding without debugging! \n");
-    printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+    printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
     fflush(stdout);
     exit(1);
   }/*endif*/
 
   if( (cp->cpopts.icheck_perd_size != 1)  && (cp_on + cp_min_on > 0)) {
    if(general_data->cell.iperd <= 2 || general_data->cell.iperd == 4){ 
-       printf("$$$$$$$$$$$$$$$$$$$$_WARNING_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("You are doing a CP calculation with reduced boundary\n");
        printf("conditions (< 3) and have elected NOT to check the\n"); 
        printf("inter-particle distances for instances of \n"); 
        printf("particles escaping the box. \n"); 
        printf("ARE YOU SURE THIS IS WHAT YOU WANT TO DO?????? \n"); 
-       printf("$$$$$$$$$$$$$$$$$$$$_WARNING_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
    }/*endif*/
   }/*endif*/
 
   if( (general_data->cell.imov_cp_box == 1)  && (cp_on + cp_min_on > 0)) {
    if(cp->cpopts.cp_dual_grid_opt < 2){ 
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       printf("If you are doing a CP calculation with the small box \n");
       printf("moving, you must use the not_prop option for the  \n");
       printf("cp_dual_grid_opt. Good bye, and have a nice day \n");
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       fflush(stdout);
       exit(1);
    }/*endif*/
@@ -3481,49 +3549,50 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
 
   if( (cp_on + cp_min_on > 0)) {
    if(cp->cpopts.cp_dual_grid_opt > 2 && cp->cpopts.cp_ptens_calc == 1){ 
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       printf("If you would like to do a dual grid NPT CP calculation \n");
       printf("you will have to code up the pressure tensor \n");
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       fflush(stdout);
       exit(1);
    }/*endif*/
   }/*endif*/
 
  if((cp_on || cp_min_on) && (class->energy_ctrl.iget_pe_real_inter_freq != 1)){
-       printf("$$$$$$$$$$$$$$$$$$$$_WARNING_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("For CP calculations, interatomic PE should be \n");
        printf("Calculated every step.  Setting the frequency to 1\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_WARNING_$$$$$$$$$$$$$$$$$$$$\n"); 
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        class->energy_ctrl.iget_pe_real_inter_freq = 1;   
  }
 
   if(cp->cpopts.cp_dual_grid_opt >= 1 && cp->cpopts.cp_hess_calc != 0){
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       printf("Dude, if you would like to do a dual grid with the hessian \n");
       printf("you will have to code it up \n");
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       fflush(stdout);
       exit(1);
   }/*endif*/
 
   if(class->clatoms_info.hess_calc == 1  && cp->cpopts.cp_ptens_calc != 0){
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       printf("Simulataneous calculation of pressure tensor and \n");
       printf("atomic Hessian under CP not currently available\n");
       printf("If you like REALLY need this option, see support staff\n");
       printf("and they will allocate the separate memory space\n");
       printf("required for this.\n");
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       fflush(stdout);
       exit(1);
   }/*endif*/
 
   if( (cp_on + cp_min_on > 1) && (class->interact.dielectric_opt == 1)){
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       printf("Dude, the dielectric option must be off for all  \n");
       printf("CP runs \n");
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       fflush(stdout);
       exit(1);
   }/*endif*/
@@ -3531,19 +3600,20 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
   if( (cp_on + cp_min_on > 1)){
      if(cp->cpscr.cpscr_atom_pme.pme_on  == 1 && 
         cp->cpopts.cp_dual_grid_opt != 2){
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       printf("Dude, you may only pme when you dual grid the \n");
       printf("not proportional way \n");
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       fflush(stdout);
       exit(1);
      }/*endif*/
      if(cp->cpscr.cpscr_atom_pme.pme_on  == 0 && 
         cp->cpopts.cp_dual_grid_opt == 2){
-      printf("$$$$$$$$$$$$$$$$$$$$_WARNING_$$$$$$$$$$$$$$$$$$$$\n");    
+      printf("\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       printf("Dude, why aren't you using pme when you are dual gridding\n");
       printf("the not proportional way. It really is a time saver. \n");
-      printf("$$$$$$$$$$$$$$$$$$$$_WARNING_$$$$$$$$$$$$$$$$$$$$\n");    
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       fflush(stdout);
      }/*endif*/
 
@@ -3552,18 +3622,19 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
   if( (cp->cpopts.cp_dual_grid_opt >= 1) && 
       (general_data->simopts.cp_min== 1) &&
       (general_data->minopts.min_atm_com_fix_opt==0)){
-       printf("$$$$$$$$$$$$$$$$$$$$_WARNING_$$$$$$$$$$$$$$$$$$$$\n");
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("Dual gridding is great BUT you might want to fix\n");    
        printf("the com of the system using the min_atm_com_fix option\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_WARNING_$$$$$$$$$$$$$$$$$$$$\n");   
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
   }/*endif*/
 
   if((cp->cpopts.cp_isok_opt == 1) && (cp->cpopts.cp_norb == 0)){
-      printf("@@@@@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@\n");
       printf("Sorry, but if you want to use the CP isokinetic option,\n");
       printf("you need to turn on one of the nonorthogonal (cp_norb)\n");
       printf("options.  Try `full_ortho' if you are not sure what to do\n");
-      printf("@@@@@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@\n");
       fflush(stdout);
       exit(1);
   }/* endif */
@@ -3573,22 +3644,24 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
 /* Reduced Periodicity Warnings */
 
   if( (iperd!=3) && (cp_on + cp_min_on > 0) ){
-    printf("$$$$$$$$$$$$$$$$$$$$_WARNING_$$$$$$$$$$$$$$$$$$$$\n");    
+    printf("\n");
+    printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
     printf("Danger! Periodicity is not 3! The convergence of the\n");
     printf("electronic structure with box size in the non-periodic\n");
     printf("directions must be tested!\n");
-    printf("$$$$$$$$$$$$$$$$$$$$_WARNING_$$$$$$$$$$$$$$$$$$$$\n");    
+    printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
   }/*endif*/
 
   if( (iperd>0) && (iperd!=3) ){
-    printf("$$$$$$$$$$$$$$$$$$$$_WARNING_$$$$$$$$$$$$$$$$$$$$\n");    
+    printf("\n");
+    printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
     printf("Danger! Periodicity is not 3 or 0. The box side, L,\n");
     printf("in the non-periodic direction(s) must be in the range\n");
     printf("L>D where D is the relevent distance parameter, \n");
     printf("clusters, D=4R, surfaces D=2T, wires, D=2l. Here,\n");
     printf("R=cluster radius, T=surface thickness, l=wire length\n");
     printf("formed by the atomic positions \n");
-    printf("$$$$$$$$$$$$$$$$$$$$_WARNING_$$$$$$$$$$$$$$$$$$$$\n");    
+    printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
   }/*endif*/
 
 /*========================================================================*/
@@ -3597,10 +3670,10 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
   if(general_data->simopts.cp_wave==1||
                       general_data->simopts.cp_wave_pimd == 1){
       if((general_data->ensopts.npt_i + general_data->ensopts.npt_f == 1)){
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       printf("If you are doing a CP calculation moving only the \n");
       printf("wave functions, constant pressure cannnot be employed \n");
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       fflush(stdout);
       exit(1);
     }
@@ -3608,11 +3681,11 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
 
   if(cp->cpopts.cp_ptens_calc==0 && cp_on ==1){
       if((general_data->ensopts.npt_i + general_data->ensopts.npt_f == 1)){
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       printf("If you are doing a CP calculation under constant pressure \n");
       printf("You must turn on the CP pressure tensor calculation \n");
       printf("(cp_ptens{on} \n");
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       fflush(stdout);
       exit(1);
     }
@@ -3642,10 +3715,10 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
 
   if((general_data->cell.iperd<2) || (general_data->cell.iperd==4) ){
    if((general_data->ensopts.npt_f+general_data->ensopts.npt_i)==1){
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       printf("Constant Pressure is not implemented for\n");
       printf("periodicity in less than 2 dimensions   \n");
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       fflush(stdout);
       exit(1);
    }/*endif*/
@@ -3653,39 +3726,44 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
 
   if((general_data->simopts.ann_rate!=1.0)&&
      ((general_data->ensopts.npt_f+general_data->ensopts.npt_i)==1)){
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       printf("Constant Pressure is not implemented using\n");
       printf("the temperature annealing option\n");
-      printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+      printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
       fflush(stdout);
       exit(1);
   }/*endif*/
 
   if(general_data->ensopts.npt_f == 1){
     if(general_data->cell.hmat_cons_typ==0){
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+      printf("\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       printf("You have requested flexible constant pressure. \n");
       printf("This only is appropriate for 3D solid systems.\n");
       printf("For example, membranes won't work but protein crystals will.\n");
       printf("Are you certain this is what you would like to do?\n");
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
     }/*endif*/
     if(general_data->cell.hmat_cons_typ==2){
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+      printf("\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       printf("You have requested flexible constant pressure\n");
       printf("with the mono_clinic constraint. For example,\n");
       printf("this ensemble will be stable for some membranes systems\n");
       printf("but not others. It is not a good idea for liquids.\n");
       printf("Are you certain this is what you would like to do?\n");
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+      printf("\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
     }/*endif*/
     if(general_data->cell.hmat_cons_typ==1){
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+      printf("\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       printf("You have requested flexible constant pressure\n");
       printf("with the orthorhombic constraint. This ensemble will be\n");
       printf("stable for membranes but not liquids.\n");
       printf("Are you certain this is what you would like to do?\n");
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+      printf("\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
     }/*endif*/
   }/*endif*/
 
@@ -3693,18 +3771,19 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
 /* VI) Path integral consistency checks */
 
   if((pimd_on==1)&&(general_data->simopts.pi_beads<=1)){
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+      printf("\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       printf("You have chosen the Path Integral option with  \n");
       printf("only one bead.                                 \n");
-      printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+      printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       fflush(stdout);
   }/*endif*/
 
 #ifdef NO_PATH_INT_ANNEALING
   if((pimd_on==1)&&(general_data->simopts.ann_rate!=1.0)){
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        printf("Temperature annealing with path integrals not allowed.\n");
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
        fflush(stdout);
        exit(1);
    }/*endif*/
@@ -3723,12 +3802,12 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
                +general_data->simopts.cp_wave_min_pimd;
     if(cppimd_on == 0){
       if(psum != class->clatoms_info.pi_beads){ 
-        printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+        printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
         printf("Your have improperly set up your RESPA beads   \n");
         printf("for a Path Integral MD simulation.  The product of \n");
         printf("bead_level parameters %d  must equal pi_beads %d. \n",psum,
                 class->clatoms_info.pi_beads);
-        printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+        printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
         fflush(stdout);
         exit(1);
       }/*endif*/
@@ -3776,11 +3855,11 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
    if((cp_on+cp_min_on)==0){
     if(class->communicate.np !=
       class->communicate.np_forc*class->communicate.np_beads){
-        printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+        printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
         printf("You have not properly divided up processors among \n");
         printf("beads and classical forces: %d neq %d x %d\n",nproc_tot,
                 class->communicate.np_forc,class->communicate.np_beads);
-        printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+        printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
         fflush(stdout);
         exit(1);
     }/*endif*/
@@ -3789,19 +3868,19 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
    if((cp_on+cp_min_on)==1){
     if(class->communicate.np != 
       class->communicate.np_states*class->communicate.np_beads){
-        printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+        printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
         printf("You have not properly divided up processors among \n");
         printf("beads and states: %d neq %d x %d\n",nproc_tot,
                class->communicate.np_states,class->communicate.np_beads);
-        printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+        printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
         fflush(stdout);
         exit(1);
     }
     if((class->communicate.np_forc != 1)&&
        (class->communicate.np_forc!=class->communicate.np_states)){
-        printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+        printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
         printf("Under CP you can only have np_forc=1 or np_forc=np_state.\n");
-        printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+        printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
         fflush(stdout);
         exit(1);
     }
@@ -3809,19 +3888,21 @@ void set_sim_params_finale(CLASS *class,GENERAL_DATA *general_data,
 
    if(class->communicate.np != 1){
      if(class_parse->istart!=4){
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("\n");
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        printf("Restart types other than restart_all employed\n");
        printf("in parallel may effect comparisons with simulations \n");
        printf("performed in scalar or with different numbers of procs\n");
-       printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+       printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
      }/*endif*/
      if((cp_on+cp_min_on)==1){
        if(cp_parse->istart_cp!=4){
-         printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+         printf("\n");
+         printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
          printf("CP-Restart types other than restart_all employed\n");
          printf("in parallel may effect comparisons with simulations \n");
          printf("performed in scalar or with different numbers of procs\n");
-         printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");    
+         printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
        }/*endif*/
      }/*endif*/
    }/*endif*/
@@ -3834,35 +3915,35 @@ if(general_data->cell.iperd > 0 && cp_on == 0){
 
    if((general_data->timeinfo.int_res_ter==0) &&
       (class->part_mesh.pme_res_on == 1)){
-        printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+        printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
         printf("PME respa option requires long range forces respa \n");
-        printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+        printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
         fflush(stdout);
         exit(1);
    }/*endif*/
 
    if(class->part_mesh.pme_res_on == 1 && class->part_mesh.pme_on == 0){
-        printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+        printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
         printf("No PME respa option without the PME option \n");
-        printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+        printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
         fflush(stdout);
         exit(1);
    }/*endif*/
    if((general_data->timeinfo.int_res_ter==1) &&
       (class->part_mesh.pme_res_on == 1)){ 
       if((class->part_mesh.n_interp_res  > class->part_mesh.n_interp)){
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
        printf("The RESPA PME n_interp parameter > PME n_interp \n");
-       printf("This is not allowed\n");      
-       printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+       printf("This is not allowed\n");
+       printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
        fflush(stdout);
        exit(1);      
       }/*endif*/
       if((class->part_mesh.kmax_pme  < class->part_mesh.kmax_pme_res)){
-         printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+         printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
          printf("The RESPA PME kmax parameter > PME kmax parameter\n");
          printf("This is not allowed\n");      
-         printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+         printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
         fflush(stdout);
         exit(1);
       }/*endif*/
@@ -3871,17 +3952,18 @@ if(general_data->cell.iperd > 0 && cp_on == 0){
    if((general_data->timeinfo.int_res_ter==1) &&
       (class->part_mesh.pme_res_on == 0) && (class->part_mesh.pme_on == 1) ){
       if(class_parse->kmax_res==class_parse->kmax_ewd){
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+        printf("\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
         printf("Inter respa with PME option on but PME respa opt is off.\n");
         printf("Placing full reciprocal space calculation \n");
         printf("inside the short range respa loop.\n");
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
       }else{
        if(class_parse->kmax_res!=0){
-        printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+        printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
         printf("PME option on but PME respa opt is off under LRF respa.\n");
         printf("This is only OK if kmax_res=kmax or kmax_res=0\n");
-        printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+        printf("@@@@@@@@@@@@@@@@@@@@ ERROR @@@@@@@@@@@@@@@@@@@@\n");
         fflush(stdout);
         exit(1);
        }/*endif*/
@@ -3892,11 +3974,12 @@ if(general_data->cell.iperd > 0 && cp_on == 0){
      if(class_parse->kmax_res==class_parse->kmax_ewd){
        if((class->part_mesh.kmax_pme_res == class->part_mesh.kmax_pme) &&
           (class->part_mesh.n_interp_res == class->part_mesh.n_interp)){
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+        printf("\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
         printf("PME Respa identical to full PME\n");
         printf("Placing full reciprocal space calculation \n");
         printf("inside the short range respa loop.\n");
-        printf("$$$$$$$$$$$$$$$$$$$$_warning_$$$$$$$$$$$$$$$$$$$$\n");
+        printf("$$$$$$$$$$$$$$$$$$$$ WARNING $$$$$$$$$$$$$$$$$$$$\n");
         class->part_mesh.pme_res_on = 0; 
        }/*endif*/
      }/*endif*/

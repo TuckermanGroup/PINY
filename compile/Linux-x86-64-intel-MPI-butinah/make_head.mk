@@ -14,7 +14,7 @@ OPT_CARE = -O2
 OPT_GRP = -O2
 CFLAGS = -fPIC -static-intel $(DEFINE)
 FFLAGS = $(CFLAGS) -nofor-main
-LIBS = $(LIB_PATH) $(MALLOC) -Wl,-rpath,/share/apps/intel/12.1.3.293/composer_xe_2011_sp1.9.293/compiler/lib/intel64
+LIBS = -Wl,-rpath,/share/apps/intel/12.1.3.293/composer_xe_2011_sp1.9.293/compiler/lib/intel64
 
 BASE = $(realpath ../..)
 CODE = $(BASE)/src
