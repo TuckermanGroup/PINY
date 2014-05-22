@@ -28,6 +28,9 @@
 #include "../proto_defs/proto_pimd_entry.h"
 #include "../proto_defs/proto_pimd_local.h"
 #include "../proto_defs/proto_math.h"
+#if defined PLUMED
+#include "../proto_defs/proto_plumed.h"
+#endif
 
 
 /*==========================================================================*/
@@ -47,6 +50,7 @@ void int_NPTI_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
     int ix_now;
     int nres_tra,nres_tor,nres_ter,nres_pimd;
     int int_res_ter,iii;
+    int itimei = 1;
     double aa,aa2,arg2,poly,bb,dlen;
     double e2,e4,e6,e8;
     int natm_tot,pi_beads;
@@ -180,7 +184,18 @@ void int_NPTI_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
              {(class->energy_ctrl.iget_full_intra) = 1;}
           if(ir_pimd == nres_pimd)
              {(class->energy_ctrl.iget_res_intra) = 1;}
-          energy_control_pimd(class,bonded,general_data, 0);
+
+          #if defined PLUMED
+          itimei = nres_ter * nres_tor * nres_tra *
+                   (general_data->timeinfo.itime - 1) +
+                   nres_tor * nres_tra * (ir_ter - 1) +
+                   nres_tra * (ir_tor - 1) +
+                   ir_tra;
+          /* PLUMED itself is called inside energy_control_pimd,
+           * before forces are transformed to modes. */
+          #endif
+
+          energy_control_pimd(class,bonded,general_data, itimei);
 
 
 /*==========================================================================*/
