@@ -769,7 +769,7 @@ void screen_write_cp_pimd(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded
   printf("Total PE          = "FMT" "FMT"\n",(vtot)*eu_conv,(avtot/atime)*eu_conv);
   printf("Intermol PE       = "FMT" "FMT"\n",(general_data->stat_avg.vintert)*eu_conv,
 	 (general_data->stat_avg.avintert/atime)*eu_conv);
-  printf("Intramol PE       = %"FMT" "FMT"\n",(general_data->stat_avg.vintrat)*eu_conv,
+  printf("Intramol PE       = "FMT" "FMT"\n",(general_data->stat_avg.vintrat)*eu_conv,
 	 (general_data->stat_avg.avintrat/atime)*eu_conv);
   printf("Fict. Atm KE      = "FMT" "FMT"\n",(general_data->stat_avg.kinet)*eu_conv/dpi_beads,
 	 (general_data->stat_avg.akinet/(atime*dpi_beads))*eu_conv);
