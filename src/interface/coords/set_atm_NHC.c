@@ -658,7 +658,7 @@ void set_atm_NHC(ENSOPTS *ensopts, STATEPOINT *statepoint, SIMOPTS *simopts,
 
     bead_num_nhc  = 0;
     ind_glob_nhc  = 0;
-    pre_nhc       = (BOLTZ*BOLTZ)/(gamma_adb*gamma_adb*((double)(pi_beads)));
+    pre_nhc       = (BOLTZ*BOLTZ*gamma_adb*gamma_adb)/((double)(pi_beads));
 
 /*--------------------------------------------------------------------------*/
 /*    1) Couple each coord of the atom bead to its own NHC         */

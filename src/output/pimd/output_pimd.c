@@ -528,9 +528,10 @@ void screen_write_pimd(CLASS *class, GENERAL_DATA *general_data, BONDED *bonded,
 
 
   int npairs, iii;
+  int updates_now;
   double dpi_beads = (double)class->clatoms_info.pi_beads;
   double atime, vol_div, atm_div;
-  double updates_t, updates_true, updates_now;
+  double updates_t, updates_true;
   double eu_conv = 1.0;
   double time_fact = general_data->timeinfo.dt * TIME_CONV / 1000.0;
 
@@ -548,6 +549,7 @@ void screen_write_pimd(CLASS *class, GENERAL_DATA *general_data, BONDED *bonded,
   /* standard */
 
   #define FMT "%18.10f"
+  #define FMT_INT "%18d"
 
   printf("\n");
   printf("****************************************************************************\n");
@@ -635,7 +637,7 @@ void screen_write_pimd(CLASS *class, GENERAL_DATA *general_data, BONDED *bonded,
   /*========*/
   /* timing */
 
-  printf("Cpu time          = "FMT" "FMT"\n",
+  printf("CPU time          = "FMT" "FMT"\n",
          general_data->stat_avg.cpu_now,
          general_data->stat_avg.acpu/atime);
   printf("\n");
@@ -706,18 +708,18 @@ void screen_write_pimd(CLASS *class, GENERAL_DATA *general_data, BONDED *bonded,
     updates_t = general_data->stat_avg.updates;
     if (updates_t == 0)
       updates_t = 1;
-    updates_now = (double)(general_data->timeinfo.itime -
-                           general_data->stat_avg.itime_update);
+    updates_now = general_data->timeinfo.itime -
+                  general_data->stat_avg.itime_update;
     updates_true = updates_t;
     npairs = class->nbr_list.verlist.nver_lst_now;
-    printf("Inst steps/update = "FMT"\n", updates_now);
+    printf("Inst steps/update = "FMT_INT"\n", updates_now);
     printf("Avg. steps/update = "FMT"\n", atime/updates_t);
-    printf("Total list updates= "FMT"\n", updates_true);
-    printf("Number of pairs   = %d\n", npairs);
+    printf("Total updates     = "FMT_INT"\n", (int)updates_true);
+    printf("Number of pairs   = "FMT_INT"\n", npairs);
     if (general_data->timeinfo.int_res_ter==1) {
       npairs = class->nbr_list.verlist.nver_lst_now_res;
-      printf("Inst steps/update = "FMT"\n", updates_now);
-      printf("Number RESPA pairs= %d\n", npairs);
+      printf("Inst steps/update = "FMT_INT"\n", updates_now);
+      printf("Number RESPA pairs= "FMT_INT"\n", npairs);
     }
     printf("\n");
   }
