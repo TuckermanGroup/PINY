@@ -16,7 +16,7 @@ DEFINE = -DPLUMED
 OPT = -O2
 OPT_CARE = -O2
 OPT_GRP = -O2
-CFLAGS = -fPIC $(DEFINE) -I $(PLUMED)/src/wrapper -g
+CFLAGS = -fPIC $(DEFINE) -I $(PLUMED)src/wrapper -g
 FFLAGS = -fPIC $(DEFINE)
 LIBS = -L $(PLUMED)src/lib -lplumed -ldl -Wl,-rpath,$(PLUMED)src/lib
 
