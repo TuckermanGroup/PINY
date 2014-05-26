@@ -399,3 +399,18 @@ void ver_pare_down_root(CLATOMS_INFO *,CLATOMS_POS *,
                         INTRA_SCR *,int *,int *,
                         int);
 
+
+/*--------------------------------------------------------------------------*/
+/* H2_pot.c - H2-H2 potential and forces */
+
+void H2_pot_for(double *, double *, double *, double *,
+                double *, double *, double *, double *,
+                double *);
+
+
+/*--------------------------------------------------------------------------*/
+/* force_H2.c - all H2-H2 interactions */
+
+void force_H2(CLATOMS_INFO *, CLATOMS_POS *, INTERACT *, CELL *,
+              double *, double *);
+

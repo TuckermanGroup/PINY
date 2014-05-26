@@ -158,7 +158,7 @@ void comm_clatoms_info(CLATOMS_INFO *clatoms_info,MPI_Comm world)
 
 #include "../typ_defs/typ_mask.h"
 
-  int ninfo = 17;
+  int ninfo = 19;
   MPI_Datatype clatoms_info_comm;
   MPI_Datatype types[1];
   MPI_Aint displs[1];
