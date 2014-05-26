@@ -11,12 +11,8 @@
 //#define DEBUG_H2
 
 // TODO
-// - get cutoff from settings
-// - do I need to modify vcoul and vvdw as well?
-// - double check sign of elstat correction forces - sign on energy is correct,
-//   but then it seems forces should be the other way around
-// - possibly take advantage of neighbor lists - seems difficult, as they are opaque
-// - add "if more than 0 H2 molecules" to force control
+// - possibly get cutoff from settings
+// - possibly take advantage of neighbor lists
 
 
 /*==========================================================================*/
