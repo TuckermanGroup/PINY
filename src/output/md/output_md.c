@@ -68,13 +68,6 @@ void output_md(CLASS *class, GENERAL_DATA *general_data, BONDED *bonded) {
       initial_fopen_md(class, general_data, bonded);
     }
 
-    /*==================================*/
-    /* Write Initial Energies to screen */
-
-    //if ((itime == 0) && (general_data->simopts.debug == 0)) {
-    //  initial_output_md(class, general_data, bonded);
-    //}
-
     /*=================================*/
     /* Calculate some dinky quantities */
 
@@ -541,7 +534,7 @@ void screen_write_md(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
   if(general_data->ensopts.npt_i==1)		printf("Ensemble          = NPT-ISO\n");
   if(general_data->ensopts.npt_f==1)		printf("Ensemble          = NPT-FLEX\n");
   printf("Time step         = %d\n", general_data->timeinfo.itime);
-  printf("Time              = %.4f ps\n", atime * time_fact);
+  printf("Time              = %.4f ps\n", general_data->timeinfo.itime * time_fact);
   printf("\n");
   printf("QUANTITY                 INSTANTANEOUS            AVERAGE\n");
   printf("---------------------------------------------------------\n");
@@ -576,7 +569,6 @@ void screen_write_md(CLASS *class,GENERAL_DATA *general_data,BONDED *bonded,
   printf("Atm KE            = "FMT" "FMT"\n",(general_data->stat_avg.kinet)*eu_conv,
         (general_data->stat_avg.akinet/atime)*eu_conv);
   printf("\n");
-  printf("Atm Deg. Free     = "FMT"\n",atm_div); 
   printf("Atm Temperature   = "FMT" "FMT"\n",
         (general_data->stat_avg.kinet*2.0*BOLTZ/atm_div),
         (general_data->stat_avg.akinet*2.0*BOLTZ/(atm_div*atime)));
