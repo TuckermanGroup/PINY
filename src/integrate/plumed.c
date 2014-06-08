@@ -19,7 +19,7 @@ Would have to pass itimei to energy_control, the same way as with PIMD
 */
 
 
-#define PLUMED_DEBUG
+//#define PLUMED_DEBUG
 
 
 typedef struct {
