@@ -2,18 +2,22 @@
 EXE_NAME = piny-plumed
 LIB_NAME = libpiny.so
 
+# find PLUMED
+PLUMED = $(shell plumed info --root)
+ifeq ($(PLUMED),)
+    $(error PLUMED not found.)
+endif
+
 # compilers and options
-PLUMED = /Users/andy/opt/plumed-2.0.2
 FC = gfortran
 CC = gcc
-#DEFINE = -DNO_CFREE -DPLUMED -DPLUMED_DEBUG
 DEFINE = -DNO_CFREE -DPLUMED
 OPT = -O2
 OPT_CARE = -O2
 OPT_GRP = -O2
-CFLAGS = -fPIC $(DEFINE) -I $(PLUMED)/include/Plumed/wrapper
+CFLAGS = -fPIC $(DEFINE) -I $(PLUMED)src/wrapper
 FFLAGS = -fPIC $(DEFINE)
-LIBS = -L $(PLUMED)/lib -lplumed -ldl
+LIBS = -L $(PLUMED)src/lib -lplumed -ldl
 
 BASE = $(realpath ../..)
 CODE = $(BASE)/src
