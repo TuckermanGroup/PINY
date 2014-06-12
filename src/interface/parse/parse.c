@@ -52,6 +52,91 @@
 #include "../proto_defs/proto_energy_cp_entry.h"
 
 
+#if defined H2
+void find_H2(CLASS* class) {
+  /*
+   * Searches for H2 molecules in topology information.
+   *
+   * Sets the number of H2 molecules N_H2 and the index of the first atom
+   * of the block of H2 molecules i_H2_start.
+   *
+   * If nothing is found, N_H2=0 and i_H2_start=-1.
+   *
+   */
+
+  int i;
+  int i_mol_H2;
+  ATOMMAPS* atommaps = &(class->atommaps);
+  char *n1;
+  char *n2;
+  char *n3;
+  int *N_H2 = &(class->clatoms_info.N_H2);
+  int *i_H2_start = &(class->clatoms_info.i_H2_start);
+
+  PRINT_LINE_STAR;
+  printf("Molecular hydrogen interactions\n");
+  PRINT_LINE_DASH;
+  printf("\n");
+
+  /* loop over molecule types and find the name "H2" */
+  i_mol_H2 = -1;
+  for (i=1; i<=atommaps->nmol_typ; ++i) {
+    if (strcmp(atommaps->mol_typ[i], "H2") == 0) {
+      if (i_mol_H2 == -1) {
+        i_mol_H2 = i;
+      } else {
+        printf("Molecule name H2 found more than once.\n");
+        exit(1);
+      }
+    }
+  }
+
+  /* see if we found anything and store the number of H2 molecules */
+  if (i_mol_H2 == -1) {
+    *N_H2 = 0;
+    *i_H2_start = -1;
+    printf("H2 molecule type not found.\n\n");
+  } else {
+    /* found */
+
+    /* total number of H2 molecules */
+    *N_H2 =atommaps->nmol_jmol_typ[i_mol_H2];
+
+    /* index of the first atom of theblock of H2 molecules */
+    *i_H2_start = atommaps->jatm_jmol_typ_strt[i_mol_H2];
+
+    /* check that it has 3 atoms per molecule */
+    if (atommaps->natm_1mol_jmol_typ[i_mol_H2] != 3) {
+      printf("Expected H2 molecule to have 3 atoms, found %i.\n",
+             atommaps->natm_1mol_jmol_typ[i_mol_H2]);
+      exit(1);
+    }
+
+    /* check that they are H H F - names and order */
+    n1 = atommaps->atm_typ[atommaps->iatm_atm_typ[*i_H2_start]];
+    n2 = atommaps->atm_typ[atommaps->iatm_atm_typ[*i_H2_start+1]];
+    n3 = atommaps->atm_typ[atommaps->iatm_atm_typ[*i_H2_start+2]];
+    if ((strcmp(n1, "H") != 0) ||
+        (strcmp(n2, "H") != 0) ||
+        (strcmp(n3, "F") != 0)) {
+      printf("Expected atom names H H F, found %s %s %s.\n", n1, n2, n3);
+      exit(1);
+    }
+
+    /* print summary */
+    printf("Found H2 molecule type.\n");
+    printf("Number of molecules: %i\n", *N_H2);
+    printf("Index of first atom: %i\n\n", *i_H2_start);
+  }
+
+  PRINT_LINE_DASH;
+  printf("End - molecular hydrogen interactions\n");
+  PRINT_LINE_STAR;
+  printf("\n");
+
+}
+#endif
+
 
 /*==========================================================================*/
 /*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
@@ -92,15 +177,15 @@ void parse(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,CP *cp,
 /*========================================================================*/
 /*   I) Zero the malloc size variables                                  */
 
-    control_zero_mem(class,bonded,general_data,cp,&class_parse,
-                     &null_inter_parse);
+  control_zero_mem(class,bonded,general_data,cp,&class_parse,
+                   &null_inter_parse);
 
 /*========================================================================*/
   if(icontrol_proc==1){
   /*========================================================================*/
   /*   II) Set the sim parameters: Done first to get input file names       */
   /*               (interface/sim_params/control_sim_params.c)              */
- 
+
     filename_parse.input_name  = (char *)cmalloc(MAXWORD*sizeof(char));
     strcpy(filename_parse.input_name,input_name);
     control_sim_params(class,general_data,bonded,cp,analysis,
@@ -110,10 +195,10 @@ void parse(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,CP *cp,
   /*                                        needed for set_intra;           */
   /*                                        some atom mallocing             */
   /*               (interface/mol_params/control_mol_params.c)              */
-  
+
     control_mol_params(class,general_data,bonded,cp,&class_parse,&cp_parse,
                        &free_parse,&filename_parse);
-    
+
   /*========================================================================*/
   /*  IV) Read in atom, molecule connectivity data: Done before setting     */
   /*                                                 therms;                */
@@ -130,16 +215,20 @@ void parse(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,CP *cp,
                          &(general_data->simopts),&(class->communicate),
                          (class->surface.isurf_on));
 
+    #if defined H2
+    /* search for a molecule type named "H2" and store information */
+    find_H2(class);
+    #endif
   /*========================================================================*/
   }/*endif : icontrol_proc */
 /*========================================================================*/
 /*    V) Communicate class interface: done before proceeding further      */
 
- if(num_proc>1){
-  Barrier(world);
-  communicate_interface(class,bonded,cp,general_data,&null_inter_parse,
-                        &class_parse,&cp_parse);
- }/*endif*/
+  if(num_proc>1){
+    Barrier(world);
+    communicate_interface(class,bonded,cp,general_data,&null_inter_parse,
+                          &class_parse,&cp_parse);
+  }/*endif*/
 
 /*========================================================================*/
 /*   VI) Assign Flags                                                     */

@@ -29,12 +29,12 @@ ENERGY_INTER_FILES    = energy_control.o energy_control_initial.o \
                         energy_control_inter_recip.o \
                         energy_control_surf.o \
                         energy_control_final.o test_energy.o \
-                        force_control.o force_nolst.o \
+                        force_control.o force_nolst.o force_H2.o \
                         force_verlst.o force_npol.o force_lnklst.o period.o \
                         nbr_list_control.o verlist_control.o verlist_create.o \
                         make_lnk_lst.o make_lnk_map.o lnk_lst_dis.o \
                         ewald3d.o ewald3d_both.o ewald3d_self_bgr.o \
-                        ewald3d_pme.o surf_pot.o
+                        ewald3d_pme.o surf_pot.o H2_pot.o
 ENERGY_INTRA_FILES    = bond.o bond_watts.o bend.o bend_bnd.o tors.o \
                         onefour.o ecorr.o rbar_sigma.o
 ENERGY_INTRA_CON_FILES= ghost_control.o constraint_control.o bond_con.o \

@@ -596,7 +596,7 @@ void screen_write_pimd(CLASS *class, GENERAL_DATA *general_data, BONDED *bonded,
              general_data->stat_avg.kinet_nhc * 2.0 * BOLTZ / nhc_div,
              general_data->stat_avg.akinet_nhc * 2.0 * BOLTZ / (nhc_div*atime));
     } else {
-      printf("NHC Temperature   = 0.0 0.0\n");
+      printf("NHC Temperature   = "FMT" "FMT"\n", 0.0, 0.0);
     }
     if(class->clatoms_info.pi_beads) {
       printf("Bead NHC Temp.    = "FMT" "FMT"\n",
