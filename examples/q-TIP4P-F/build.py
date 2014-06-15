@@ -27,6 +27,7 @@ dt = 2.0
 write_freq_screen = int(t_screen / dt)
 write_freq = int(t_write / dt)
 n_step_eq = int(t_tot_eq / dt)
+n_step_prod = int(t_tot_prod / dt)
 
 comment, names, positions = piny.tools.read_XYZ_frame(open(fn_initial_xyz))
 nwater = names.count('O')
@@ -46,6 +47,14 @@ input_PINY = {
         'num_proc_tot': P,
         'num_proc_beads': P,
         'num_proc_class_forc': 1},
+
+    'sim_pimd_def': {
+        'path_int_beads': P,
+        'path_int_md_typ': 'centroid',
+        'respa_steps_pimd': 5,
+        'initial_spread_opt': 'on',
+        'initial_spread_size': 0.1
+    },
 
     'sim_list_def': {
         'neighbor_list': 'ver_list',
@@ -101,14 +110,6 @@ input_PINY = {
         'mol_set_file': 'water.set',
         'conf_file_format': 'formatted'}}
 
-if P > 1:
-    input_PINY['sim_pimd_def']= {
-        'path_int_beads': P,
-        'path_int_md_typ': 'centroid',
-        'respa_steps_pimd': 5,
-        'initial_spread_opt': 'on',
-        'initial_spread_size': 0.1}
-
 
 #
 # compose topology and force field data
@@ -156,26 +157,10 @@ piny.tools.write_input_directory(data, dir_out_eq)
 # write production simulation directory
 #
 
-dt = 2.0
-write_freq_screen = int(t_screen / dt)
-write_freq = int(t_write / dt)
-n_step_prod = int(t_tot_prod / dt)
-
-input_PINY['sim_gen_def']['time_step'] = dt
 input_PINY['sim_gen_def']['num_time_step'] = n_step_prod
 input_PINY['sim_gen_def']['restart_type'] = 'restart_all'
 input_PINY['sim_write_def']['in_restart_file'] = os.path.join('..', dir_out_eq, 'water.restart')
-input_PINY['sim_write_def']['write_pos_freq'] = write_freq
-input_PINY['sim_write_def']['path_cent_freq'] = write_freq
-input_PINY['sim_write_def']['write_screen_freq'] = write_freq_screen
-input_PINY['sim_pimd_def']['initial_spread_opt'] = 'off'
 
-data = {
-    'water.input': input_PINY,
-    'water.bend': bend,
-    'water.bond': bond,
-    'water.inter': inter,
-    'water.parm': parm,
-    'water.set': water_set}
+del data['W512-bulk.initial']
 
 piny.tools.write_input_directory(data, dir_out_prod)
