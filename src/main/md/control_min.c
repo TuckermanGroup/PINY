@@ -87,17 +87,22 @@ void control_min(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
   /*   5)Check magnitude of atomic forces */
       check_atm_grad_mag(class,general_data,&f_atm_mag,&ireset,&idone,
                          general_data->minopts.tol_atom);
+
       if(idone==1){
        printf("\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
        printf("Tolerance on atomic forces reached\n");
        printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
        iexit = 1;
       }
-      if(ireset==1){
-        printf("\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-        printf("Resetting Atomic Conjugate Gradient\n");
-        printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+
+      if (general_data->minopts.min_cg == 1) {
+        if (ireset == 1) {
+          printf("\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+          printf("Resetting Atomic Conjugate Gradient\n");
+          printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+        }
       }
+
   /*----------------------------------------------------------------------*/
   /*   6)Calculate some simple averages                                   */
     cputime(&(general_data->stat_avg.cpu2)); 
