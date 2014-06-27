@@ -66,17 +66,22 @@ Initialize the PLUMED global object with all data that is needed.
   }
 
   /* check that we have a PIMD or MD run */
-  if (!((general_data->simopts.md + general_data->simopts.pimd) == 1)) {
+  if (!((general_data->simopts.md +
+         general_data->simopts.pimd +
+         general_data->simopts.minimize
+        ) == 1)) {
     if (myid == 0)
-      printf("Error: PLUMED is only supported in MD and PIMD simulations.\n");
+      printf("Error: PLUMED is only supported in minimization, MD and PIMD simulations.\n");
     exit(0);
   }
 
   /* check that we have a supported ensemble */
-  if (!(general_data->ensopts.nvt == 1)) {
+  if (!((general_data->ensopts.nvt +
+         general_data->ensopts.nve
+        ) == 1)) {
     if (myid == 0)
-      printf("Error: PLUMED is currently only supported in the NVT ensemble. "
-             "However, adding it to other propagators based on the NVT code "
+      printf("Error: PLUMED is currently only supported in the NVE and NVT ensembles. "
+             "However, adding it to other propagators based on the existing code "
              "is very easy.\n");
     exit(0);
   }
