@@ -1,0 +1,5 @@
+~inter_parm[\atom1{H} \atom2{H} \pot_type{null} \min_dist{0.1} \max_dist{6.2060455} \res_dist{5.0}]
+
+~inter_parm[\atom1{H} \atom2{O} \pot_type{null} \min_dist{0.1} \max_dist{6.2060455} \res_dist{5.0}]
+
+~inter_parm[\atom1{O} \atom2{O} \pot_type{lennard-jones} \eps{78.214293} \sig{3.16549} \min_dist{0.5} \max_dist{6.2060455} \res_dist{5.0}]

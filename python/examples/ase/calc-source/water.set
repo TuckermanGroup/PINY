@@ -1,0 +1,13 @@
+~molecule_def[
+    \mol_parm_file{water.parm}
+    \mol_opt_nhc{mass_mol}
+    \num_mol{2}
+    \mol_index{1}
+    \mol_name{water}
+]
+
+~data_base_def[
+    \bond_file{water.bond}
+    \bend_file{water.bend}
+    \inter_file{water.inter}
+]
