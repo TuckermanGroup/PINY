@@ -11,7 +11,7 @@ http://wiki.cython.org/AutoPxd
 ctypedef char NAME[50]
 
 
-cdef extern from 'pentium_nopar/standard_include.h':
+cdef extern from 'linux/standard_include.h':
 
     pass
 
@@ -241,7 +241,27 @@ cdef extern from 'typ_defs/typedefs_gen.h':
         pass
 
     ctypedef struct CELL:
-        pass
+        int iperd
+        int intra_perds
+        int cubic_box_flag
+        int hmat_int_typ
+        int hmat_cons_typ
+        int imov_cp_box
+        double vol
+        double vol_cp
+        double vol0
+        double area
+        double alpha_conv_dual
+        double *hmat
+        double *hmati
+        double *hmat_ewd
+        double *hmat_ewd_cp
+        double *hmat_cp
+        double *hmati_cp
+        double *cp_box_center
+        double *cp_box_center_rel
+        double *cp_vbox_center
+        double *cp_fbox_center
 
     ctypedef struct TIMEINFO:
         pass

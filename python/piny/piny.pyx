@@ -247,6 +247,52 @@ cdef class PINYEmpirical:
 
         return names
 
+    def get_hmat(self):
+        """Return the h matrix with box vectors in columns.
+
+        Get data from 1st replica, as all should be the same.
+        """
+
+        cdef int i
+        cdef int j
+        cdef CELL *cell = &(self._general_data[0].cell)
+
+        hmat = np.empty((3,3))
+
+        for j in range(3):
+            for i in range(3):
+                hmat[i,j] = cell.hmat[i + 3*j + 1]
+
+        return hmat
+
+    def get_pbc(self):
+        """Return True/False flags for periodicity in x, y, z.
+
+        Get data from 1st replica, as all should be the same.
+        """
+
+        iperd = self._general_data[0].cell.iperd
+        pbc = iperd * [True] + (3-iperd) * [False]
+
+        return pbc
+
+
+    def get_charges(self):
+        """Return atomic partial charges.
+
+        Get data from 1st replica, as all should be the same.
+        """
+
+        cdef int i
+
+        charges = np.empty(self._n_atoms)
+
+        for i in range(self._n_atoms):
+            charges[i] = self._class[0].clatoms_info.q[i+1]
+
+        return charges
+
+
     def get_x(self):
         """Return atomic positions of all replicas as a n_atomsx3xP numpy array."""
 
@@ -322,10 +368,6 @@ cdef class PINYEmpirical:
         positions, depending on when update() was called last.
 
         """
-
-        # TODO
-        # there might be additional components for NpT simulations
-        # possibly depending on other settings (switching)
 
         cdef int P = self._P
         cdef STAT_AVG *stat_avg
