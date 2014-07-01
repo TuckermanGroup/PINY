@@ -70,6 +70,8 @@ class CalculatorPINY(Calculator):
     implemented_properties = ['energy', 'forces']
     'Properties this calculator can handle.'
 
+    changes = set(['positions'])
+
     def __init__(self, sim):
         """Construct the calculator.
 
@@ -85,6 +87,11 @@ class CalculatorPINY(Calculator):
                   system_changes=all_changes):
 
         sim = self.sim
+
+        # check that only things we actually pass to PINY are changed
+        if not self.changes.issuperset(system_changes):
+            msg = 'Not all changes are supported: {:s}'.format(str(system_changes))
+            raise NotImplementedError(msg)
 
         # update PINY positions, recalculate ghosts and set them back in atoms
         sim.set_x((atoms.get_positions() / units.Bohr)[:,:,np.newaxis])
