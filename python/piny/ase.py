@@ -87,6 +87,9 @@ class CalculatorPINY(Calculator):
         F = - sim.get_dV_dx()[:,:,0] * units.Ha / units.Bohr
         V = sim.get_V().item() * units.Ha
 
+        # this is needed to update positions of ghost atoms in `atoms`
+        atoms.set_positions(sim.get_x()[:,:,0] * units.Bohr)
+
         self.results = {
             'energy': V,
             'forces': F,
