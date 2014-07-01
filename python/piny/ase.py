@@ -84,22 +84,18 @@ class CalculatorPINY(Calculator):
     def calculate(self, atoms=None, properties=['energy'],
                   system_changes=all_changes):
 
-        # call parent method to remember the current atoms
-        Calculator.calculate(self, atoms=atoms)
-
         sim = self.sim
 
-        # update positions, run, extract results
+        # update PINY positions, recalculate ghosts and set them back in atoms
         sim.set_x((atoms.get_positions() / units.Bohr)[:,:,np.newaxis])
-        sim.update()
-        F = - sim.get_dV_dx()[:,:,0] * units.Ha / units.Bohr
-        V = sim.get_V().item() * units.Ha
-
-        # this is needed to update positions of ghost atoms in `atoms`
         atoms.set_positions(sim.get_x()[:,:,0] * units.Bohr)
 
-        # store the results
+        # now call parent method to remember the atoms, with ghosts updated
+        Calculator.calculate(self, atoms=atoms)
+
+        # run and extract results
+        sim.update()
         self.results = {
-            'energy': V,
-            'forces': F,
+            'energy': sim.get_V().item() * units.Ha,
+            'forces': - sim.get_dV_dx()[:,:,0] * units.Ha / units.Bohr
         }
