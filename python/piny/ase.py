@@ -9,7 +9,7 @@ from ase import units
 from ase.calculators.calculator import Calculator, all_changes
 
 
-def atoms_from_PINY(sim):
+def atoms_from_PINY(sim, types2elements=None):
 
     _debug = False
 
@@ -28,6 +28,11 @@ def atoms_from_PINY(sim):
     charges = sim.get_charges()
 
     calculator = CalculatorPINY(sim)
+
+    if types2elements is not None:
+        for i, name in enumerate(names):
+            if name in types2elements:
+                names[i] = types2elements[name]
 
     atoms = Atoms(symbols=names,
                   positions=positions,
