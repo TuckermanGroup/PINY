@@ -37,6 +37,7 @@ def atoms_from_PINY(sim, types2elements=None):
     atoms = Atoms(symbols=names,
                   positions=positions,
                   masses=masses,
+                  cell=cell,
                   pbc=pbc,
                   charges=charges,
                   calculator=calculator
