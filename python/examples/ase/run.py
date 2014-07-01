@@ -17,6 +17,6 @@ F = atoms.get_forces()
 print V
 print F
 
-# create and run a minimization, saving the progress in ASE format
+# create and run a minimization, saving the trajectory in ASE format
 mini = BFGS(atoms, trajectory='water.traj')
 mini.run(fmax=1e-3)

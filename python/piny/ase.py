@@ -20,6 +20,7 @@ def atoms_from_PINY(sim, types2elements=None):
 
     u = 1822.88839
 
+    # extract all data from the PINY simulation
     names = sim.get_names()
     positions = sim.get_x()[:,:,0] * units.Bohr
     masses = sim.get_m() / u
@@ -27,13 +28,16 @@ def atoms_from_PINY(sim, types2elements=None):
     pbc = sim.get_pbc()
     charges = sim.get_charges()
 
+    # construct the calculator
     calculator = CalculatorPINY(sim)
 
+    # if provided, use the mapping to convert atom types to elements
     if types2elements is not None:
         for i, name in enumerate(names):
             if name in types2elements:
                 names[i] = types2elements[name]
 
+    # construct an atoms object with all the data
     atoms = Atoms(symbols=names,
                   positions=positions,
                   masses=masses,
@@ -67,6 +71,10 @@ class CalculatorPINY(Calculator):
     'Properties this calculator can handle.'
 
     def __init__(self, sim):
+        """Construct the calculator.
+
+        Store the PINY simulation and initialize results.
+        """
 
         self.sim = sim
         self.results = {}
@@ -76,7 +84,7 @@ class CalculatorPINY(Calculator):
     def calculate(self, atoms=None, properties=['energy'],
                   system_changes=all_changes):
 
-        # call parent method to remember atoms atoms
+        # call parent method to remember the current atoms
         Calculator.calculate(self, atoms=atoms)
 
         sim = self.sim
@@ -90,6 +98,7 @@ class CalculatorPINY(Calculator):
         # this is needed to update positions of ghost atoms in `atoms`
         atoms.set_positions(sim.get_x()[:,:,0] * units.Bohr)
 
+        # store the results
         self.results = {
             'energy': V,
             'forces': F,
