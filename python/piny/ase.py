@@ -11,13 +11,6 @@ from ase.calculators.calculator import Calculator, all_changes
 
 def atoms_from_PINY(sim, types2elements=None):
 
-    _debug = False
-
-    if _debug:
-        print
-        print 'DBG | atoms_from_PINY | start'
-        print
-
     u = 1822.88839
 
     # extract all data from the PINY simulation
@@ -48,18 +41,6 @@ def atoms_from_PINY(sim, types2elements=None):
                   )
 
     calculator.atoms = atoms
-
-    if _debug:
-        print 'names:\n%s\n' % str(names)
-        print 'positions:\n%s\n' % str(positions)
-        print 'masses:\n%s\n' % str(masses)
-        print 'cell:\n%s\n' % str(cell)
-        print 'pbc:\n%s\n' % str(pbc)
-        print 'charges:\n%s\n' % str(charges)
-        print atoms
-        print
-        print 'DBG | atoms_from_PINY | end'
-        print
 
     return atoms
 
