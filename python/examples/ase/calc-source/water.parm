@@ -1,0 +1,10 @@
+~molecule_name_def[\molecule_name{water} \natom{3}]
+
+~atom_def[\atom_typ{O} \atom_ind{1} \mass{15.9994} \charge{-0.84}]
+~atom_def[\atom_typ{H} \atom_ind{2} \mass{1.00800} \charge{0.42}]
+~atom_def[\atom_typ{H} \atom_ind{3} \mass{1.00800} \charge{0.42}]
+
+~bond_def[\atom1{1} \atom2{2}]
+~bond_def[\atom1{1} \atom2{3}]
+
+~bend_def[\atom1{2} \atom2{1} \atom3{3}]
