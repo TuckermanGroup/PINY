@@ -122,19 +122,11 @@ void class_int_allgather(GENERAL_DATA *,CLASS *);
 /*--------------------------------------------------------------------------*/
 /* move_vel_vbox.c */
 
-void move_vel_vbox(CLATOMS_POS *, CLATOMS_INFO *,
-                   CELL *,PAR_RAHMAN *, double *,double *,
-                   double *,double *, double *,
-                   double **,double **,
-                   int *,int *,int *,int , 
-                   int , double *, double *,double , int, int, int );
-
 void move_vel_vbox_upper(CLATOMS_POS *, CLATOMS_INFO *,
-                   CELL *,PAR_RAHMAN *, double *,double *,
-                   double *,double *, double *,
-                   double **,double **,
-                   int *,int *,int *,int , 
-                   int , double *, double *,double , int);
+                   CELL *, PAR_RAHMAN *, double);
+
+void move_vel_vbox(CLATOMS_POS *, CLATOMS_INFO *,
+                   CELL *, PAR_RAHMAN *, double);
 
 
 

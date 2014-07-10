@@ -83,7 +83,10 @@ typedef struct baro {
   double vol;                  /* Num: volume                         */
   double mass_lnv;             /* Num: Mass of log(vol)               */
   double c2_lnv;               /* Num: Useful constant                */
+  double roll_scvv;            /* Num: Useful constant                */
+  double roll_scx;             /* Num: Useful constant                */
   double roll_scv;             /* Num: Roll scaling factor            */
+  double roll_scf;             /* Num: Roll scaling factor            */
   double roll_scg;             /* Num: Roll scaling factor            */
   double roll_scg0;            /* Num: Roll scaling factor            */
   double x_lnv_o;              /* Num: old log(vol)                   */
@@ -106,6 +109,7 @@ typedef struct par_rahman{
   double c1_hm;                /* Num: Useful constant                */
   double roll_scg;             /* Num: Roll scaling factor            */
   double roll_scg0;            /* Num: Roll scaling factor            */
+  double *roll_mtf;             /* Num: Roll scaling matrix            */
   double area;                 /* Num: area                           */
 
   double *vgmat,*vgmat_g;      /* Lst: Velocity of hh^-1 matrix Lth:9 */
@@ -114,6 +118,7 @@ typedef struct par_rahman{
   double *roll_mtv,*roll_mtx;  /* Lst: Roll matrices            Lth:9 */
   double *roll_mtvv;           /* Lst: Roll matrices            Lth:9 */
   double *vtemps,*veigv,*veig; /* Lst: Integration temp         Lth:9 */
+  double *vtempf;              /* Lst: Integration temp         Lth:9 */
   double *vexpdt,*vsindt;      /* Lst: Integration temp         Lth:9 */
   double *vtempx, *vtempv;     /* Lst: Integration temp         Lth:9 */
   double *hmat_t, *hmato;      /* Lst: cell shape temps         Lth:9 */

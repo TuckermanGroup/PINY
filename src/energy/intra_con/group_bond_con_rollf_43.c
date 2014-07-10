@@ -57,7 +57,8 @@ void shake_43_rollf(GRP_BOND_CON *grp_bond_con,
  int iter,igrp,*ind1,*ind2,*ind3,*ind4,jtyp;
 
 /* Local arrays   */
-   double **dx,**dy,**dz;
+   double **dxr,**dyr,**dzr;
+   double **dxrr,**dyrr,**dzrr;
    double **dxo,**dyo,**dzo;
    double **dxt,**dyt,**dzt;
    double **xlam,**dxl;
@@ -98,6 +99,7 @@ void shake_43_rollf(GRP_BOND_CON *grp_bond_con,
   double *pvten_tmp2           = ptens->pvten_tmp_res;
 
   double *roll_mtv             = par_rahman->roll_mtv;
+  double *roll_mtf             = par_rahman->roll_mtf;
   double *fgmat_p              = par_rahman->fgmat_p;
   double *vgmat                = par_rahman->vgmat;
   double roll_scg              = par_rahman->roll_scg;
@@ -114,9 +116,13 @@ void shake_43_rollf(GRP_BOND_CON *grp_bond_con,
 /*=======================================================================*/
 /* assign local arrays */ 
   if(ngrp > 0){
-    dx= dmatrix(1,3,1,ngrp);
-    dy= dmatrix(1,3,1,ngrp);
-    dz= dmatrix(1,3,1,ngrp);
+    dxr= dmatrix(1,3,1,ngrp);
+    dyr= dmatrix(1,3,1,ngrp);
+    dzr= dmatrix(1,3,1,ngrp);
+
+    dxrr= dmatrix(1,3,1,ngrp);
+    dyrr= dmatrix(1,3,1,ngrp);
+    dzrr= dmatrix(1,3,1,ngrp);
 
     dxo= dmatrix(1,3,1,ngrp);
     dyo= dmatrix(1,3,1,ngrp);
@@ -313,48 +319,90 @@ void shake_43_rollf(GRP_BOND_CON *grp_bond_con,
   }
 
   for(igrp=1;igrp <= ngrp ; igrp++) {
-    dx[1][igrp] = dxo[1][igrp]*roll_mtv[1]
-                + dyo[1][igrp]*roll_mtv[2]
-                + dzo[1][igrp]*roll_mtv[3];
+    dxr[1][igrp] = dxo[1][igrp]*roll_mtf[1]
+                + dyo[1][igrp]*roll_mtf[2]
+                + dzo[1][igrp]*roll_mtf[3];
 
-    dx[2][igrp] = dxo[2][igrp]*roll_mtv[1]
-                + dyo[2][igrp]*roll_mtv[2]
-                + dzo[2][igrp]*roll_mtv[3];
+    dxr[2][igrp] = dxo[2][igrp]*roll_mtf[1]
+                + dyo[2][igrp]*roll_mtf[2]
+                + dzo[2][igrp]*roll_mtf[3];
 
-    dx[3][igrp] = dxo[3][igrp]*roll_mtv[1]
-                + dyo[3][igrp]*roll_mtv[2]
-                + dzo[3][igrp]*roll_mtv[3];
+    dxr[3][igrp] = dxo[3][igrp]*roll_mtf[1]
+                + dyo[3][igrp]*roll_mtf[2]
+                + dzo[3][igrp]*roll_mtf[3];
   }/*end for*/
 
 
  for(igrp=1;igrp <= ngrp ; igrp++) {
-    dy[1][igrp] = dxo[1][igrp]*roll_mtv[4]
-                + dyo[1][igrp]*roll_mtv[5]
-                + dzo[1][igrp]*roll_mtv[6];
+    dyr[1][igrp] = dxo[1][igrp]*roll_mtf[4]
+                + dyo[1][igrp]*roll_mtf[5]
+                + dzo[1][igrp]*roll_mtf[6];
 
-    dy[2][igrp] = dxo[2][igrp]*roll_mtv[4]
-                + dyo[2][igrp]*roll_mtv[5]
-                + dzo[2][igrp]*roll_mtv[6];
+    dyr[2][igrp] = dxo[2][igrp]*roll_mtf[4]
+                + dyo[2][igrp]*roll_mtf[5]
+                + dzo[2][igrp]*roll_mtf[6];
 
-    dy[3][igrp] = dxo[3][igrp]*roll_mtv[4]
-                + dyo[3][igrp]*roll_mtv[5]
-                + dzo[3][igrp]*roll_mtv[6];
+    dyr[3][igrp] = dxo[3][igrp]*roll_mtf[4]
+                + dyo[3][igrp]*roll_mtf[5]
+                + dzo[3][igrp]*roll_mtf[6];
   }/*end for*/
 
-for(igrp=1;igrp <= ngrp ; igrp++) {
-    dz[1][igrp] = dxo[1][igrp]*roll_mtv[7]
-                + dyo[1][igrp]*roll_mtv[8]
-                + dzo[1][igrp]*roll_mtv[9];
+ for(igrp=1;igrp <= ngrp ; igrp++) {
+    dzr[1][igrp] = dxo[1][igrp]*roll_mtf[7]
+                + dyo[1][igrp]*roll_mtf[8]
+                + dzo[1][igrp]*roll_mtf[9];
 
-    dz[2][igrp] = dxo[2][igrp]*roll_mtv[7]
-                + dyo[2][igrp]*roll_mtv[8]
-                + dzo[2][igrp]*roll_mtv[9];
+    dzr[2][igrp] = dxo[2][igrp]*roll_mtf[7]
+                + dyo[2][igrp]*roll_mtf[8]
+                + dzo[2][igrp]*roll_mtf[9];
 
-    dz[3][igrp] = dxo[3][igrp]*roll_mtv[7]
-                + dyo[3][igrp]*roll_mtv[8]
-                + dzo[3][igrp]*roll_mtv[9];
+    dzr[3][igrp] = dxo[3][igrp]*roll_mtf[7]
+                + dyo[3][igrp]*roll_mtf[8]
+                + dzo[3][igrp]*roll_mtf[9];
   }/*end for*/
 
+  for(igrp=1;igrp <= ngrp ; igrp++) {
+    dxrr[1][igrp] = dxr[1][igrp]*roll_mtv[1]
+                + dyr[1][igrp]*roll_mtv[2]
+                + dzr[1][igrp]*roll_mtv[3];
+
+    dxrr[2][igrp] = dxr[2][igrp]*roll_mtv[1]
+                + dyr[2][igrp]*roll_mtv[2]
+                + dzr[2][igrp]*roll_mtv[3];
+
+    dxrr[3][igrp] = dxr[3][igrp]*roll_mtv[1]
+                + dyr[3][igrp]*roll_mtv[2]
+                + dzr[3][igrp]*roll_mtv[3];
+  }/*end for*/
+
+
+ for(igrp=1;igrp <= ngrp ; igrp++) {
+    dyrr[1][igrp] = dxr[1][igrp]*roll_mtv[4]
+                + dyr[1][igrp]*roll_mtv[5]
+                + dzr[1][igrp]*roll_mtv[6];
+
+    dyrr[2][igrp] = dxr[2][igrp]*roll_mtv[4]
+                + dyr[2][igrp]*roll_mtv[5]
+                + dzr[2][igrp]*roll_mtv[6];
+
+    dyrr[3][igrp] = dxr[3][igrp]*roll_mtv[4]
+                + dyr[3][igrp]*roll_mtv[5]
+                + dzr[3][igrp]*roll_mtv[6];
+  }/*end for*/
+
+ for(igrp=1;igrp <= ngrp ; igrp++) {
+    dzrr[1][igrp] = dxr[1][igrp]*roll_mtv[7]
+                + dyr[1][igrp]*roll_mtv[8]
+                + dzr[1][igrp]*roll_mtv[9];
+
+    dzrr[2][igrp] = dxr[2][igrp]*roll_mtv[7]
+                + dyr[2][igrp]*roll_mtv[8]
+                + dzr[2][igrp]*roll_mtv[9];
+
+    dzrr[3][igrp] = dxr[3][igrp]*roll_mtv[7]
+                + dyr[3][igrp]*roll_mtv[8]
+                + dzr[3][igrp]*roll_mtv[9];
+  }/*end for*/
 
  for(igrp=1;igrp <= ngrp ; igrp++) {
     avec[1][igrp]= dij[1][igrp]*dij[1][igrp] - (dxt[1][igrp]*dxt[1][igrp]
@@ -375,26 +423,26 @@ for(igrp=1;igrp <= ngrp ; igrp++) {
 #pragma IVDEP
 #endif
  for(igrp=1;igrp <= ngrp ; igrp++) {
-    amat[1][1] = -2.0*rmm11[igrp]* (dxt[1][igrp]*dx[1][igrp] 
-               + dyt[1][igrp]*dy[1][igrp] + dzt[1][igrp]*dz[1][igrp]);
-    amat[1][2] = -2.0*rmm12[igrp]* (dxt[1][igrp]*dx[2][igrp] 
-               + dyt[1][igrp]*dy[2][igrp] + dzt[1][igrp]*dz[2][igrp]);
-    amat[1][3] = -2.0*rmm13[igrp]* (dxt[1][igrp]*dx[3][igrp] 
-               + dyt[1][igrp]*dy[3][igrp] + dzt[1][igrp]*dz[3][igrp]);
+    amat[1][1] = -2.0*rmm11[igrp]* (dxt[1][igrp]*dxrr[1][igrp] 
+               + dyt[1][igrp]*dyrr[1][igrp] + dzt[1][igrp]*dzrr[1][igrp]);
+    amat[1][2] = -2.0*rmm12[igrp]* (dxt[1][igrp]*dxrr[2][igrp] 
+               + dyt[1][igrp]*dyrr[2][igrp] + dzt[1][igrp]*dzrr[2][igrp]);
+    amat[1][3] = -2.0*rmm13[igrp]* (dxt[1][igrp]*dxrr[3][igrp] 
+               + dyt[1][igrp]*dyrr[3][igrp] + dzt[1][igrp]*dzrr[3][igrp]);
 
-    amat[2][1] = -2.0*rmm21[igrp]* (dxt[2][igrp]*dx[1][igrp] 
-               + dyt[2][igrp]*dy[1][igrp] + dzt[2][igrp]*dz[1][igrp]);
-    amat[2][2] = -2.0*rmm22[igrp]* (dxt[2][igrp]*dx[2][igrp] 
-               + dyt[2][igrp]*dy[2][igrp] + dzt[2][igrp]*dz[2][igrp]);
-    amat[2][3] = -2.0*rmm23[igrp]* (dxt[2][igrp]*dx[3][igrp] 
-               + dyt[2][igrp]*dy[3][igrp] + dzt[2][igrp]*dz[3][igrp]);
+    amat[2][1] = -2.0*rmm21[igrp]* (dxt[2][igrp]*dxrr[1][igrp] 
+               + dyt[2][igrp]*dyrr[1][igrp] + dzt[2][igrp]*dzrr[1][igrp]);
+    amat[2][2] = -2.0*rmm22[igrp]* (dxt[2][igrp]*dxrr[2][igrp] 
+               + dyt[2][igrp]*dyrr[2][igrp] + dzt[2][igrp]*dzrr[2][igrp]);
+    amat[2][3] = -2.0*rmm23[igrp]* (dxt[2][igrp]*dxrr[3][igrp] 
+               + dyt[2][igrp]*dyrr[3][igrp] + dzt[2][igrp]*dzrr[3][igrp]);
 
-    amat[3][1] = -2.0*rmm31[igrp]* (dxt[3][igrp]*dx[1][igrp] 
-               + dyt[3][igrp]*dy[1][igrp] + dzt[3][igrp]*dz[1][igrp]);
-    amat[3][2] = -2.0*rmm32[igrp]* (dxt[3][igrp]*dx[2][igrp] 
-               + dyt[3][igrp]*dy[2][igrp] + dzt[3][igrp]*dz[2][igrp]);
-    amat[3][3] = -2.0*rmm33[igrp]* (dxt[3][igrp]*dx[3][igrp] 
-               + dyt[3][igrp]*dy[3][igrp] + dzt[3][igrp]*dz[3][igrp]);
+    amat[3][1] = -2.0*rmm31[igrp]* (dxt[3][igrp]*dxrr[1][igrp] 
+               + dyt[3][igrp]*dyrr[1][igrp] + dzt[3][igrp]*dzrr[1][igrp]);
+    amat[3][2] = -2.0*rmm32[igrp]* (dxt[3][igrp]*dxrr[2][igrp] 
+               + dyt[3][igrp]*dyrr[2][igrp] + dzt[3][igrp]*dzrr[2][igrp]);
+    amat[3][3] = -2.0*rmm33[igrp]* (dxt[3][igrp]*dxrr[3][igrp] 
+               + dyt[3][igrp]*dyrr[3][igrp] + dzt[3][igrp]*dzrr[3][igrp]);
 
 
 /* Get inverse of matrix */
@@ -462,7 +510,7 @@ for(igrp=1;igrp <= ngrp ; igrp++) {
    for(igrp=1;igrp <= ngrp ; igrp++) {
 /* Set up guess of difference vectors */
 
-    dxn[1] = -2.0*dxt[1][igrp]; 
+    dxn[1] = -2.0*dxt[1][igrp];
     dyn[1] = -2.0*dyt[1][igrp];
     dzn[1] = -2.0*dzt[1][igrp];
 
@@ -474,64 +522,64 @@ for(igrp=1;igrp <= ngrp ; igrp++) {
     dyn[3] = -2.0*dyt[3][igrp];
     dzn[3] = -2.0*dzt[3][igrp];
 
-    dxn[1] += (rmm11[igrp]*xlam[1][igrp]*dx[1][igrp]+ 
-               rmm12[igrp]*xlam[2][igrp]*dx[2][igrp]+
-               rmm13[igrp]*xlam[3][igrp]*dx[3][igrp]);
+    dxn[1] += (rmm11[igrp]*xlam[1][igrp]*dxrr[1][igrp]+ 
+               rmm12[igrp]*xlam[2][igrp]*dxrr[2][igrp]+
+               rmm13[igrp]*xlam[3][igrp]*dxrr[3][igrp]);
 
-    dxn[2] += (rmm21[igrp]*xlam[1][igrp]*dx[1][igrp]+ 
-               rmm22[igrp]*xlam[2][igrp]*dx[2][igrp]+
-               rmm23[igrp]*xlam[3][igrp]*dx[3][igrp]);
+    dxn[2] += (rmm21[igrp]*xlam[1][igrp]*dxrr[1][igrp]+ 
+               rmm22[igrp]*xlam[2][igrp]*dxrr[2][igrp]+
+               rmm23[igrp]*xlam[3][igrp]*dxrr[3][igrp]);
 
-    dxn[3] += (rmm31[igrp]*xlam[1][igrp]*dx[1][igrp]+ 
-               rmm32[igrp]*xlam[2][igrp]*dx[2][igrp]+
-               rmm33[igrp]*xlam[3][igrp]*dx[3][igrp]);
+    dxn[3] += (rmm31[igrp]*xlam[1][igrp]*dxrr[1][igrp]+ 
+               rmm32[igrp]*xlam[2][igrp]*dxrr[2][igrp]+
+               rmm33[igrp]*xlam[3][igrp]*dxrr[3][igrp]);
 
-    dyn[1] += (rmm11[igrp]*xlam[1][igrp]*dy[1][igrp]+ 
-               rmm12[igrp]*xlam[2][igrp]*dy[2][igrp]+
-               rmm13[igrp]*xlam[3][igrp]*dy[3][igrp]);
+    dyn[1] += (rmm11[igrp]*xlam[1][igrp]*dyrr[1][igrp]+ 
+               rmm12[igrp]*xlam[2][igrp]*dyrr[2][igrp]+
+               rmm13[igrp]*xlam[3][igrp]*dyrr[3][igrp]);
 
-    dyn[2] += (rmm21[igrp]*xlam[1][igrp]*dy[1][igrp]+ 
-               rmm22[igrp]*xlam[2][igrp]*dy[2][igrp]+
-               rmm23[igrp]*xlam[3][igrp]*dy[3][igrp]);
+    dyn[2] += (rmm21[igrp]*xlam[1][igrp]*dyrr[1][igrp]+ 
+               rmm22[igrp]*xlam[2][igrp]*dyrr[2][igrp]+
+               rmm23[igrp]*xlam[3][igrp]*dyrr[3][igrp]);
 
-    dyn[3] += (rmm31[igrp]*xlam[1][igrp]*dy[1][igrp]+ 
-               rmm32[igrp]*xlam[2][igrp]*dy[2][igrp]+
-               rmm33[igrp]*xlam[3][igrp]*dy[3][igrp]);
+    dyn[3] += (rmm31[igrp]*xlam[1][igrp]*dyrr[1][igrp]+ 
+               rmm32[igrp]*xlam[2][igrp]*dyrr[2][igrp]+
+               rmm33[igrp]*xlam[3][igrp]*dyrr[3][igrp]);
 
-    dzn[1] += (rmm11[igrp]*xlam[1][igrp]*dz[1][igrp]+ 
-               rmm12[igrp]*xlam[2][igrp]*dz[2][igrp]+
-               rmm13[igrp]*xlam[3][igrp]*dz[3][igrp]);
+    dzn[1] += (rmm11[igrp]*xlam[1][igrp]*dzrr[1][igrp]+ 
+               rmm12[igrp]*xlam[2][igrp]*dzrr[2][igrp]+
+               rmm13[igrp]*xlam[3][igrp]*dzrr[3][igrp]);
 
-    dzn[2] += (rmm21[igrp]*xlam[1][igrp]*dz[1][igrp]+ 
-               rmm22[igrp]*xlam[2][igrp]*dz[2][igrp]+
-               rmm23[igrp]*xlam[3][igrp]*dz[3][igrp]);
+    dzn[2] += (rmm21[igrp]*xlam[1][igrp]*dzrr[1][igrp]+ 
+               rmm22[igrp]*xlam[2][igrp]*dzrr[2][igrp]+
+               rmm23[igrp]*xlam[3][igrp]*dzrr[3][igrp]);
 
-    dzn[3] += (rmm31[igrp]*xlam[1][igrp]*dz[1][igrp]+ 
-               rmm32[igrp]*xlam[2][igrp]*dz[2][igrp]+
-               rmm33[igrp]*xlam[3][igrp]*dz[3][igrp]);
+    dzn[3] += (rmm31[igrp]*xlam[1][igrp]*dzrr[1][igrp]+ 
+               rmm32[igrp]*xlam[2][igrp]*dzrr[2][igrp]+
+               rmm33[igrp]*xlam[3][igrp]*dzrr[3][igrp]);
 
 /* Construct A-matrix */
 
-      amat[1][1] = rmm11[igrp]* (dxn[1]*dx[1][igrp] 
-               + dyn[1]*dy[1][igrp] + dzn[1]*dz[1][igrp]);
-      amat[1][2] = rmm12[igrp]* (dxn[1]*dx[2][igrp] 
-               + dyn[1]*dy[2][igrp] + dzn[1]*dz[2][igrp]);
-      amat[1][3] = rmm13[igrp]* (dxn[1]*dx[3][igrp] 
-               + dyn[1]*dy[3][igrp] + dzn[1]*dz[3][igrp]);
+      amat[1][1] = rmm11[igrp]* (dxn[1]*dxrr[1][igrp] 
+               + dyn[1]*dyrr[1][igrp] + dzn[1]*dzrr[1][igrp]);
+      amat[1][2] = rmm12[igrp]* (dxn[1]*dxrr[2][igrp] 
+               + dyn[1]*dyrr[2][igrp] + dzn[1]*dzrr[2][igrp]);
+      amat[1][3] = rmm13[igrp]* (dxn[1]*dxrr[3][igrp] 
+               + dyn[1]*dyrr[3][igrp] + dzn[1]*dzrr[3][igrp]);
 
-      amat[2][1] = rmm21[igrp]* (dxn[2]*dx[1][igrp] 
-               + dyn[2]*dy[1][igrp] + dzn[2]*dz[1][igrp]);
-      amat[2][2] = rmm22[igrp]* (dxn[2]*dx[2][igrp] 
-               + dyn[2]*dy[2][igrp] + dzn[2]*dz[2][igrp]);
-      amat[2][3] = rmm23[igrp]* (dxn[2]*dx[3][igrp] 
-               + dyn[2]*dy[3][igrp] + dzn[2]*dz[3][igrp]);
+      amat[2][1] = rmm21[igrp]* (dxn[2]*dxrr[1][igrp] 
+               + dyn[2]*dyrr[1][igrp] + dzn[2]*dzrr[1][igrp]);
+      amat[2][2] = rmm22[igrp]* (dxn[2]*dxrr[2][igrp] 
+               + dyn[2]*dyrr[2][igrp] + dzn[2]*dzrr[2][igrp]);
+      amat[2][3] = rmm23[igrp]* (dxn[2]*dxrr[3][igrp] 
+               + dyn[2]*dyrr[3][igrp] + dzn[2]*dzrr[3][igrp]);
 
-      amat[3][1] = rmm31[igrp]* (dxn[3]*dx[1][igrp] 
-               + dyn[3]*dy[1][igrp] + dzn[3]*dz[1][igrp]);
-      amat[3][2] = rmm32[igrp]* (dxn[3]*dx[2][igrp] 
-               + dyn[3]*dy[2][igrp] + dzn[3]*dz[2][igrp]);
-      amat[3][3] = rmm33[igrp]* (dxn[3]*dx[3][igrp] 
-               + dyn[3]*dy[3][igrp] + dzn[3]*dz[3][igrp]);
+      amat[3][1] = rmm31[igrp]* (dxn[3]*dxrr[1][igrp] 
+               + dyn[3]*dyrr[1][igrp] + dzn[3]*dzrr[1][igrp]);
+      amat[3][2] = rmm32[igrp]* (dxn[3]*dxrr[2][igrp] 
+               + dyn[3]*dyrr[2][igrp] + dzn[3]*dzrr[2][igrp]);
+      amat[3][3] = rmm33[igrp]* (dxn[3]*dxrr[3][igrp] 
+               + dyn[3]*dyrr[3][igrp] + dzn[3]*dzrr[3][igrp]);
 
 /* Get inverse of matrix */
 
@@ -582,20 +630,21 @@ for(igrp=1;igrp <= ngrp ; igrp++) {
 
 }/*endif for ngrp > 0*/
 
-/* position update */
 
+
+/* position update */
 #ifndef NO_PRAGMA
 #pragma IVDEP
 #endif
  for(igrp=1;igrp <= ngrp ; igrp++) {
     double xlam1,xlam2,xlam3;
     double rms1,rms2,rms3,rms4;
-    double dx1,dx2,dx3;
-    double dxo1,dxo2,dxo3;
-    double dy1,dy2,dy3;
-    double dyo1,dyo2,dyo3;
-    double dz1,dz2,dz3;
-    double dzo1,dzo2,dzo3;
+    double dx1rr,dx2rr,dx3rr;
+    double dx1r,dx2r,dx3r;
+    double dy1rr,dy2rr,dy3rr;
+    double dy1r,dy2r,dy3r;
+    double dz1rr,dz2rr,dz3rr;
+    double dz1r,dz2r,dz3r;
     int ktemp1,ktemp2,ktemp3,ktemp4;
 
      rms1=rm1[igrp];
@@ -607,48 +656,48 @@ for(igrp=1;igrp <= ngrp ; igrp++) {
      xlam2=xlam[2][igrp];
      xlam3=xlam[3][igrp];
     
-     dx1=dx[1][igrp]; dx2=dx[2][igrp]; dx3=dx[3][igrp]; 
-     dy1=dy[1][igrp]; dy2=dy[2][igrp]; dy3=dy[3][igrp];
-     dz1=dz[1][igrp]; dz2=dz[2][igrp]; dz3=dz[3][igrp];
+     dx1rr=dxrr[1][igrp]; dx2rr=dxrr[2][igrp]; dx3rr=dxrr[3][igrp]; 
+     dy1rr=dyrr[1][igrp]; dy2rr=dyrr[2][igrp]; dy3rr=dyrr[3][igrp];
+     dz1rr=dzrr[1][igrp]; dz2rr=dzrr[2][igrp]; dz3rr=dzrr[3][igrp];
 
-     dxo1=dxo[1][igrp]; dxo2=dxo[2][igrp]; dxo3=dxo[3][igrp]; 
-     dyo1=dyo[1][igrp]; dyo2=dyo[2][igrp]; dyo3=dyo[3][igrp];
-     dzo1=dzo[1][igrp]; dzo2=dzo[2][igrp]; dzo3=dzo[3][igrp];
+     dx1r=dxr[1][igrp]; dx2r=dxr[2][igrp]; dx3r=dxr[3][igrp]; 
+     dy1r=dyr[1][igrp]; dy2r=dyr[2][igrp]; dy3r=dyr[3][igrp];
+     dz1r=dzr[1][igrp]; dz2r=dzr[2][igrp]; dz3r=dzr[3][igrp];
 
      ktemp1 = ind1[igrp]; ktemp2 = ind2[igrp]; 
      ktemp3 = ind3[igrp]; ktemp4 = ind4[igrp];
 
-    clatoms_x[ktemp1] -= (xlam1*dx1 + xlam2*dx2 + xlam3*dx3)*rms1;
-    clatoms_y[ktemp1] -= (xlam1*dy1 + xlam2*dy2 + xlam3*dy3)*rms1;
-    clatoms_z[ktemp1] -= (xlam1*dz1 + xlam2*dz2 + xlam3*dz3)*rms1;
+    clatoms_x[ktemp1] -= (xlam1*dx1rr + xlam2*dx2rr + xlam3*dx3rr)*rms1;
+    clatoms_y[ktemp1] -= (xlam1*dy1rr + xlam2*dy2rr + xlam3*dy3rr)*rms1;
+    clatoms_z[ktemp1] -= (xlam1*dz1rr + xlam2*dz2rr + xlam3*dz3rr)*rms1;
 
-    clatoms_vx[ktemp1] -= (xlam1*dxo1 + xlam2*dxo2 + xlam3*dxo3)*rms1/dt;
-    clatoms_vy[ktemp1] -= (xlam1*dyo1 + xlam2*dyo2 + xlam3*dyo3)*rms1/dt;
-    clatoms_vz[ktemp1] -= (xlam1*dzo1 + xlam2*dzo2 + xlam3*dzo3)*rms1/dt;
+    clatoms_vx[ktemp1] -= (xlam1*dx1r + xlam2*dx2r + xlam3*dx3r)*rms1/dt;
+    clatoms_vy[ktemp1] -= (xlam1*dy1r + xlam2*dy2r + xlam3*dy3r)*rms1/dt;
+    clatoms_vz[ktemp1] -= (xlam1*dz1r + xlam2*dz2r + xlam3*dz3r)*rms1/dt;
 
-    clatoms_x[ktemp2] += (xlam1*dx1)*rms2;
-    clatoms_y[ktemp2] += (xlam1*dy1)*rms2;
-    clatoms_z[ktemp2] += (xlam1*dz1)*rms2;
+    clatoms_x[ktemp2] += (xlam1*dx1rr)*rms2;
+    clatoms_y[ktemp2] += (xlam1*dy1rr)*rms2;
+    clatoms_z[ktemp2] += (xlam1*dz1rr)*rms2;
 
-    clatoms_vx[ktemp2] += (xlam1*dxo1)*rms2/dt;
-    clatoms_vy[ktemp2] += (xlam1*dyo1)*rms2/dt;
-    clatoms_vz[ktemp2] += (xlam1*dzo1)*rms2/dt;
+    clatoms_vx[ktemp2] += (xlam1*dx1r)*rms2/dt;
+    clatoms_vy[ktemp2] += (xlam1*dy1r)*rms2/dt;
+    clatoms_vz[ktemp2] += (xlam1*dz1r)*rms2/dt;
 
-    clatoms_x[ktemp3] += (xlam2*dx2)*rms3;
-    clatoms_y[ktemp3] += (xlam2*dy2)*rms3;
-    clatoms_z[ktemp3] += (xlam2*dz2)*rms3;
+    clatoms_x[ktemp3] += (xlam2*dx2rr)*rms3;
+    clatoms_y[ktemp3] += (xlam2*dy2rr)*rms3;
+    clatoms_z[ktemp3] += (xlam2*dz2rr)*rms3;
 
-    clatoms_vx[ktemp3] += (xlam2*dxo2)*rms3/dt;
-    clatoms_vy[ktemp3] += (xlam2*dyo2)*rms3/dt;
-    clatoms_vz[ktemp3] += (xlam2*dzo2)*rms3/dt;
+    clatoms_vx[ktemp3] += (xlam2*dx2r)*rms3/dt;
+    clatoms_vy[ktemp3] += (xlam2*dy2r)*rms3/dt;
+    clatoms_vz[ktemp3] += (xlam2*dz2r)*rms3/dt;
 
-    clatoms_x[ktemp4] += (xlam3*dx3)*rms4;
-    clatoms_y[ktemp4] += (xlam3*dy3)*rms4;
-    clatoms_z[ktemp4] += (xlam3*dz3)*rms4;
+    clatoms_x[ktemp4] += (xlam3*dx3rr)*rms4;
+    clatoms_y[ktemp4] += (xlam3*dy3rr)*rms4;
+    clatoms_z[ktemp4] += (xlam3*dz3rr)*rms4;
 
-    clatoms_vx[ktemp4] += (xlam3*dxo3)*rms4/dt;
-    clatoms_vy[ktemp4] += (xlam3*dyo3)*rms4/dt;
-    clatoms_vz[ktemp4] += (xlam3*dzo3)*rms4/dt;
+    clatoms_vx[ktemp4] += (xlam3*dx3r)*rms4/dt;
+    clatoms_vy[ktemp4] += (xlam3*dy3r)*rms4/dt;
+    clatoms_vz[ktemp4] += (xlam3*dz3r)*rms4/dt;
 
   }
 
@@ -732,9 +781,13 @@ for(igrp=1;igrp <= ngrp ; igrp++) {
 
 /* free all the memory allocated locally */
  if(ngrp > 0){
-     free_dmatrix(dx,1,3,1,ngrp);
-     free_dmatrix(dy,1,3,1,ngrp);
-     free_dmatrix(dz,1,3,1,ngrp);
+     free_dmatrix(dxr,1,3,1,ngrp);
+     free_dmatrix(dyr,1,3,1,ngrp);
+     free_dmatrix(dzr,1,3,1,ngrp);
+
+     free_dmatrix(dxrr,1,3,1,ngrp);
+     free_dmatrix(dyrr,1,3,1,ngrp);
+     free_dmatrix(dzrr,1,3,1,ngrp);
 
      free_dmatrix(dxo,1,3,1,ngrp);
      free_dmatrix(dyo,1,3,1,ngrp);
@@ -791,6 +844,8 @@ for(igrp=1;igrp <= ngrp ; igrp++) {
 /*=======================================================================*/
 
 
+
+
 /*==========================================================================*/
 /*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
 /*==========================================================================*/
@@ -822,15 +877,15 @@ void rattle_43_rollf(GRP_BOND_CON *grp_bond_con,
   double **x,**y,**z;
   double **vx,**vy,**vz;
   double *p11,*p12,*p13,*p23,*p22,*p33;
+  double **p11k,**p22k,**p33k,**p12k,**p13k,**p23k;
   double *rm1,*rm2,*rm3,*rm4;
   double **dx,**dy,**dz;
+  double **dxr,**dyr,**dzr;
   double **dvx,**dvy,**dvz;
   double *rmm11,*rmm12,*rmm13,*rmm21,*rmm22,*rmm23,*rmm31,*rmm32,*rmm33;
   double **xlam;
 
   double pnorm;
-  double roll_mtvvi[10],rolli_by_vg[10];
-  double det_roll_mtvv;
 
 /* Local pointers */
   double *clatoms_mass         = clatoms_info->mass;
@@ -847,13 +902,14 @@ void rattle_43_rollf(GRP_BOND_CON *grp_bond_con,
   int *grp_bond_con_j2_43      = grp_bond_con->j2_43;
   int *grp_bond_con_j3_43      = grp_bond_con->j3_43;
   int *grp_bond_con_j4_43      = grp_bond_con->j4_43;
-  int *grp_bond_con_jtyp_43    = grp_bond_con->jtyp_43;
+  int *grp_bond_con_j22typ_43    = grp_bond_con->jtyp_43;
 
   double *pvten_inc            = ptens->pvten_inc;
   double *pvten_tmp            = ptens->pvten_tmp;
   double *pvten_tmp2           = ptens->pvten_tmp_res;
 
   double *roll_mtvv            = par_rahman->roll_mtvv;
+  double *roll_mtf             = par_rahman->roll_mtf;
   double *vgmat_g              = par_rahman->vgmat_g;
   double *fgmat_p              = par_rahman->fgmat_p;
   double roll_scg              = par_rahman->roll_scg;
@@ -884,6 +940,13 @@ void rattle_43_rollf(GRP_BOND_CON *grp_bond_con,
   p23= dvector(1,ngrp);
   p33= dvector(1,ngrp);
 
+  p11k= dmatrix(1,3,1,ngrp);
+  p12k= dmatrix(1,3,1,ngrp);
+  p13k= dmatrix(1,3,1,ngrp);
+  p22k= dmatrix(1,3,1,ngrp);
+  p23k= dmatrix(1,3,1,ngrp);
+  p33k= dmatrix(1,3,1,ngrp);
+  
   rm1= dvector(1,ngrp);
   rm2= dvector(1,ngrp);
   rm3= dvector(1,ngrp);
@@ -892,6 +955,9 @@ void rattle_43_rollf(GRP_BOND_CON *grp_bond_con,
   dx= dmatrix(1,3,1,ngrp);
   dy= dmatrix(1,3,1,ngrp);
   dz= dmatrix(1,3,1,ngrp);
+ dxr= dmatrix(1,3,1,ngrp);
+ dyr= dmatrix(1,3,1,ngrp);
+ dzr= dmatrix(1,3,1,ngrp);
  dvx= dmatrix(1,3,1,ngrp);
  dvy= dmatrix(1,3,1,ngrp);
  dvz= dmatrix(1,3,1,ngrp);
@@ -916,10 +982,6 @@ void rattle_43_rollf(GRP_BOND_CON *grp_bond_con,
 
  pnorm = 2.0/dt;
 
-/* Set zeta matrix and reciprocal mass matrix */
- n=3;
- gethinv(roll_mtvv,roll_mtvvi,&det_roll_mtvv,n);
- matmul_tt(roll_mtvvi,vgmat_g,rolli_by_vg,n);
 
  pvten_tmp[1] = 0.0;
  pvten_tmp[2] = 0.0;
@@ -978,16 +1040,16 @@ void rattle_43_rollf(GRP_BOND_CON *grp_bond_con,
 
   roll_sci=1.0/clatoms_roll_sc[ktemp3];/*all roll scales the same in same cons*/
   vx[1][igrp] = clatoms_vx[ktemp]
-        + (x[1][igrp]*rolli_by_vg[1] +y[1][igrp]*rolli_by_vg[2]
-         + z[1][igrp]*rolli_by_vg[3]) *roll_sci;
+        + (x[1][igrp]*vgmat_g[1] +y[1][igrp]*vgmat_g[2]
+         + z[1][igrp]*vgmat_g[3]) *roll_sci;
 
   vy[1][igrp] = clatoms_vy[ktemp]
-        + (x[1][igrp]*rolli_by_vg[4] +y[1][igrp]*rolli_by_vg[5]
-         + z[1][igrp]*rolli_by_vg[6]) *roll_sci;
+        + (x[1][igrp]*vgmat_g[4] +y[1][igrp]*vgmat_g[5]
+         + z[1][igrp]*vgmat_g[6]) *roll_sci;
 
   vz[1][igrp] = clatoms_vz[ktemp]
-        + (x[1][igrp]*rolli_by_vg[7] +y[1][igrp]*rolli_by_vg[8]
-         + z[1][igrp]*rolli_by_vg[9]) *roll_sci;
+        + (x[1][igrp]*vgmat_g[7] +y[1][igrp]*vgmat_g[8]
+         + z[1][igrp]*vgmat_g[9]) *roll_sci;
  }
 
  for(igrp=1;igrp <= ngrp ; igrp++) {
@@ -996,16 +1058,16 @@ void rattle_43_rollf(GRP_BOND_CON *grp_bond_con,
 
   roll_sci=1.0/clatoms_roll_sc[ktemp3];/*all roll scales the same in same cons*/
   vx[2][igrp] = clatoms_vx[ktemp]
-        + (x[2][igrp]*rolli_by_vg[1] +y[2][igrp]*rolli_by_vg[2]
-         + z[2][igrp]*rolli_by_vg[3]) *roll_sci;
+        + (x[2][igrp]*vgmat_g[1] +y[2][igrp]*vgmat_g[2]
+         + z[2][igrp]*vgmat_g[3]) *roll_sci;
 
   vy[2][igrp] = clatoms_vy[ktemp]
-        + (x[2][igrp]*rolli_by_vg[4] +y[2][igrp]*rolli_by_vg[5]
-         + z[2][igrp]*rolli_by_vg[6]) *roll_sci;
+        + (x[2][igrp]*vgmat_g[4] +y[2][igrp]*vgmat_g[5]
+         + z[2][igrp]*vgmat_g[6]) *roll_sci;
 
   vz[2][igrp] = clatoms_vz[ktemp]
-        + (x[2][igrp]*rolli_by_vg[7] +y[2][igrp]*rolli_by_vg[8]
-         + z[2][igrp]*rolli_by_vg[9]) *roll_sci;
+        + (x[2][igrp]*vgmat_g[7] +y[2][igrp]*vgmat_g[8]
+         + z[2][igrp]*vgmat_g[9]) *roll_sci;
 
  }
 
@@ -1015,16 +1077,16 @@ void rattle_43_rollf(GRP_BOND_CON *grp_bond_con,
 
   roll_sci=1.0/clatoms_roll_sc[ktemp3];/*all roll scales the same in same cons*/
   vx[3][igrp] = clatoms_vx[ktemp]
-        + (x[3][igrp]*rolli_by_vg[1] +y[3][igrp]*rolli_by_vg[2]
-         + z[3][igrp]*rolli_by_vg[3]) *roll_sci;
+        + (x[3][igrp]*vgmat_g[1] +y[3][igrp]*vgmat_g[2]
+         + z[3][igrp]*vgmat_g[3]) *roll_sci;
 
   vy[3][igrp] = clatoms_vy[ktemp]
-        + (x[3][igrp]*rolli_by_vg[4] +y[3][igrp]*rolli_by_vg[5]
-         + z[3][igrp]*rolli_by_vg[6]) *roll_sci;
+        + (x[3][igrp]*vgmat_g[4] +y[3][igrp]*vgmat_g[5]
+         + z[3][igrp]*vgmat_g[6]) *roll_sci;
 
   vz[3][igrp] = clatoms_vz[ktemp]
-        + (x[3][igrp]*rolli_by_vg[7] +y[3][igrp]*rolli_by_vg[8]
-         + z[3][igrp]*rolli_by_vg[9]) *roll_sci;
+        + (x[3][igrp]*vgmat_g[7] +y[3][igrp]*vgmat_g[8]
+         + z[3][igrp]*vgmat_g[9]) *roll_sci;
 
  }
 
@@ -1034,16 +1096,16 @@ void rattle_43_rollf(GRP_BOND_CON *grp_bond_con,
 
   roll_sci=1.0/clatoms_roll_sc[ktemp3];/*all roll scales the same in same cons*/
   vx[4][igrp] = clatoms_vx[ktemp]
-        + (x[4][igrp]*rolli_by_vg[1] +y[4][igrp]*rolli_by_vg[2]
-         + z[4][igrp]*rolli_by_vg[3]) *roll_sci;
+        + (x[4][igrp]*vgmat_g[1] +y[4][igrp]*vgmat_g[2]
+         + z[4][igrp]*vgmat_g[3]) *roll_sci;
 
   vy[4][igrp] = clatoms_vy[ktemp]
-        + (x[4][igrp]*rolli_by_vg[4] +y[4][igrp]*rolli_by_vg[5]
-         + z[4][igrp]*rolli_by_vg[6]) *roll_sci;
+        + (x[4][igrp]*vgmat_g[4] +y[4][igrp]*vgmat_g[5]
+         + z[4][igrp]*vgmat_g[6]) *roll_sci;
 
   vz[4][igrp] = clatoms_vz[ktemp]
-        + (x[4][igrp]*rolli_by_vg[7] +y[4][igrp]*rolli_by_vg[8]
-         + z[4][igrp]*rolli_by_vg[9]) *roll_sci;
+        + (x[4][igrp]*vgmat_g[7] +y[4][igrp]*vgmat_g[8]
+         + z[4][igrp]*vgmat_g[9]) *roll_sci;
 
  }
 
@@ -1076,8 +1138,102 @@ void rattle_43_rollf(GRP_BOND_CON *grp_bond_con,
    dz[2][igrp] = z[1][igrp]-z[3][igrp];
    dz[3][igrp] = z[1][igrp]-z[4][igrp];
 
-} 
+ } 
 
+/* Get Pressure tensor */
+ for(igrp=1;igrp <= ngrp ; igrp++){
+   double dx1,dx2,dx3;
+   double dy1,dy2,dy3;
+   double dz1,dz2,dz3;
+
+    dx1= dx[1][igrp]; dx2= dx[2][igrp]; dx3= dx[3][igrp];
+    dy1= dy[1][igrp]; dy2= dy[2][igrp]; dy3= dy[3][igrp];
+    dz1= dz[1][igrp]; dz2= dz[2][igrp]; dz3= dz[3][igrp];
+
+    p11k[1][igrp] = dx1*dx1;
+    p22k[1][igrp] = dy1*dy1;
+    p33k[1][igrp] = dz1*dz1;
+    p12k[1][igrp] = dx1*dy1;
+    p13k[1][igrp] = dx1*dz1;
+    p23k[1][igrp] = dy1*dz1;
+
+    p11k[2][igrp] = dx2*dx2;
+    p22k[2][igrp] = dy2*dy2;
+    p33k[2][igrp] = dz2*dz2;
+    p12k[2][igrp] = dx2*dy2;
+    p13k[2][igrp] = dx2*dz2;
+    p23k[2][igrp] = dy2*dz2;
+
+    p11k[3][igrp] = dx3*dx3;
+    p22k[3][igrp] = dy3*dy3;
+    p33k[3][igrp] = dz3*dz3;
+    p12k[3][igrp] = dx3*dy3;
+    p13k[3][igrp] = dx3*dz3;
+    p23k[3][igrp] = dy3*dz3;
+ }/* end for */
+
+
+ for(igrp=1;igrp <= ngrp; igrp++) {
+    double dx1r,dy1r,dz1r;
+
+    dx1r= (dx[1][igrp]*roll_mtf[1]
+          +dy[1][igrp]*roll_mtf[2]
+          +dz[1][igrp]*roll_mtf[3]);
+    
+    dy1r= (dx[1][igrp]*roll_mtf[4]
+          +dy[1][igrp]*roll_mtf[5]
+          +dz[1][igrp]*roll_mtf[6]);
+    
+    dz1r= (dx[1][igrp]*roll_mtf[7]
+          +dy[1][igrp]*roll_mtf[8]
+          +dz[1][igrp]*roll_mtf[9]);
+    
+    dxr[1][igrp] = dx1r;
+    dyr[1][igrp] = dy1r;
+    dzr[1][igrp] = dz1r;
+ }/*end for*/
+
+ for(igrp=1;igrp <= ngrp; igrp++) {
+    double dx2r,dy2r,dz2r;
+
+    dx2r= (dx[2][igrp]*roll_mtf[1]
+          +dy[2][igrp]*roll_mtf[2]
+          +dz[2][igrp]*roll_mtf[3]);
+    
+    dy2r= (dx[2][igrp]*roll_mtf[4]
+          +dy[2][igrp]*roll_mtf[5]
+          +dz[2][igrp]*roll_mtf[6]);
+    
+    dz2r= (dx[2][igrp]*roll_mtf[7]
+          +dy[2][igrp]*roll_mtf[8]
+          +dz[2][igrp]*roll_mtf[9]);
+
+    dxr[2][igrp] = dx2r;
+    dyr[2][igrp] = dy2r;
+    dzr[2][igrp] = dz2r;
+ }/*end for*/
+ 
+ for(igrp=1;igrp <= ngrp; igrp++) {
+    double dx3r,dy3r,dz3r;
+
+    dx3r= (dx[3][igrp]*roll_mtf[1]
+          +dy[3][igrp]*roll_mtf[2]
+          +dz[3][igrp]*roll_mtf[3]);
+    
+    dy3r= (dx[3][igrp]*roll_mtf[4]
+          +dy[3][igrp]*roll_mtf[5]
+          +dz[3][igrp]*roll_mtf[6]);
+    
+    dz3r= (dx[3][igrp]*roll_mtf[7]
+          +dy[3][igrp]*roll_mtf[8]
+          +dz[3][igrp]*roll_mtf[9]);
+
+    dxr[3][igrp] = dx3r;
+    dyr[3][igrp] = dy3r;
+    dzr[3][igrp] = dz3r;
+ }/*end for*/
+ 
+ 
  for(igrp=1;igrp <= ngrp ; igrp++) {
   rms1 = rm1[igrp];
   rms2 = rm2[igrp];
@@ -1095,31 +1251,145 @@ void rattle_43_rollf(GRP_BOND_CON *grp_bond_con,
 #pragma IVDEP
 #endif
  for(igrp=1;igrp <= ngrp ; igrp++) {
+
+   double dx_tmp,dy_tmp,dz_tmp;
+
+   avec[1] = dvx[1][igrp]*dx[1][igrp] + dvy[1][igrp]*dy[1][igrp] + dvz[1][igrp]*dz[1][igrp];
+   avec[2] = dvx[2][igrp]*dx[2][igrp] + dvy[2][igrp]*dy[2][igrp] + dvz[2][igrp]*dz[2][igrp];
+   avec[3] = dvx[3][igrp]*dx[3][igrp] + dvy[3][igrp]*dy[3][igrp] + dvz[3][igrp]*dz[3][igrp];
+     
    amat[1][1] = rmm11[igrp]*
-               (dx[1][igrp]*dx[1][igrp] + dy[1][igrp]*dy[1][igrp] + dz[1][igrp]*dz[1][igrp]);
+               (dx[1][igrp]*dxr[1][igrp] + dy[1][igrp]*dyr[1][igrp] + dz[1][igrp]*dzr[1][igrp]);
    amat[1][2] = rmm12[igrp]*
-               (dx[1][igrp]*dx[2][igrp] + dy[1][igrp]*dy[2][igrp] + dz[1][igrp]*dz[2][igrp]);
+               (dx[1][igrp]*dxr[2][igrp] + dy[1][igrp]*dyr[2][igrp] + dz[1][igrp]*dzr[2][igrp]);
    amat[1][3] = rmm13[igrp]*
-               (dx[1][igrp]*dx[3][igrp] + dy[1][igrp]*dy[3][igrp] + dz[1][igrp]*dz[3][igrp]);
+               (dx[1][igrp]*dxr[3][igrp] + dy[1][igrp]*dyr[3][igrp] + dz[1][igrp]*dzr[3][igrp]);
 
    amat[2][1] = rmm21[igrp]*
-               (dx[2][igrp]*dx[1][igrp] + dy[2][igrp]*dy[1][igrp] + dz[2][igrp]*dz[1][igrp]);
+               (dx[2][igrp]*dxr[1][igrp] + dy[2][igrp]*dyr[1][igrp] + dz[2][igrp]*dzr[1][igrp]);
    amat[2][2] = rmm22[igrp]*
-               (dx[2][igrp]*dx[2][igrp] + dy[2][igrp]*dy[2][igrp] + dz[2][igrp]*dz[2][igrp]);
+               (dx[2][igrp]*dxr[2][igrp] + dy[2][igrp]*dyr[2][igrp] + dz[2][igrp]*dzr[2][igrp]);
    amat[2][3] = rmm23[igrp]*
-               (dx[2][igrp]*dx[3][igrp] + dy[2][igrp]*dy[3][igrp] + dz[2][igrp]*dz[3][igrp]);
+               (dx[2][igrp]*dxr[3][igrp] + dy[2][igrp]*dyr[3][igrp] + dz[2][igrp]*dzr[3][igrp]);
 
    amat[3][1] = rmm31[igrp]*
-               (dx[3][igrp]*dx[1][igrp] + dy[3][igrp]*dy[1][igrp] + dz[3][igrp]*dz[1][igrp]);
+               (dx[3][igrp]*dxr[1][igrp] + dy[3][igrp]*dyr[1][igrp] + dz[3][igrp]*dzr[1][igrp]);
    amat[3][2] = rmm32[igrp]*
-               (dx[3][igrp]*dx[2][igrp] + dy[3][igrp]*dy[2][igrp] + dz[3][igrp]*dz[2][igrp]);
+               (dx[3][igrp]*dxr[2][igrp] + dy[3][igrp]*dyr[2][igrp] + dz[3][igrp]*dzr[2][igrp]);
    amat[3][3] = rmm33[igrp]*
-               (dx[3][igrp]*dx[3][igrp] + dy[3][igrp]*dy[3][igrp] + dz[3][igrp]*dz[3][igrp]);
+               (dx[3][igrp]*dxr[3][igrp] + dy[3][igrp]*dyr[3][igrp] + dz[3][igrp]*dzr[3][igrp]);
 
-  avec[1] = dvx[1][igrp]*dx[1][igrp] + dvy[1][igrp]*dy[1][igrp] + dvz[1][igrp]*dz[1][igrp];
-  avec[2] = dvx[2][igrp]*dx[2][igrp] + dvy[2][igrp]*dy[2][igrp] + dvz[2][igrp]*dz[2][igrp];
-  avec[3] = dvx[3][igrp]*dx[3][igrp] + dvy[3][igrp]*dy[3][igrp] + dvz[3][igrp]*dz[3][igrp];
+/* contribution to A matrix from pressure tensor  */ 
+   ktemp3= ind3[igrp];
+   roll_sci= 1.0/clatoms_roll_sc[ktemp3];/*all roll scales the same in same cons*/
 
+   dx_tmp = p11k[1][igrp]*dx[1][igrp]
+          + p12k[1][igrp]*dy[1][igrp]
+          + p13k[1][igrp]*dz[1][igrp];
+   dy_tmp = p12k[1][igrp]*dx[1][igrp]
+          + p22k[1][igrp]*dy[1][igrp]
+          + p23k[1][igrp]*dz[1][igrp]; 
+   dz_tmp = p13k[1][igrp]*dx[1][igrp]
+          + p23k[1][igrp]*dy[1][igrp]
+          + p33k[1][igrp]*dz[1][igrp];
+   amat[1][1]+= (dx[1][igrp]*dx_tmp + dy[1][igrp]*dy_tmp + dz[1][igrp]*dz_tmp)
+                *roll_scg*roll_sci/mass_hm;
+
+   dx_tmp = p11k[1][igrp]*dx[2][igrp]
+           + p12k[1][igrp]*dy[2][igrp]
+           + p13k[1][igrp]*dz[2][igrp];
+   dy_tmp = p12k[1][igrp]*dx[2][igrp]
+           + p22k[1][igrp]*dy[2][igrp]
+           + p23k[1][igrp]*dz[2][igrp]; 
+   dz_tmp = p13k[1][igrp]*dx[2][igrp]
+           + p23k[1][igrp]*dy[2][igrp]
+           + p33k[1][igrp]*dz[2][igrp];
+   amat[1][2]+= (dx[2][igrp]*dx_tmp + dy[2][igrp]*dy_tmp + dz[2][igrp]*dz_tmp)
+                *roll_sci*roll_scg/mass_hm;
+
+   dx_tmp = p11k[1][igrp]*dx[3][igrp]
+           + p12k[1][igrp]*dy[3][igrp]
+           + p13k[1][igrp]*dz[3][igrp];
+   dy_tmp = p12k[1][igrp]*dx[3][igrp]
+           + p22k[1][igrp]*dy[3][igrp]
+           + p23k[1][igrp]*dz[3][igrp]; 
+   dz_tmp = p13k[1][igrp]*dx[3][igrp]
+           + p23k[1][igrp]*dy[3][igrp]
+           + p33k[1][igrp]*dz[3][igrp];
+   amat[1][3]+= (dx[3][igrp]*dx_tmp + dy[3][igrp]*dy_tmp + dz[3][igrp]*dz_tmp)
+                *roll_sci*roll_scg/mass_hm;
+
+   dx_tmp = p11k[2][igrp]*dx[1][igrp]
+           + p12k[2][igrp]*dy[1][igrp]
+           + p13k[2][igrp]*dz[1][igrp];
+   dy_tmp = p12k[2][igrp]*dx[1][igrp]
+           + p22k[2][igrp]*dy[1][igrp]
+           + p23k[2][igrp]*dz[1][igrp]; 
+   dz_tmp = p13k[2][igrp]*dx[1][igrp]
+           + p23k[2][igrp]*dy[1][igrp]
+           + p33k[2][igrp]*dz[1][igrp];
+   amat[2][1]+= (dx[1][igrp]*dx_tmp + dy[1][igrp]*dy_tmp + dz[1][igrp]*dz_tmp)
+                *roll_sci*roll_scg/mass_hm;
+
+   dx_tmp = p11k[2][igrp]*dx[2][igrp]
+           + p12k[2][igrp]*dy[2][igrp]
+           + p13k[2][igrp]*dz[2][igrp];
+   dy_tmp = p12k[2][igrp]*dx[2][igrp]
+           + p22k[2][igrp]*dy[2][igrp]
+           + p23k[2][igrp]*dz[2][igrp]; 
+   dz_tmp = p13k[2][igrp]*dx[2][igrp]
+           + p23k[2][igrp]*dy[2][igrp]
+           + p33k[2][igrp]*dz[2][igrp];
+   amat[2][2]+= (dx[2][igrp]*dx_tmp + dy[2][igrp]*dy_tmp + dz[2][igrp]*dz_tmp)
+                *roll_sci*roll_scg/mass_hm;
+
+   dx_tmp = p11k[2][igrp]*dx[3][igrp]
+           + p12k[2][igrp]*dy[3][igrp]
+           + p13k[2][igrp]*dz[3][igrp];
+   dy_tmp = p12k[2][igrp]*dx[3][igrp]
+           + p22k[2][igrp]*dy[3][igrp]
+           + p23k[2][igrp]*dz[3][igrp]; 
+   dz_tmp = p13k[2][igrp]*dx[3][igrp]
+           + p23k[2][igrp]*dy[3][igrp]
+           + p33k[2][igrp]*dz[3][igrp];
+   amat[2][3]+= (dx[3][igrp]*dx_tmp + dy[3][igrp]*dy_tmp + dz[3][igrp]*dz_tmp)
+                *roll_sci*roll_scg/mass_hm;
+
+   dx_tmp = p11k[3][igrp]*dx[1][igrp]
+           + p12k[3][igrp]*dy[1][igrp]
+           + p13k[3][igrp]*dz[1][igrp];
+   dy_tmp = p12k[3][igrp]*dx[1][igrp]
+           + p22k[3][igrp]*dy[1][igrp]
+           + p23k[3][igrp]*dz[1][igrp]; 
+   dz_tmp = p13k[3][igrp]*dx[1][igrp]
+           + p23k[3][igrp]*dy[1][igrp]
+           + p33k[3][igrp]*dz[1][igrp];
+   amat[3][1]+= (dx[1][igrp]*dx_tmp + dy[1][igrp]*dy_tmp + dz[1][igrp]*dz_tmp)
+                *roll_sci*roll_scg/mass_hm;
+   
+   dx_tmp = p11k[3][igrp]*dx[2][igrp]
+           + p12k[3][igrp]*dy[2][igrp]
+           + p13k[3][igrp]*dz[2][igrp];
+   dy_tmp = p12k[3][igrp]*dx[2][igrp]
+           + p22k[3][igrp]*dy[2][igrp]
+           + p23k[3][igrp]*dz[2][igrp]; 
+   dz_tmp = p13k[3][igrp]*dx[2][igrp]
+           + p23k[3][igrp]*dy[2][igrp]
+           + p33k[3][igrp]*dz[2][igrp];
+   amat[3][2]+= (dx[2][igrp]*dx_tmp + dy[2][igrp]*dy_tmp + dz[2][igrp]*dz_tmp)
+                *roll_sci*roll_scg/mass_hm;
+
+   dx_tmp = p11k[3][igrp]*dx[3][igrp]
+           + p12k[3][igrp]*dy[3][igrp]
+           + p13k[3][igrp]*dz[3][igrp];
+   dy_tmp = p12k[3][igrp]*dx[3][igrp]
+           + p22k[3][igrp]*dy[3][igrp]
+           + p23k[3][igrp]*dz[3][igrp]; 
+   dz_tmp = p13k[3][igrp]*dx[3][igrp]
+           + p23k[3][igrp]*dy[3][igrp]
+           + p33k[3][igrp]*dz[3][igrp];
+   amat[3][3]+= (dx[3][igrp]*dx_tmp + dy[3][igrp]*dy_tmp + dz[3][igrp]*dz_tmp)
+                *roll_sci*roll_scg/mass_hm;
 
 /* Get inverse of matrix */
 
@@ -1152,12 +1422,19 @@ void rattle_43_rollf(GRP_BOND_CON *grp_bond_con,
   double dx1,dx2,dx3;
   double dy1,dy2,dy3;
   double dz1,dz2,dz3;
+  double dx1r,dx2r,dx3r;
+  double dy1r,dy2r,dy3r;
+  double dz1r,dz2r,dz3r;
   int ktemp1,ktemp2,ktemp3,ktemp4;
 
 
     dx1= dx[1][igrp]; dx2= dx[2][igrp]; dx3= dx[3][igrp];
     dy1= dy[1][igrp]; dy2= dy[2][igrp]; dy3= dy[3][igrp];
     dz1= dz[1][igrp]; dz2= dz[2][igrp]; dz3= dz[3][igrp];
+
+    dx1r= dxr[1][igrp]; dx2r= dxr[2][igrp]; dx3r= dxr[3][igrp];
+    dy1r= dyr[1][igrp]; dy2r= dyr[2][igrp]; dy3r= dyr[3][igrp];
+    dz1r= dzr[1][igrp]; dz2r= dzr[2][igrp]; dz3r= dzr[3][igrp];
 
     xlam1= xlam[1][igrp];
     xlam2= xlam[2][igrp];
@@ -1170,21 +1447,21 @@ void rattle_43_rollf(GRP_BOND_CON *grp_bond_con,
     rms3 = rm3[igrp]; rms4 = rm4[igrp];
 
 
-    clatoms_vx[ktemp1] -= (xlam1*dx1 + xlam2*dx2 + xlam3*dx3)*rms1;
-    clatoms_vy[ktemp1] -= (xlam1*dy1 + xlam2*dy2 + xlam3*dy3)*rms1;
-    clatoms_vz[ktemp1] -= (xlam1*dz1 + xlam2*dz2 + xlam3*dz3)*rms1;
+    clatoms_vx[ktemp1] -= (xlam1*dx1r + xlam2*dx2r + xlam3*dx3r)*rms1;
+    clatoms_vy[ktemp1] -= (xlam1*dy1r + xlam2*dy2r + xlam3*dy3r)*rms1;
+    clatoms_vz[ktemp1] -= (xlam1*dz1r + xlam2*dz2r + xlam3*dz3r)*rms1;
 
-    clatoms_vx[ktemp2] += (xlam1*dx1)*rms2;
-    clatoms_vy[ktemp2] += (xlam1*dy1)*rms2;
-    clatoms_vz[ktemp2] += (xlam1*dz1)*rms2;
+    clatoms_vx[ktemp2] += (xlam1*dx1r)*rms2;
+    clatoms_vy[ktemp2] += (xlam1*dy1r)*rms2;
+    clatoms_vz[ktemp2] += (xlam1*dz1r)*rms2;
 
-    clatoms_vx[ktemp3] += (xlam2*dx2)*rms3;
-    clatoms_vy[ktemp3] += (xlam2*dy2)*rms3;
-    clatoms_vz[ktemp3] += (xlam2*dz2)*rms3;
+    clatoms_vx[ktemp3] += (xlam2*dx2r)*rms3;
+    clatoms_vy[ktemp3] += (xlam2*dy2r)*rms3;
+    clatoms_vz[ktemp3] += (xlam2*dz2r)*rms3;
 
-    clatoms_vx[ktemp4] += (xlam3*dx3)*rms4;
-    clatoms_vy[ktemp4] += (xlam3*dy3)*rms4;
-    clatoms_vz[ktemp4] += (xlam3*dz3)*rms4;
+    clatoms_vx[ktemp4] += (xlam3*dx3r)*rms4;
+    clatoms_vy[ktemp4] += (xlam3*dy3r)*rms4;
+    clatoms_vz[ktemp4] += (xlam3*dz3r)*rms4;
 
 /* Pressure tensor update */
 
@@ -1259,6 +1536,13 @@ void rattle_43_rollf(GRP_BOND_CON *grp_bond_con,
    free_dvector(p23,1,ngrp);
    free_dvector(p33,1,ngrp);
 
+   free_dmatrix(p11k,1,3,1,ngrp);
+   free_dmatrix(p12k,1,3,1,ngrp);
+   free_dmatrix(p13k,1,3,1,ngrp);
+   free_dmatrix(p22k,1,3,1,ngrp);
+   free_dmatrix(p23k,1,3,1,ngrp);
+   free_dmatrix(p33k,1,3,1,ngrp);
+   
    free_dvector(rm1,1,ngrp);
    free_dvector(rm2,1,ngrp);
    free_dvector(rm3,1,ngrp);
@@ -1267,6 +1551,10 @@ void rattle_43_rollf(GRP_BOND_CON *grp_bond_con,
    free_dmatrix(dx,1,3,1,ngrp);
    free_dmatrix(dy,1,3,1,ngrp);
    free_dmatrix(dz,1,3,1,ngrp);
+
+   free_dmatrix(dxr,1,3,1,ngrp);
+   free_dmatrix(dyr,1,3,1,ngrp);
+   free_dmatrix(dzr,1,3,1,ngrp);
 
    free_dmatrix(dvx,1,3,1,ngrp);
    free_dmatrix(dvy,1,3,1,ngrp);

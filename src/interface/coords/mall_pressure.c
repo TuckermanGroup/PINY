@@ -75,6 +75,7 @@
   general_data->par_rahman.fgmat_v  = (double *)cmalloc((size_t)9*sizeof(double))-1;
   general_data->par_rahman.roll_mtv = (double *)cmalloc((size_t)9*sizeof(double))-1;
   general_data->par_rahman.roll_mtx = (double *)cmalloc((size_t)9*sizeof(double))-1;
+  general_data->par_rahman.roll_mtf = (double *)cmalloc((size_t)9*sizeof(double))-1;   /*** added by TANG for new NPTF ***/
   general_data->par_rahman.roll_mtvv = (double *)cmalloc((size_t)9*sizeof(double))-1;
   general_data->par_rahman.vtemps   = (double *)cmalloc((size_t)9*sizeof(double))-1;
   general_data->par_rahman.veigv    = (double *)cmalloc((size_t)9*sizeof(double))-1;
@@ -83,6 +84,7 @@
   general_data->par_rahman.vsindt   = (double *)cmalloc((size_t)9*sizeof(double))-1;
   general_data->par_rahman.vtempx   = (double *)cmalloc((size_t)9*sizeof(double))-1;
   general_data->par_rahman.vtempv   = (double *)cmalloc((size_t)9*sizeof(double))-1;
+  general_data->par_rahman.vtempf   = (double *)cmalloc((size_t)9*sizeof(double))-1;   /*** added by TANG for new NPTF  ***/
   general_data->par_rahman.hmat_t   = (double *)cmalloc((size_t)9*sizeof(double))-1;
   general_data->par_rahman.hmato    = (double *)cmalloc((size_t)9*sizeof(double))-1;
   general_data->par_rahman.fv1    = (double *)cmalloc((size_t)9*sizeof(double))-1;

@@ -34,7 +34,9 @@
 
 void move_pos_box(CELL *cell,PAR_RAHMAN *par_rahman,
                   double *clatoms_x,double *clatoms_y,
-                  double *clatoms_z,double *clatoms_vx,
+                  double *clatoms_z,double *clatoms_xold,
+                  double *clatoms_yold,double *clatoms_zold,
+                  double *clatoms_vx,
                   double *clatoms_vy,double *clatoms_vz,
                   double dt,int natm_tot)
 
@@ -104,15 +106,15 @@ void move_pos_box(CELL *cell,PAR_RAHMAN *par_rahman,
   matmul_t2(veigv,vtempv,roll_mtv,n);
      	
   for(ipart=1;ipart<=(natm_tot); ++ipart) {
-    tempx  =  clatoms_x[ipart]*roll_mtx[1]
-             +clatoms_y[ipart]*roll_mtx[2]
-             +clatoms_z[ipart]*roll_mtx[3];
-    tempy  =  clatoms_x[ipart]*roll_mtx[4]
-             +clatoms_y[ipart]*roll_mtx[5]
-             +clatoms_z[ipart]*roll_mtx[6];
-    tempz  =  clatoms_x[ipart]*roll_mtx[7]
-             +clatoms_y[ipart]*roll_mtx[8]
-             +clatoms_z[ipart]*roll_mtx[9];
+    tempx  =  clatoms_xold[ipart]*roll_mtx[1]
+             +clatoms_yold[ipart]*roll_mtx[2]
+             +clatoms_zold[ipart]*roll_mtx[3];
+    tempy  =  clatoms_xold[ipart]*roll_mtx[4]
+             +clatoms_yold[ipart]*roll_mtx[5]
+             +clatoms_zold[ipart]*roll_mtx[6];
+    tempz  =  clatoms_xold[ipart]*roll_mtx[7]
+             +clatoms_yold[ipart]*roll_mtx[8]
+             +clatoms_zold[ipart]*roll_mtx[9];
     tempvx = clatoms_vx[ipart]*roll_mtv[1]
             +clatoms_vy[ipart]*roll_mtv[2]
             +clatoms_vz[ipart]*roll_mtv[3];
@@ -140,6 +142,7 @@ void move_pos_box(CELL *cell,PAR_RAHMAN *par_rahman,
   }/*endfor*/
   matmul_tt(hmat_t,veigv,hmat,n);
   gethinv(hmat,hmati,&(cell->vol),iperd);
+  par_rahman->vol = cell->vol;
 
 /*--------------------------------------------------------------------------*/
    }/*end routine*/
@@ -149,14 +152,15 @@ void move_pos_box(CELL *cell,PAR_RAHMAN *par_rahman,
 
 
 
+
 /*==========================================================================*/
 /*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
 /*==========================================================================*/
 
-void move_pos_box_upper(double *clatoms_x,double *clatoms_y,
+void move_pos_box_upper(CELL *cell,PAR_RAHMAN *par_rahman,
+                        double *clatoms_x,double *clatoms_y,
                         double *clatoms_z,double *clatoms_vx,
                         double *clatoms_vy,double *clatoms_vz,
-                        double *hmat, double *hmati,double *vgmat, 
                         double dt,int natm_tot,int myatm_start, int myatm_end)
 
 /*==========================================================================*/
@@ -172,7 +176,13 @@ void move_pos_box_upper(double *clatoms_x,double *clatoms_y,
    double sindt,arg2;
    double e2,e4,e6,e8;
    double ax,ay,az,bx,by,bz;
+   double vol;
    double hmat_old[10],hmat_temp[10];
+
+   double *vgmat    = par_rahman->vgmat;
+   double *hmat     = cell->hmat;
+   double *hmati    = cell->hmati;
+   int iperd        = cell->iperd;
 
 /*==========================================================================*/
 /* 0) Useful constants                                                      */
@@ -289,9 +299,42 @@ void move_pos_box_upper(double *clatoms_x,double *clatoms_y,
   /*--------------------------------------------------------------------*/
   /* 4) Evolve the matrix from dt2 to dt with exp(iL_correction*dt)     */
 
-        hmat[7] += vgmat[4]*hmat[8]*dt_res;
+     hmat[7] += vgmat[4]*hmat[8]*dt_res;
 
    }/*endfor : ires*/
+   
+  /*--------------------------------------------------------------------*/
+  /* 5) recalculate the inverse of h matrix and cell volume             */
+
+   cell->vol = 0.0;
+   for(i=1;i<=9;i++){hmati[i]=0.0;}
+   if (iperd == 3) {
+     vol = hmat[1] * hmat[5] * hmat[9] ;
+     cell->vol = vol;
+     hmati[1] = (hmat[5] * hmat[9]) / vol;
+     hmati[5] = (hmat[1] * hmat[9]) / vol;
+     hmati[9] = (hmat[1] * hmat[5]) / vol;
+     hmati[4] = (- hmat[4] * hmat[9]) / vol;
+     hmati[2] = 0.0;
+     hmati[7] = (hmat[4] * hmat[8] - hmat[7] * hmat[5]) / vol;
+     hmati[3] = 0.0;
+     hmati[8] = (- hmat[8] * hmat[1]) / vol;
+     hmati[6] = 0.0;
+   }/*endif*/
+   par_rahman->vol = cell->vol;
+
+/*===============================================================*/
+/* Errors */
+
+  if((cell->vol)==0.0){
+    printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");    
+    printf("The present volume is zero.                 \n");
+    printf("If this is not an error in your input data, \n");
+    printf("contact technical support                  \n");
+    printf("@@@@@@@@@@@@@@@@@@@@_error_@@@@@@@@@@@@@@@@@@@@\n");
+    fflush(stdout);
+    exit(1);
+  } /*endif*/
 
 /*--------------------------------------------------------------------------*/
      }/*end routine*/

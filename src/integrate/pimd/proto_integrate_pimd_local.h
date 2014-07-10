@@ -79,19 +79,24 @@ void int_dt2_to_dt_nptf_pimd(CLASS *,BONDED *,GENERAL_DATA *,int,int,int,int,
 /*--------------------------------------------------------------------------*/
 /* move_pos_box.c */
 
+// The following has been changed by TANG for the new NPT integrator of MD
+// However, this may cause PIMD not work since all other parts of PIMD is not updated to
+// the new NPT integrator yet.
+// This is only for the compiling purpose at present.
  void move_pos_box(CELL *,PAR_RAHMAN *,
                          double *,double *,
                          double *,double *,
+                         double *,double *,double *,
                          double *,double *,
                          double ,int);
 
 
+ void move_pos_box_upper(CELL *, PAR_RAHMAN *,
+                         double *,double *,
+                         double *,double *,
+                         double *,double *,
+                         double ,int ,int , int );
 
- void move_pos_box_upper(double *,double *,
-                         double *,double *,
-                         double *,double *,
-                         double *, double *,double *, 
-                         double ,int,int, int );
 
 
 

@@ -325,7 +325,14 @@ void mall_intra_scr(INTRA_SCR *intra_scr,double *tot_memory,
   intra_scr->fx4   = (double *)cmalloc(nlen_mall*sizeof(double))-1;
   intra_scr->fy4   = (double *)cmalloc(nlen_mall*sizeof(double))-1;
   intra_scr->fz4   = (double *)cmalloc(nlen_mall*sizeof(double))-1;
-  
+//added by TANG for newNPT
+  intra_scr->fx5   = (double *)cmalloc(nlen_mall*sizeof(double))-1;
+  intra_scr->fy5   = (double *)cmalloc(nlen_mall*sizeof(double))-1;
+  intra_scr->fz5   = (double *)cmalloc(nlen_mall*sizeof(double))-1;
+  intra_scr->fx6   = (double *)cmalloc(nlen_mall*sizeof(double))-1;
+  intra_scr->fy6   = (double *)cmalloc(nlen_mall*sizeof(double))-1;
+  intra_scr->fz6   = (double *)cmalloc(nlen_mall*sizeof(double))-1;
+//added by TANG for newNPT
   /*-----------------------------------------------------------------------*/
 
   intra_scr->c_0   = (double *)cmalloc(nlen_mall*sizeof(double))-1;

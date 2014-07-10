@@ -57,6 +57,8 @@ void shake_bond_roll_f(BOND *bond,
   double fxo2,fyo2,fzo2;
   double fxo1r,fyo1r,fzo1r;
   double fxo2r,fyo2r,fzo2r;
+  double fxo1rr,fyo1rr,fzo1rr; 
+  double fxo2rr,fyo2rr,fzo2rr; 
   double fxn1,fyn1,fzn1;
   double fxn2,fyn2,fzn2;
   double arg2,poly;
@@ -99,6 +101,12 @@ void shake_bond_roll_f(BOND *bond,
   double *intra_scr_fx4   = intra_scr->fx4;
   double *intra_scr_fy4   = intra_scr->fy4;
   double *intra_scr_fz4   = intra_scr->fz4;
+  double *intra_scr_fx5   = intra_scr->fx5;
+  double *intra_scr_fy5   = intra_scr->fy5;
+  double *intra_scr_fz5   = intra_scr->fz5;
+  double *intra_scr_fx6   = intra_scr->fx6;
+  double *intra_scr_fy6   = intra_scr->fy6;
+  double *intra_scr_fz6   = intra_scr->fz6;
   double *intra_scr_dx12  = intra_scr->dx12;
   double *intra_scr_dy12  = intra_scr->dy12;
   double *intra_scr_dz12  = intra_scr->dz12;
@@ -143,8 +151,10 @@ void shake_bond_roll_f(BOND *bond,
   int np_forc             = class_comm_forc_pkg->num_proc;
   MPI_Comm comm_forc      = class_comm_forc_pkg->comm;
 
-  double *roll_mtv        = par_rahman->roll_mtv;
   double *roll_mtx        = par_rahman->roll_mtx;
+  double *roll_mtf        = par_rahman->roll_mtf;
+  double *roll_mtv       = par_rahman->roll_mtv;
+  double *roll_mtvv       = par_rahman->roll_mtvv;
   double *fgmat_p         = par_rahman->fgmat_p;
   double *vgmat           = par_rahman->vgmat;
   double roll_scg         = par_rahman->roll_scg;
@@ -152,6 +162,7 @@ void shake_bond_roll_f(BOND *bond,
   double *vtemps          = par_rahman->vtemps;
   double *vtempv          = par_rahman->vtempv;
   double *vtempx          = par_rahman->vtempx;
+  double *vtempf          = par_rahman->vtempf;
   double *veig            = par_rahman->veig;
   double *veigv           = par_rahman->veigv;
   double *fv1             = par_rahman->fv1;
@@ -247,18 +258,30 @@ void shake_bond_roll_f(BOND *bond,
          fyo2  = -fyo1;
          fzo2  = -fzo1;
 /* ii) rolled forces*/
-         fxo1r =  fxo1*roll_mtv[1]+fyo1*roll_mtv[2]
-               +  fzo1*roll_mtv[3];
-         fyo1r =  fxo1*roll_mtv[4]+fyo1*roll_mtv[5]
-               +  fzo1*roll_mtv[6];
-         fzo1r =  fxo1*roll_mtv[7]+fyo1*roll_mtv[8]
-               +  fzo1*roll_mtv[9];
-         fxo2r =  fxo2*roll_mtv[1]+fyo2*roll_mtv[2]
-               +  fzo2*roll_mtv[3];
-         fyo2r =  fxo2*roll_mtv[4]+fyo2*roll_mtv[5]
-               +  fzo2*roll_mtv[6];
-         fzo2r =  fxo2*roll_mtv[7]+fyo2*roll_mtv[8]
-               +  fzo2*roll_mtv[9];
+	 fxo1r =  fxo1*roll_mtf[1]+fyo1*roll_mtf[2]
+	       +  fzo1*roll_mtf[3];
+         fyo1r =  fxo1*roll_mtf[4]+fyo1*roll_mtf[5]
+               +  fzo1*roll_mtf[6];
+         fzo1r =  fxo1*roll_mtf[7]+fyo1*roll_mtf[8]
+               +  fzo1*roll_mtf[9];
+         fxo2r =  fxo2*roll_mtf[1]+fyo2*roll_mtf[2]
+               +  fzo2*roll_mtf[3];
+         fyo2r =  fxo2*roll_mtf[4]+fyo2*roll_mtf[5]
+               +  fzo2*roll_mtf[6];
+         fzo2r =  fxo2*roll_mtf[7]+fyo2*roll_mtf[8]
+               +  fzo2*roll_mtf[9];
+         fxo1rr=  fxo1r*roll_mtv[1]+fyo1r*roll_mtv[2]
+               +  fzo1r*roll_mtv[3];
+         fyo1rr=  fxo1r*roll_mtv[4]+fyo1r*roll_mtv[5]
+               +  fzo1r*roll_mtv[6];
+         fzo1rr=  fxo1r*roll_mtv[7]+fyo1r*roll_mtv[8]
+               +  fzo1r*roll_mtv[9];
+         fxo2rr=  fxo2r*roll_mtv[1]+fyo2r*roll_mtv[2]
+               +  fzo2r*roll_mtv[3];
+         fyo2rr=  fxo2r*roll_mtv[4]+fyo2r*roll_mtv[5]
+               +  fzo2r*roll_mtv[6];
+         fzo2rr=  fxo2r*roll_mtv[7]+fyo2r*roll_mtv[8]
+               +  fzo2r*roll_mtv[9];
 /* ii) get the multiplier                                 */
          alam  = bond_al_con[(ibond+ibig1)];
 /* iii) get the forces forces                             */
@@ -268,18 +291,24 @@ void shake_bond_roll_f(BOND *bond,
          intra_scr_fx2[ibond]  = alam*fxo2;
          intra_scr_fy2[ibond]  = alam*fyo2;
          intra_scr_fz2[ibond]  = alam*fzo2;
-         intra_scr_fx3[ibond]  = alam*fxo1r*dt22*intra_scr_m1[ibond];
-         intra_scr_fy3[ibond]  = alam*fyo1r*dt22*intra_scr_m1[ibond];
-         intra_scr_fz3[ibond]  = alam*fzo1r*dt22*intra_scr_m1[ibond];
-         intra_scr_fx4[ibond]  = alam*fxo2r*dt22*intra_scr_m2[ibond];
-         intra_scr_fy4[ibond]  = alam*fyo2r*dt22*intra_scr_m2[ibond];
-         intra_scr_fz4[ibond]  = alam*fzo2r*dt22*intra_scr_m2[ibond];
+         intra_scr_fx3[ibond]  = alam*fxo1rr*dt22*intra_scr_m1[ibond];
+         intra_scr_fy3[ibond]  = alam*fyo1rr*dt22*intra_scr_m1[ibond];
+         intra_scr_fz3[ibond]  = alam*fzo1rr*dt22*intra_scr_m1[ibond];
+         intra_scr_fx4[ibond]  = alam*fxo2rr*dt22*intra_scr_m2[ibond];
+         intra_scr_fy4[ibond]  = alam*fyo2rr*dt22*intra_scr_m2[ibond];
+         intra_scr_fz4[ibond]  = alam*fzo2rr*dt22*intra_scr_m2[ibond];
+         intra_scr_fx5[ibond]  = alam*fxo1r*dt2*intra_scr_m1[ibond];
+         intra_scr_fy5[ibond]  = alam*fyo1r*dt2*intra_scr_m1[ibond];
+         intra_scr_fz5[ibond]  = alam*fzo1r*dt2*intra_scr_m1[ibond];
+         intra_scr_fx6[ibond]  = alam*fxo2r*dt2*intra_scr_m2[ibond];
+         intra_scr_fy6[ibond]  = alam*fyo2r*dt2*intra_scr_m2[ibond];
+         intra_scr_fz6[ibond]  = alam*fzo2r*dt2*intra_scr_m2[ibond];
       }/*endfor*/
     }/*endif*/
 /*----------------------------------------------------------------------*/
 /*  E) Thereafter refine the multipliers  and get the force             */
     if(iter!=1){
-      for(ibond=1;ibond <= nnow; ++ibond) {           
+      for(ibond=1;ibond <= nnow; ++ibond) {
 /* i) calculate the basis vectors (r12) of old positions and get force */
          r122  = intra_scr_dx43[ibond]*intra_scr_dx43[ibond]
                 +intra_scr_dy43[ibond]*intra_scr_dy43[ibond]
@@ -294,18 +323,30 @@ void shake_bond_roll_f(BOND *bond,
          fyo2  = -fyo1;
          fzo2  = -fzo1;
 /* ii) rolled forces*/
-         fxo1r =  fxo1*roll_mtv[1]+fyo1*roll_mtv[2]
-               +  fzo1*roll_mtv[3];
-         fyo1r =  fxo1*roll_mtv[4]+fyo1*roll_mtv[5]
-               +  fzo1*roll_mtv[6];
-         fzo1r =  fxo1*roll_mtv[7]+fyo1*roll_mtv[8]
-               +  fzo1*roll_mtv[9];
-         fxo2r =  fxo2*roll_mtv[1]+fyo2*roll_mtv[2]
-               +  fzo2*roll_mtv[3];
-         fyo2r =  fxo2*roll_mtv[4]+fyo2*roll_mtv[5]
-               +  fzo2*roll_mtv[6];
-         fzo2r =  fxo2*roll_mtv[7]+fyo2*roll_mtv[8]
-               +  fzo2*roll_mtv[9];
+         fxo1r =  fxo1*roll_mtf[1]+fyo1*roll_mtf[2]
+               +  fzo1*roll_mtf[3];
+         fyo1r =  fxo1*roll_mtf[4]+fyo1*roll_mtf[5]
+               +  fzo1*roll_mtf[6];
+         fzo1r =  fxo1*roll_mtf[7]+fyo1*roll_mtf[8]
+               +  fzo1*roll_mtf[9];
+         fxo2r =  fxo2*roll_mtf[1]+fyo2*roll_mtf[2]
+               +  fzo2*roll_mtf[3];
+         fyo2r =  fxo2*roll_mtf[4]+fyo2*roll_mtf[5]
+               +  fzo2*roll_mtf[6];
+         fzo2r =  fxo2*roll_mtf[7]+fyo2*roll_mtf[8]
+               +  fzo2*roll_mtf[9];
+         fxo1rr=  fxo1r*roll_mtv[1]+fyo1r*roll_mtv[2]
+               +  fzo1r*roll_mtv[3];
+         fyo1rr=  fxo1r*roll_mtv[4]+fyo1r*roll_mtv[5]
+               +  fzo1r*roll_mtv[6];
+         fzo1rr=  fxo1r*roll_mtv[7]+fyo1r*roll_mtv[8]
+               +  fzo1r*roll_mtv[9];
+         fxo2rr=  fxo2r*roll_mtv[1]+fyo2r*roll_mtv[2]
+               +  fzo2r*roll_mtv[3];
+         fyo2rr=  fxo2r*roll_mtv[4]+fyo2r*roll_mtv[5]
+               +  fzo2r*roll_mtv[6];
+         fzo2rr=  fxo2r*roll_mtv[7]+fyo2r*roll_mtv[8]
+               +  fzo2r*roll_mtv[9];
 /*ii) calculate the basis vectors (r12) of new positions and get force*/
          r122  = intra_scr_dx12[ibond]*intra_scr_dx12[ibond]
                 +intra_scr_dy12[ibond]*intra_scr_dy12[ibond]
@@ -322,8 +363,8 @@ void shake_bond_roll_f(BOND *bond,
 /*iii) get the present value of the constraint */
          vcons  = (r12-intra_scr_eq[ibond]);
 /*iv) get the increment to the multiplier      */
-         fdot1 = (fxn1*fxo1r+fyn1*fyo1r+fzn1*fzo1r)*intra_scr_m1[ibond];
-         fdot2 = (fxn2*fxo2r+fyn2*fyo2r+fzn2*fzo2r)*intra_scr_m2[ibond];
+         fdot1 = (fxn1*fxo1rr+fyn1*fyo1rr+fzn1*fzo1rr)*intra_scr_m1[ibond];
+         fdot2 = (fxn2*fxo2rr+fyn2*fyo2rr+fzn2*fzo2rr)*intra_scr_m2[ibond];
          alam = dt22i*vcons/(fdot1+fdot2);
          bond_al_con[(ibond+ibig1)] += alam;
 /*v) get the force on the atoms                */
@@ -333,19 +374,25 @@ void shake_bond_roll_f(BOND *bond,
          intra_scr_fx2[ibond]  = alam*fxo2;
          intra_scr_fy2[ibond]  = alam*fyo2;
          intra_scr_fz2[ibond]  = alam*fzo2;
-         intra_scr_fx3[ibond]  = alam*fxo1r*dt22*intra_scr_m1[ibond];
-         intra_scr_fy3[ibond]  = alam*fyo1r*dt22*intra_scr_m1[ibond];
-         intra_scr_fz3[ibond]  = alam*fzo1r*dt22*intra_scr_m1[ibond];
-         intra_scr_fx4[ibond]  = alam*fxo2r*dt22*intra_scr_m2[ibond];
-         intra_scr_fy4[ibond]  = alam*fyo2r*dt22*intra_scr_m2[ibond];
-         intra_scr_fz4[ibond]  = alam*fzo2r*dt22*intra_scr_m2[ibond];
+         intra_scr_fx3[ibond]  = alam*fxo1rr*dt22*intra_scr_m1[ibond];
+         intra_scr_fy3[ibond]  = alam*fyo1rr*dt22*intra_scr_m1[ibond];
+         intra_scr_fz3[ibond]  = alam*fzo1rr*dt22*intra_scr_m1[ibond];
+         intra_scr_fx4[ibond]  = alam*fxo2rr*dt22*intra_scr_m2[ibond];
+         intra_scr_fy4[ibond]  = alam*fyo2rr*dt22*intra_scr_m2[ibond];
+         intra_scr_fz4[ibond]  = alam*fzo2rr*dt22*intra_scr_m2[ibond];
+         intra_scr_fx5[ibond]  = alam*fxo1r*dt2*intra_scr_m1[ibond];
+         intra_scr_fy5[ibond]  = alam*fyo1r*dt2*intra_scr_m1[ibond];
+         intra_scr_fz5[ibond]  = alam*fzo1r*dt2*intra_scr_m1[ibond];
+         intra_scr_fx6[ibond]  = alam*fxo2r*dt2*intra_scr_m2[ibond];
+         intra_scr_fy6[ibond]  = alam*fyo2r*dt2*intra_scr_m2[ibond];
+         intra_scr_fz6[ibond]  = alam*fzo2r*dt2*intra_scr_m2[ibond];
       }/*endfor*/
-    }/*endif*/    
+    }/*endif*/
 /*----------------------------------------------------------------------*/
 /*  F) Get Pressure tensor                                              */
     for(i=1;i<=9;i++){pvten_tmp[i]=0;}
     if((iperd==2)||(iperd==3)){
-      for(ibond=1;ibond <= nnow; ++ibond) {           
+      for(ibond=1;ibond <= nnow; ++ibond) {
         intra_scr_p11[ibond] = intra_scr_dx43[ibond]*intra_scr_fx1[ibond];
         intra_scr_p22[ibond] = intra_scr_dy43[ibond]*intra_scr_fy1[ibond];
         intra_scr_p33[ibond] = intra_scr_dz43[ibond]*intra_scr_fz1[ibond];
@@ -359,7 +406,7 @@ void shake_bond_roll_f(BOND *bond,
       }/*endfor*/
       pvten_tmp[4] = pvten_tmp[2];
       if(iperd==3){
-        for(ibond=1;ibond <= nnow; ++ibond) {           
+        for(ibond=1;ibond <= nnow; ++ibond) {
           intra_scr_p13[ibond] = intra_scr_dx43[ibond]*intra_scr_fz1[ibond];
           intra_scr_p23[ibond] = intra_scr_dy43[ibond]*intra_scr_fz1[ibond];
         }/*endfor*/
@@ -393,24 +440,14 @@ void shake_bond_roll_f(BOND *bond,
     }/*endif*/
 /*----------------------------------------------------------------------*/
 /*  G) Add the force to the velocities then the positions               */
-    for(ibond=1;ibond <= nnow; ++ibond) {
-      temp1 = (dt2*intra_scr_m1[ibond]);
-      temp2 = (dt2*intra_scr_m2[ibond]);
-      intra_scr_fx1[ibond] *=temp1;
-      intra_scr_fy1[ibond] *=temp1;
-      intra_scr_fz1[ibond] *=temp1;
-      intra_scr_fx2[ibond] *=temp2;
-      intra_scr_fy2[ibond] *=temp2;
-      intra_scr_fz2[ibond] *=temp2;
-    }/*endfor*/
-
+ 
     igo = 0;
     if(igo==0){
      for(iboff=1,ibond=ibig;ibond <= iend; ++ibond,++iboff) {       
       ktemp = bond_j1_con[ibond];
-      clatoms_vx[ktemp] +=  intra_scr_fx1[iboff];
-      clatoms_vy[ktemp] +=  intra_scr_fy1[iboff];
-      clatoms_vz[ktemp] +=  intra_scr_fz1[iboff];
+      clatoms_vx[ktemp] +=  intra_scr_fx5[iboff];
+      clatoms_vy[ktemp] +=  intra_scr_fy5[iboff];
+      clatoms_vz[ktemp] +=  intra_scr_fz5[iboff];
      }
     }else{
 #ifndef NO_PRAGMA
@@ -418,9 +455,9 @@ void shake_bond_roll_f(BOND *bond,
 #endif
      for(iboff=1,ibond=ibig;ibond <= iend; ++ibond,++iboff) {       
       ktemp = bond_j1_con[ibond];
-      clatoms_vx[ktemp] +=  intra_scr_fx1[iboff];
-      clatoms_vy[ktemp] +=  intra_scr_fy1[iboff];
-      clatoms_vz[ktemp] +=  intra_scr_fz1[iboff];
+      clatoms_vx[ktemp] +=  intra_scr_fx5[iboff];
+      clatoms_vy[ktemp] +=  intra_scr_fy5[iboff];
+      clatoms_vz[ktemp] +=  intra_scr_fz5[iboff];
      }
     }/*endif*/
 
@@ -428,9 +465,9 @@ void shake_bond_roll_f(BOND *bond,
     if(igo==0){
      for(iboff=1,ibond=ibig;ibond <= iend; ++ibond,++iboff) {       
       ktemp = bond_j2_con[ibond];
-      clatoms_vx[ktemp] +=  intra_scr_fx2[iboff];
-      clatoms_vy[ktemp] +=  intra_scr_fy2[iboff];
-      clatoms_vz[ktemp] +=  intra_scr_fz2[iboff];
+      clatoms_vx[ktemp] +=  intra_scr_fx6[iboff];
+      clatoms_vy[ktemp] +=  intra_scr_fy6[iboff];
+      clatoms_vz[ktemp] +=  intra_scr_fz6[iboff];
      }/*endfor*/
     }else{
 #ifndef NO_PRAGMA
@@ -438,9 +475,9 @@ void shake_bond_roll_f(BOND *bond,
 #endif
      for(iboff=1,ibond=ibig;ibond <= iend; ++ibond,++iboff) {       
       ktemp = bond_j2_con[ibond];
-      clatoms_vx[ktemp] +=  intra_scr_fx2[iboff];
-      clatoms_vy[ktemp] +=  intra_scr_fy2[iboff];
-      clatoms_vz[ktemp] +=  intra_scr_fz2[iboff];
+      clatoms_vx[ktemp] +=  intra_scr_fx6[iboff];
+      clatoms_vy[ktemp] +=  intra_scr_fy6[iboff];
+      clatoms_vz[ktemp] +=  intra_scr_fz6[iboff];
      }/*endfor*/
     }/*endif*/
 
@@ -510,69 +547,6 @@ void shake_bond_roll_f(BOND *bond,
 
   if((iter % 2)==0){flip_bond_con(bond);}
 
-/*==========================================================================*/
-/* IV) consistently re-calculate everything                                 */
-  if(iter!=1){
-/*----------------------------------------------------------------------*/
-/* A) new atom positions */
-    for(i=1;i<=9;i++){vtemps[i] = vgmat[i];}
-    diag33(vtemps,veig,veigv,fv1,fv2);
-    for(i=1;i<=3;i++){
-      aa        = exp(dt2*(veig)[i]);
-      vexpdt[i] = aa*aa;
-      arg2      = (veig[i]*dt2)*(veig[i]*dt2);
-      poly      = (((e8*arg2+e6)*arg2+e4)*arg2+e2)*arg2+1.0;
-      vsindt[i] = aa*poly;
-    }/*endfor*/
-    for(i=1;i<=3;i++){
-      joff = (i-1)*3 ;
-      for(j=1;j<=3;j++){ 
-        vtempx[j+joff] = veigv[j+joff]*(vexpdt)[i];
-        vtempv[j+joff] = veigv[j+joff]*(vsindt)[i];
-      }/*endfor*/
-    }/*endfor*/
-    n = 3;
-    matmul_t2(veigv,vtempx,roll_mtx,n);
-    matmul_t2(veigv,vtempv,roll_mtv,n);
-    for(ipart=myatm_start;ipart<=(myatm_end); ++ipart) {
-      tempx  =  clatoms_xold[ipart]*roll_mtx[1]
-               +clatoms_yold[ipart]*roll_mtx[2]
-               +clatoms_zold[ipart]*roll_mtx[3];
-      tempy  =  clatoms_xold[ipart]*roll_mtx[4]
-               +clatoms_yold[ipart]*roll_mtx[5]
-               +clatoms_zold[ipart]*roll_mtx[6];
-      tempz  = clatoms_xold[ipart]*roll_mtx[7]
-              +clatoms_yold[ipart]*roll_mtx[8]
-              +clatoms_zold[ipart]*roll_mtx[9];
-      tempvx = clatoms_vx[ipart]*roll_mtv[1]
-              +clatoms_vy[ipart]*roll_mtv[2]
-              +clatoms_vz[ipart]*roll_mtv[3];
-      tempvy = clatoms_vx[ipart]*roll_mtv[4]
-              +clatoms_vy[ipart]*roll_mtv[5]
-              +clatoms_vz[ipart]*roll_mtv[6];
-      tempvz = clatoms_vx[ipart]*roll_mtv[7]
-              +clatoms_vy[ipart]*roll_mtv[8]
-              +clatoms_vz[ipart]*roll_mtv[9];
-      clatoms_x[ipart] = tempx+tempvx*dt;
-      clatoms_y[ipart] = tempy+tempvy*dt;
-      clatoms_z[ipart] = tempz+tempvz*dt;
-    }/*endfor*/
-/*----------------------------------------------------------------------*/
-/* B) get the new matrix of cell parameters and their inverse */
-
-    matmul_t(hmato,veigv,hmat_t,n);
-    for(i=1;i<=3;i++){
-      joff = (i-1)*3 ;
-      for(j=1;j<=3;j++){ 
-        hmat_t[j+joff] *=  vexpdt[j];
-      }/*endfor*/
-    }/*endfor*/
-    matmul_tt(hmat_t,veigv,hmat,n);
-    gethinv(hmat,hmati,&(cell->vol),iperd);
-    par_rahman->vol = cell->vol;
-
-  }/*endif*/
-
 /*--------------------------------------------------------------------------*/
   }/*end routine */
 /*==========================================================================*/
@@ -602,13 +576,13 @@ void rattle_bond_roll_f(BOND *bond,
 
 #include "../typ_defs/typ_mask.h"
 
-  int i,ibond,iii;
+  int i,ibond,iii,jbond;
   int ktemp,iboff;
   int ibig,ibig1,ioff,iend,nnow;
   int nlen_now;
   int igo;
 
-  double dt2,fdot1,fdot2,dt2i;
+  double dt2,fdot1,fdot2,gdot,dt2i;
   double r122,r12,alam,vcons,r12i;
   double fxo1,fyo1,fzo1;
   double fxo2,fyo2,fzo2;
@@ -680,6 +654,7 @@ void rattle_bond_roll_f(BOND *bond,
   double *pvten_tmp2      = ptens->pvten_tmp_res;
 
   double *roll_mtvv       = par_rahman->roll_mtvv;
+  double *roll_mtf        = par_rahman->roll_mtf;
   double *vgmat_g         = par_rahman->vgmat_g;
   double *fgmat_p         = par_rahman->fgmat_p;
   double roll_scg         = par_rahman->roll_scg;
@@ -690,7 +665,7 @@ void rattle_bond_roll_f(BOND *bond,
 
 
 /*==========================================================================*/
-/* I) Flip the order of the constraints on even iteration numbers            */
+/* I) Flip the order of the constraints on even iteration numbers           */
 
   if((iter % 2)==0){flip_bond_con(bond);}
 
@@ -723,7 +698,7 @@ void rattle_bond_roll_f(BOND *bond,
       intra_scr_m1[iboff]   = clatoms_mass[ktemp];
       intra_scr_sc_1[iboff] = clatoms_roll_sc[ktemp];
     }
-    for(iboff=1,ibond=ibig;ibond <= iend; ++ibond,++iboff) {       
+    for(iboff=1,ibond=ibig;ibond <= iend; ++ibond,++iboff) {
       ktemp = bond_j2_con[ibond];
       intra_scr_x2[iboff]   = clatoms_x[ktemp];
       intra_scr_y2[iboff]   = clatoms_y[ktemp];
@@ -793,44 +768,46 @@ void rattle_bond_roll_f(BOND *bond,
          fxo2  = -fxo1;
          fyo2  = -fyo1;
          fzo2  = -fzo1;
+/* get the pressure tensor */  
+        for(i=1;i<=9;i++){pvten_tmp[i]=0.0;}
+        intra_scr_p11[ibond] = intra_scr_dx12[ibond]*fxo1;
+        intra_scr_p22[ibond] = intra_scr_dy12[ibond]*fyo1;
+        intra_scr_p33[ibond] = intra_scr_dz12[ibond]*fzo1;
+        intra_scr_p12[ibond] = intra_scr_dx12[ibond]*fyo1;
+        pvten_tmp[1] = intra_scr_p11[ibond];
+        pvten_tmp[5] = intra_scr_p22[ibond];
+        pvten_tmp[9] = intra_scr_p33[ibond];
+        pvten_tmp[2] = intra_scr_p12[ibond];
+        pvten_tmp[4] = pvten_tmp[2];
+        if(iperd==3){
+          intra_scr_p13[ibond] = intra_scr_dx12[ibond]*fzo1;
+          intra_scr_p23[ibond] = intra_scr_dy12[ibond]*fzo1;       
+          pvten_tmp[3] = intra_scr_p13[ibond];
+          pvten_tmp[6] = intra_scr_p23[ibond];            
+          pvten_tmp[7] = pvten_tmp[3];
+          pvten_tmp[8] = pvten_tmp[6];
+        }/*endif*/
 /* ii) rolled forces */
-         fxo1r =  (fxo1*roll_mtvv[1]+fyo1*roll_mtvv[2]
-               +   fzo1*roll_mtvv[3])*intra_scr_sc_1[ibond];
-         fyo1r =  (fxo1*roll_mtvv[4]+fyo1*roll_mtvv[5]
-               +  fzo1*roll_mtvv[6])*intra_scr_sc_1[ibond];
-         fzo1r =  (fxo1*roll_mtvv[7]+fyo1*roll_mtvv[8]
-               +  fzo1*roll_mtvv[9])*intra_scr_sc_1[ibond];
-         fxo2r =  (fxo2*roll_mtvv[1]+fyo2*roll_mtvv[2]
-               +  fzo2*roll_mtvv[3])*intra_scr_sc_2[ibond];
-         fyo2r =  (fxo2*roll_mtvv[4]+fyo2*roll_mtvv[5]
-               +  fzo2*roll_mtvv[6])*intra_scr_sc_2[ibond];
-         fzo2r =  (fxo2*roll_mtvv[7]+fyo2*roll_mtvv[8]
-               +  fzo2*roll_mtvv[9])*intra_scr_sc_2[ibond];
-/*rolled velocities */
-         vx1r  =(intra_scr_vx1[ibond]*roll_mtvv[1]
-              + intra_scr_vy1[ibond]*roll_mtvv[2]
-              + intra_scr_vz1[ibond]*roll_mtvv[3])*
-                intra_scr_sc_1[ibond];
-         vy1r  =(intra_scr_vx1[ibond]*roll_mtvv[4]
-              + intra_scr_vy1[ibond]*roll_mtvv[5]
-              + intra_scr_vz1[ibond]*roll_mtvv[6])*
-                intra_scr_sc_1[ibond];
-         vz1r  =(intra_scr_vx1[ibond]*roll_mtvv[7]
-              + intra_scr_vy1[ibond]*roll_mtvv[8]
-              + intra_scr_vz1[ibond]*roll_mtvv[9])*
-                intra_scr_sc_1[ibond];
-         vx2r  =(intra_scr_vx2[ibond]*roll_mtvv[1]
-              + intra_scr_vy2[ibond]*roll_mtvv[2]
-              + intra_scr_vz2[ibond]*roll_mtvv[3])*
-                intra_scr_sc_2[ibond];
-         vy2r  =(intra_scr_vx2[ibond]*roll_mtvv[4]
-              + intra_scr_vy2[ibond]*roll_mtvv[5]
-              + intra_scr_vz2[ibond]*roll_mtvv[6])*
-                intra_scr_sc_2[ibond];
-         vz2r  =(intra_scr_vx2[ibond]*roll_mtvv[7]
-              + intra_scr_vy2[ibond]*roll_mtvv[8]
-              + intra_scr_vz2[ibond]*roll_mtvv[9])*
-                intra_scr_sc_2[ibond];
+         fxo1r =  (fxo1*roll_mtf[1]+fyo1*roll_mtf[2]
+               +   fzo1*roll_mtf[3])*intra_scr_sc_1[ibond];
+         fyo1r =  (fxo1*roll_mtf[4]+fyo1*roll_mtf[5]
+               +  fzo1*roll_mtf[6])*intra_scr_sc_1[ibond];
+         fzo1r =  (fxo1*roll_mtf[7]+fyo1*roll_mtf[8]
+               +  fzo1*roll_mtf[9])*intra_scr_sc_1[ibond];
+         fxo2r =  (fxo2*roll_mtf[1]+fyo2*roll_mtf[2]
+               +  fzo2*roll_mtf[3])*intra_scr_sc_2[ibond];
+         fyo2r =  (fxo2*roll_mtf[4]+fyo2*roll_mtf[5]
+               +  fzo2*roll_mtf[6])*intra_scr_sc_2[ibond];
+         fzo2r =  (fxo2*roll_mtf[7]+fyo2*roll_mtf[8]
+               +  fzo2*roll_mtf[9])*intra_scr_sc_2[ibond];
+/* rolled velocities */
+         vx1r  =intra_scr_vx1[ibond]*intra_scr_sc_1[ibond];
+         vy1r  =intra_scr_vy1[ibond]*intra_scr_sc_1[ibond];
+         vz1r  =intra_scr_vz1[ibond]*intra_scr_sc_1[ibond];
+
+         vx2r  =intra_scr_vx2[ibond]*intra_scr_sc_2[ibond];
+         vy2r  =intra_scr_vy2[ibond]*intra_scr_sc_2[ibond];
+         vz2r  =intra_scr_vz2[ibond]*intra_scr_sc_2[ibond];
 /* iv) box contribution to dr/dt */
          vxg1r  = intra_scr_x1[ibond]*vgmat_g[1]
                 + intra_scr_y1[ibond]*vgmat_g[2]
@@ -862,7 +839,17 @@ void rattle_bond_roll_f(BOND *bond,
                  -(vx2r*fxo2+vy2r*fyo2+vz2r*fzo2);
          fdot1 = (fxo1r*fxo1+fyo1r*fyo1+fzo1r*fzo1)*intra_scr_m1[ibond];
          fdot2 = (fxo2r*fxo2+fyo2r*fyo2+fzo2r*fzo2)*intra_scr_m2[ibond];
-         alam  = dt2i*vcons/(fdot1+fdot2);
+	 gdot  = (fxo1*pvten_tmp[1]*intra_scr_dx12[ibond]
+               +fyo1*pvten_tmp[4]*intra_scr_dx12[ibond]
+               +fzo1*pvten_tmp[7]*intra_scr_dx12[ibond]
+               +fxo1*pvten_tmp[2]*intra_scr_dy12[ibond]
+               +fyo1*pvten_tmp[5]*intra_scr_dy12[ibond]
+               +fzo1*pvten_tmp[8]*intra_scr_dy12[ibond]
+               +fxo1*pvten_tmp[3]*intra_scr_dz12[ibond]
+               +fyo1*pvten_tmp[6]*intra_scr_dz12[ibond]
+               +fzo1*pvten_tmp[9]*intra_scr_dz12[ibond])
+                *roll_scg/mass_hm;
+         alam  = dt2i*vcons/(fdot1+fdot2+gdot);
          bond_al_con[(ibond+ibig1)] += alam;
 /*v) get the force on the atoms                */
          intra_scr_fx1[ibond]  = alam*fxo1;
@@ -875,6 +862,7 @@ void rattle_bond_roll_f(BOND *bond,
     }/*endif*/    
 /*----------------------------------------------------------------------*/
 /*  F) Get Pressure tensor                                              */
+
     if((iperd==2)||(iperd==3)){
       for(i=1;i<=9;i++){pvten_tmp[i]=0.0;}
       for(ibond=1;ibond <= nnow; ++ibond) {           
@@ -924,25 +912,31 @@ void rattle_bond_roll_f(BOND *bond,
       for(i=1;i<=9;i++){pvten_inc[i]+=pvten_tmp[i];}     
     }/*endif*/
 /*----------------------------------------------------------------------*/
-/*  G) Add the force to the velocities                                  */
+/*  G) Add the force to the velocities                                  */ 
     for(ibond=1;ibond <= nnow; ++ibond) {
       temp1 = (dt2*intra_scr_m1[ibond]);
       temp2 = (dt2*intra_scr_m2[ibond]);
-      intra_scr_fx1[ibond] *=temp1;
-      intra_scr_fy1[ibond] *=temp1;
-      intra_scr_fz1[ibond] *=temp1;
-      intra_scr_fx2[ibond] *=temp2;
-      intra_scr_fy2[ibond] *=temp2;
-      intra_scr_fz2[ibond] *=temp2;
+      intra_scr_fx1[ibond] *= temp1;
+      intra_scr_fy1[ibond] *= temp1;
+      intra_scr_fz1[ibond] *= temp1;
+      intra_scr_fx2[ibond] *= temp2;
+      intra_scr_fy2[ibond] *= temp2;
+      intra_scr_fz2[ibond] *= temp2;
     }/*endfor*/
 
     igo = 0;
     if(igo==0){
      for(iboff=1,ibond=ibig;ibond <= iend; ++ibond,++iboff) {       
       ktemp = bond_j1_con[ibond];
-      clatoms_vx[ktemp] +=  intra_scr_fx1[iboff];
-      clatoms_vy[ktemp] +=  intra_scr_fy1[iboff];
-      clatoms_vz[ktemp] +=  intra_scr_fz1[iboff];
+      clatoms_vx[ktemp] +=  intra_scr_fx1[iboff]*roll_mtf[1]
+                           +intra_scr_fy1[iboff]*roll_mtf[2]
+                           +intra_scr_fz1[iboff]*roll_mtf[3];
+      clatoms_vy[ktemp] +=  intra_scr_fx1[iboff]*roll_mtf[4]
+                           +intra_scr_fy1[iboff]*roll_mtf[5]
+                           +intra_scr_fz1[iboff]*roll_mtf[6];
+      clatoms_vz[ktemp] +=  intra_scr_fx1[iboff]*roll_mtf[7]
+                           +intra_scr_fy1[iboff]*roll_mtf[8]
+                           +intra_scr_fz1[iboff]*roll_mtf[9];
      }
     }else{
 #ifndef NO_PRAGMA
@@ -950,9 +944,15 @@ void rattle_bond_roll_f(BOND *bond,
 #endif
      for(iboff=1,ibond=ibig;ibond <= iend; ++ibond,++iboff) {       
       ktemp = bond_j1_con[ibond];
-      clatoms_vx[ktemp] +=  intra_scr_fx1[iboff];
-      clatoms_vy[ktemp] +=  intra_scr_fy1[iboff];
-      clatoms_vz[ktemp] +=  intra_scr_fz1[iboff];
+      clatoms_vx[ktemp] +=  intra_scr_fx1[iboff]*roll_mtf[1]
+                           +intra_scr_fy1[iboff]*roll_mtf[2]
+                           +intra_scr_fz1[iboff]*roll_mtf[3];
+      clatoms_vy[ktemp] +=  intra_scr_fx1[iboff]*roll_mtf[4]
+                           +intra_scr_fy1[iboff]*roll_mtf[5]
+                           +intra_scr_fz1[iboff]*roll_mtf[6];
+      clatoms_vz[ktemp] +=  intra_scr_fx1[iboff]*roll_mtf[7]
+                           +intra_scr_fy1[iboff]*roll_mtf[8]
+                           +intra_scr_fz1[iboff]*roll_mtf[9];
      }
     }/*endif*/
 
@@ -960,9 +960,15 @@ void rattle_bond_roll_f(BOND *bond,
     if(igo==0){
      for(iboff=1,ibond=ibig;ibond <= iend; ++ibond,++iboff) {       
       ktemp = bond_j2_con[ibond];
-      clatoms_vx[ktemp] +=  intra_scr_fx2[iboff];
-      clatoms_vy[ktemp] +=  intra_scr_fy2[iboff];
-      clatoms_vz[ktemp] +=  intra_scr_fz2[iboff];
+      clatoms_vx[ktemp] +=  intra_scr_fx2[iboff]*roll_mtf[1]
+                           +intra_scr_fy2[iboff]*roll_mtf[2]
+                           +intra_scr_fz2[iboff]*roll_mtf[3];
+      clatoms_vy[ktemp] +=  intra_scr_fx2[iboff]*roll_mtf[4]
+                           +intra_scr_fy2[iboff]*roll_mtf[5]
+                           +intra_scr_fz2[iboff]*roll_mtf[6];
+      clatoms_vz[ktemp] +=  intra_scr_fx2[iboff]*roll_mtf[7]
+                           +intra_scr_fy2[iboff]*roll_mtf[8]
+                           +intra_scr_fz2[iboff]*roll_mtf[9];
      }/*endfor*/
     }else{
 #ifndef NO_PRAGMA 
@@ -970,9 +976,15 @@ void rattle_bond_roll_f(BOND *bond,
 #endif
      for(iboff=1,ibond=ibig;ibond <= iend; ++ibond,++iboff) {       
       ktemp = bond_j2_con[ibond];
-      clatoms_vx[ktemp] +=  intra_scr_fx2[iboff];
-      clatoms_vy[ktemp] +=  intra_scr_fy2[iboff];
-      clatoms_vz[ktemp] +=  intra_scr_fz2[iboff];
+      clatoms_vx[ktemp] +=  intra_scr_fx2[iboff]*roll_mtf[1]
+                           +intra_scr_fy2[iboff]*roll_mtf[2]
+                           +intra_scr_fz2[iboff]*roll_mtf[3];
+      clatoms_vy[ktemp] +=  intra_scr_fx2[iboff]*roll_mtf[4]
+                           +intra_scr_fy2[iboff]*roll_mtf[5]
+                           +intra_scr_fz2[iboff]*roll_mtf[6];
+      clatoms_vz[ktemp] +=  intra_scr_fx2[iboff]*roll_mtf[7]
+                           +intra_scr_fy2[iboff]*roll_mtf[8]
+                           +intra_scr_fz2[iboff]*roll_mtf[9];
      }/*endfor*/
     }/*endif*/
 

@@ -58,11 +58,12 @@ double fxo1,fyo1,fzo1,f_lnv_inc;
 double fxo2,fyo2,fzo2;
 double fxo1r,fyo1r,fzo1r;
 double fxo2r,fyo2r,fzo2r;
+double fxo1rr,fyo1rr,fzo1rr;
+double fxo2rr,fyo2rr,fzo2rr;
 double fxn1,fyn1,fzn1;
 double fxn2,fyn2,fzn2;
 double aa,aa2,arg2,poly,bb,dlen;
 double e2,e4,e6,e8;
-double baro_roll_scv;
 double temp1,temp2; 
 int ipart;
   /* Define local pointers                                                */
@@ -99,6 +100,12 @@ int ipart;
   double *intra_scr_fx4   = intra_scr->fx4;
   double *intra_scr_fy4   = intra_scr->fy4;
   double *intra_scr_fz4   = intra_scr->fz4;
+  double *intra_scr_fx5   = intra_scr->fx5;
+  double *intra_scr_fy5   = intra_scr->fy5;
+  double *intra_scr_fz5   = intra_scr->fz5;
+  double *intra_scr_fx6   = intra_scr->fx6;
+  double *intra_scr_fy6   = intra_scr->fy6;
+  double *intra_scr_fz6   = intra_scr->fz6;
   double *intra_scr_dx12  = intra_scr->dx12;
   double *intra_scr_dy12  = intra_scr->dy12;
   double *intra_scr_dz12  = intra_scr->dz12;
@@ -131,6 +138,8 @@ int ipart;
   MPI_Comm comm_forc = class_comm_forc_pkg->comm;
   int myatm_start = clatoms_info->myatm_start;
   int myatm_end = clatoms_info->myatm_end;
+  double baro_roll_scv = baro->roll_scv;
+  double baro_roll_scf = baro->roll_scf;
 /*==========================================================================*/
 /* I) Flip the order of the constraints on even iteration numbers            */
 
@@ -203,7 +212,7 @@ int ipart;
 /*----------------------------------------------------------------------*/
 /*  D) First time get force with old multiplier                         */
     if(iter==1){
-      baro_roll_scv = baro->roll_scv;
+
       for(ibond=1;ibond <= nnow; ++ibond) {           
 /* i) calculate the basis vectors (r12) of old positions and get force */
         r122 = intra_scr_dx43[ibond]*intra_scr_dx43[ibond]
@@ -219,12 +228,19 @@ int ipart;
         fyo2  = -fyo1;
         fzo2  = -fzo1;
 
-        fxo1r =  fxo1*baro_roll_scv;
-        fyo1r =  fyo1*baro_roll_scv;
-        fzo1r =  fzo1*baro_roll_scv;
-        fxo2r =  fxo2*baro_roll_scv;
-        fyo2r =  fyo2*baro_roll_scv;
-        fzo2r =  fzo2*baro_roll_scv;
+        fxo1r =  fxo1*baro_roll_scf;
+        fyo1r =  fyo1*baro_roll_scf;
+        fzo1r =  fzo1*baro_roll_scf;
+        fxo2r =  fxo2*baro_roll_scf;
+        fyo2r =  fyo2*baro_roll_scf;
+        fzo2r =  fzo2*baro_roll_scf;
+
+        fxo1rr =  fxo1r*baro_roll_scv;
+        fyo1rr =  fyo1r*baro_roll_scv;
+        fzo1rr =  fzo1r*baro_roll_scv;
+        fxo2rr =  fxo2r*baro_roll_scv;
+        fyo2rr =  fyo2r*baro_roll_scv;
+        fzo2rr =  fzo2r*baro_roll_scv;
 
 /* ii) get the multiplier                                 */
 
@@ -237,18 +253,23 @@ int ipart;
         intra_scr_fx2[ibond] = alam*fxo2;
         intra_scr_fy2[ibond] = alam*fyo2;
         intra_scr_fz2[ibond] = alam*fzo2;
-        intra_scr_fx3[ibond] = alam*fxo1r*dt22*intra_scr_m1[ibond];
-        intra_scr_fy3[ibond] = alam*fyo1r*dt22*intra_scr_m1[ibond];
-        intra_scr_fz3[ibond] = alam*fzo1r*dt22*intra_scr_m1[ibond];
-        intra_scr_fx4[ibond] = alam*fxo2r*dt22*intra_scr_m2[ibond];
-        intra_scr_fy4[ibond] = alam*fyo2r*dt22*intra_scr_m2[ibond];
-        intra_scr_fz4[ibond] = alam*fzo2r*dt22*intra_scr_m2[ibond];
+        intra_scr_fx3[ibond] = alam*fxo1rr*dt22*intra_scr_m1[ibond];
+        intra_scr_fy3[ibond] = alam*fyo1rr*dt22*intra_scr_m1[ibond];
+        intra_scr_fz3[ibond] = alam*fzo1rr*dt22*intra_scr_m1[ibond];
+        intra_scr_fx4[ibond] = alam*fxo2rr*dt22*intra_scr_m2[ibond];
+        intra_scr_fy4[ibond] = alam*fyo2rr*dt22*intra_scr_m2[ibond];
+        intra_scr_fz4[ibond] = alam*fzo2rr*dt22*intra_scr_m2[ibond];
+        intra_scr_fx5[ibond] = alam*fxo1r*dt2*intra_scr_m1[ibond];
+        intra_scr_fy5[ibond] = alam*fyo1r*dt2*intra_scr_m1[ibond];
+        intra_scr_fz5[ibond] = alam*fzo1r*dt2*intra_scr_m1[ibond];
+        intra_scr_fx6[ibond] = alam*fxo2r*dt2*intra_scr_m2[ibond];
+        intra_scr_fy6[ibond] = alam*fyo2r*dt2*intra_scr_m2[ibond];
+        intra_scr_fz6[ibond] = alam*fzo2r*dt2*intra_scr_m2[ibond];
       /*endfor*/}
     /*endif*/}
 /*----------------------------------------------------------------------*/
 /*  E) Thereafter refine the multipliers  and get the force             */
     if(iter!=1){
-      baro_roll_scv = baro->roll_scv;
       for(ibond=1;ibond <= nnow; ++ibond) {           
 /* i) calculate the basis vectors (r12) of old positions and get force */
         r122  = intra_scr_dx43[ibond]*intra_scr_dx43[ibond]
@@ -264,12 +285,19 @@ int ipart;
         fyo2  = -fyo1;
         fzo2  = -fzo1;
 
-        fxo1r =  fxo1*baro_roll_scv;
-        fyo1r =  fyo1*baro_roll_scv;
-        fzo1r =  fzo1*baro_roll_scv;
-        fxo2r =  fxo2*baro_roll_scv;
-        fyo2r =  fyo2*baro_roll_scv;
-        fzo2r =  fzo2*baro_roll_scv;
+        fxo1r =  fxo1*baro_roll_scf;
+        fyo1r =  fyo1*baro_roll_scf;
+        fzo1r =  fzo1*baro_roll_scf;
+        fxo2r =  fxo2*baro_roll_scf;
+        fyo2r =  fyo2*baro_roll_scf;
+        fzo2r =  fzo2*baro_roll_scf;
+
+        fxo1rr =  fxo1r*baro_roll_scv;
+        fyo1rr =  fyo1r*baro_roll_scv;
+        fzo1rr =  fzo1r*baro_roll_scv;
+        fxo2rr =  fxo2r*baro_roll_scv;
+        fyo2rr =  fyo2r*baro_roll_scv;
+        fzo2rr =  fzo2r*baro_roll_scv;
 /*ii) calculate the basis vectors (r12) of new positions and get force*/
         r122  = intra_scr_dx12[ibond]*intra_scr_dx12[ibond]
                +intra_scr_dy12[ibond]*intra_scr_dy12[ibond]
@@ -288,8 +316,8 @@ int ipart;
         vcons  = (r12-intra_scr_eq[ibond]);
 
 /*iv) get the increment to the multiplier      */
-        fdot1 = (fxn1*fxo1r+fyn1*fyo1r+fzn1*fzo1r)*intra_scr_m1[ibond];
-        fdot2 = (fxn2*fxo2r+fyn2*fyo2r+fzn2*fzo2r)*intra_scr_m2[ibond];
+        fdot1 = (fxn1*fxo1rr+fyn1*fyo1rr+fzn1*fzo1rr)*intra_scr_m1[ibond];
+        fdot2 = (fxn2*fxo2rr+fyn2*fyo2rr+fzn2*fzo2rr)*intra_scr_m2[ibond];
         alam = dt22i*vcons/(fdot1+fdot2);
         bond_al_con[(ibond+ibig1)] += alam;
 /*v) get the force on the atoms                */
@@ -299,12 +327,18 @@ int ipart;
         intra_scr_fx2[ibond] = alam*fxo2;
         intra_scr_fy2[ibond] = alam*fyo2;
         intra_scr_fz2[ibond] = alam*fzo2;
-        intra_scr_fx3[ibond] = alam*fxo1r*dt22*intra_scr_m1[ibond];
-        intra_scr_fy3[ibond] = alam*fyo1r*dt22*intra_scr_m1[ibond];
-        intra_scr_fz3[ibond] = alam*fzo1r*dt22*intra_scr_m1[ibond];
-        intra_scr_fx4[ibond] = alam*fxo2r*dt22*intra_scr_m2[ibond];
-        intra_scr_fy4[ibond] = alam*fyo2r*dt22*intra_scr_m2[ibond];
-        intra_scr_fz4[ibond] = alam*fzo2r*dt22*intra_scr_m2[ibond];
+        intra_scr_fx3[ibond] = alam*fxo1rr*dt22*intra_scr_m1[ibond];
+        intra_scr_fy3[ibond] = alam*fyo1rr*dt22*intra_scr_m1[ibond];
+        intra_scr_fz3[ibond] = alam*fzo1rr*dt22*intra_scr_m1[ibond];
+        intra_scr_fx4[ibond] = alam*fxo2rr*dt22*intra_scr_m2[ibond];
+        intra_scr_fy4[ibond] = alam*fyo2rr*dt22*intra_scr_m2[ibond];
+        intra_scr_fz4[ibond] = alam*fzo2rr*dt22*intra_scr_m2[ibond];
+        intra_scr_fx5[ibond] = alam*fxo1r*dt2*intra_scr_m1[ibond];
+        intra_scr_fy5[ibond] = alam*fyo1r*dt2*intra_scr_m1[ibond];
+        intra_scr_fz5[ibond] = alam*fzo1r*dt2*intra_scr_m1[ibond];
+        intra_scr_fx6[ibond] = alam*fxo2r*dt2*intra_scr_m2[ibond];
+        intra_scr_fy6[ibond] = alam*fyo2r*dt2*intra_scr_m2[ibond];
+        intra_scr_fz6[ibond] = alam*fzo2r*dt2*intra_scr_m2[ibond];
       /*endfor*/}
     /*endif*/}    
 /*----------------------------------------------------------------------*/
@@ -360,16 +394,7 @@ int ipart;
     for(i=1;i<=9;i++){ptens_pvten_inc[i]+=ptens_pvten_tmp[i];}    
 /*----------------------------------------------------------------------*/
 /*  G) Add the force to the velocities then the positions               */
-    for(ibond=1;ibond <= nnow; ++ibond) {
-      temp1 = (dt2*intra_scr_m1[ibond]);
-      temp2 = (dt2*intra_scr_m2[ibond]);
-      intra_scr_fx1[ibond] *= temp1;
-      intra_scr_fy1[ibond] *= temp1;
-      intra_scr_fz1[ibond] *= temp1;
-      intra_scr_fx2[ibond] *= temp2;
-      intra_scr_fy2[ibond] *= temp2;
-      intra_scr_fz2[ibond] *= temp2;
-    /*endfor*/}
+
     if(iter!=1){
       f_lnv_inc   = (ptens_pvten_tmp[1]+ptens_pvten_tmp[5]
                     +ptens_pvten_tmp[9]);
@@ -382,9 +407,9 @@ int ipart;
     if(igo==0){
      for(iboff=1,ibond=ibig;ibond <= iend; ++ibond,++iboff) {       
       ktemp = bond_j1_con[ibond];
-      clatoms_vx[ktemp] +=  intra_scr_fx1[iboff];
-      clatoms_vy[ktemp] +=  intra_scr_fy1[iboff];
-      clatoms_vz[ktemp] +=  intra_scr_fz1[iboff];
+      clatoms_vx[ktemp] +=  intra_scr_fx5[iboff];
+      clatoms_vy[ktemp] +=  intra_scr_fy5[iboff];
+      clatoms_vz[ktemp] +=  intra_scr_fz5[iboff];
      }
     }else{
 #ifndef NO_PRAGMA
@@ -392,9 +417,9 @@ int ipart;
 #endif
      for(iboff=1,ibond=ibig;ibond <= iend; ++ibond,++iboff) {       
       ktemp = bond_j1_con[ibond];
-      clatoms_vx[ktemp] +=  intra_scr_fx1[iboff];
-      clatoms_vy[ktemp] +=  intra_scr_fy1[iboff];
-      clatoms_vz[ktemp] +=  intra_scr_fz1[iboff];
+      clatoms_vx[ktemp] +=  intra_scr_fx5[iboff];
+      clatoms_vy[ktemp] +=  intra_scr_fy5[iboff];
+      clatoms_vz[ktemp] +=  intra_scr_fz5[iboff];
      }
     }/*endif*/
 
@@ -403,9 +428,9 @@ int ipart;
     if(igo==0){
      for(iboff=1,ibond=ibig;ibond <= iend; ++ibond,++iboff) {       
       ktemp = bond_j2_con[ibond];
-      clatoms_vx[ktemp] +=  intra_scr_fx2[iboff];
-      clatoms_vy[ktemp] +=  intra_scr_fy2[iboff];
-      clatoms_vz[ktemp] +=  intra_scr_fz2[iboff];
+      clatoms_vx[ktemp] +=  intra_scr_fx6[iboff];
+      clatoms_vy[ktemp] +=  intra_scr_fy6[iboff];
+      clatoms_vz[ktemp] +=  intra_scr_fz6[iboff];
      }/*endfor*/
     }else{
 #ifndef NO_PRAGMA
@@ -413,9 +438,9 @@ int ipart;
 #endif
      for(iboff=1,ibond=ibig;ibond <= iend; ++ibond,++iboff) {       
       ktemp = bond_j2_con[ibond];
-      clatoms_vx[ktemp] +=  intra_scr_fx2[iboff];
-      clatoms_vy[ktemp] +=  intra_scr_fy2[iboff];
-      clatoms_vz[ktemp] +=  intra_scr_fz2[iboff];
+      clatoms_vx[ktemp] +=  intra_scr_fx6[iboff];
+      clatoms_vy[ktemp] +=  intra_scr_fy6[iboff];
+      clatoms_vz[ktemp] +=  intra_scr_fz6[iboff];
      }/*endfor*/
     }/*endif*/
 
@@ -478,36 +503,6 @@ int ipart;
 
   if((iter % 2)==0){flip_bond_con(bond);}
 
-/*==========================================================================*/
-/* IV) consistently re-calculate everything                                 */
-  if(iter!=1){
-     e2=1.0/(2.0*3.0);e4=e2/(4.0*5.0);e6=e4/(6.0*7.0);e8=e6/(8.0*9.0);
-/*----------------------------------------------------------------------*/
-/* A) new atom positions */
-     aa = exp( dt2*(baro->v_lnv) );
-     aa2 = aa*aa;
-     arg2 = ((baro->v_lnv)*dt2)*((baro->v_lnv)*dt2);
-     poly = (((e8*arg2+e6)*arg2+e4)*arg2+e2)*arg2+1.0;
-     bb   = aa*poly;
-     for(ipart=myatm_start;ipart<=(myatm_end);ipart++){
-       clatoms_x[ipart] = aa2*(clatoms_xold)[ipart]
-                           +bb*(clatoms_vx)[ipart]*dt;
-       clatoms_y[ipart] = aa2*(clatoms_yold)[ipart]
-                           +bb*(clatoms_vy)[ipart]*dt;
-       clatoms_z[ipart] = aa2*(clatoms_zold)[ipart]
-                           +bb*(clatoms_vz)[ipart]*dt;
-     /*endfor*/}
-     baro->roll_scv = bb;
-/*----------------------------------------------------------------------*/
-/* B) new log(vol) */
-     (baro->x_lnv) = (baro->x_lnv_o) + (baro->v_lnv)*dt;
-     dlen = exp( (baro->x_lnv)-(baro->x_lnv_o) );
-/*----------------------------------------------------------------------*/
-/* C) get the new matrix of cell parameters and their inverse */
-     for(i=1;i<=9;i++){cell->hmat[i] = baro->hmato[i]*dlen;}
-     gethinv(cell->hmat,cell->hmati,&(cell->vol),cell->iperd);
-     baro->vol = cell->vol;
-  /*endif*/}
 
 /*--------------------------------------------------------------------------*/
 /*end routine */}
@@ -549,7 +544,7 @@ int ktemp,iboff;
   int iloop=0;
   int ntot_use;
 
-double dt2,fdot1,fdot2,dt2i;
+double dt2,fdot1,fdot2,gdot,dt2i;
 double r122,r12,alam,vcons,r12i;
 double fxo1,fyo1,fzo1;
 double fxo2,fyo2,fzo2;
@@ -614,6 +609,10 @@ double temp1,temp2;
   int np_forc = class_comm_forc_pkg->num_proc;
   int myid_forc = class_comm_forc_pkg->myid;
   MPI_Comm comm_forc = class_comm_forc_pkg->comm;
+  double roll_scf         = baro->roll_scf;
+  double roll_scg         = baro->roll_scg;
+  double mass_lnv         = baro->mass_lnv;
+  
 /*==========================================================================*/
 /* I) Flip the order of the constraints on even iteration numbers            */
 
@@ -724,12 +723,12 @@ double temp1,temp2;
          fyo2  = -fyo1;
          fzo2  = -fzo1;
 /* ii) scaled forces */
-         fxo1r =  fxo1*intra_scr_sc_1[ibond];
-         fyo1r =  fyo1*intra_scr_sc_1[ibond];
-         fzo1r =  fzo1*intra_scr_sc_1[ibond];
-         fxo2r =  fxo2*intra_scr_sc_2[ibond];
-         fyo2r =  fyo2*intra_scr_sc_2[ibond];
-         fzo2r =  fzo2*intra_scr_sc_2[ibond];
+         fxo1r =  fxo1*roll_scf*intra_scr_sc_1[ibond];
+         fyo1r =  fyo1*roll_scf*intra_scr_sc_1[ibond];
+         fzo1r =  fzo1*roll_scf*intra_scr_sc_1[ibond];
+         fxo2r =  fxo2*roll_scf*intra_scr_sc_2[ibond];
+         fyo2r =  fyo2*roll_scf*intra_scr_sc_2[ibond];
+         fzo2r =  fzo2*roll_scf*intra_scr_sc_2[ibond];
 /* iii) scaled velocities */
          vx1r  =   intra_scr_vx1[ibond]*intra_scr_sc_1[ibond];
          vy1r  =   intra_scr_vy1[ibond]*intra_scr_sc_1[ibond];
@@ -756,7 +755,12 @@ double temp1,temp2;
                  -(vx2r*fxo2+vy2r*fyo2+vz2r*fzo2);
          fdot1 = (fxo1r*fxo1+fyo1r*fyo1+fzo1r*fzo1)*intra_scr_m1[ibond];
          fdot2 = (fxo2r*fxo2+fyo2r*fyo2+fzo2r*fzo2)*intra_scr_m2[ibond];
-         alam  = dt2i*vcons/(fdot1+fdot2);
+         gdot  = fxo1*intra_scr_dx12[ibond]
+                +fyo1*intra_scr_dy12[ibond]
+                +fzo1*intra_scr_dz12[ibond];
+         gdot *= (gdot*roll_scg/mass_lnv);
+         
+         alam  = dt2i*vcons/(fdot1+fdot2+gdot);
          bond_al_con[(ibond+ibig1)] += alam;
 /*v) get the force on the atoms                */
          intra_scr_fx1[ibond]  = alam*fxo1;
@@ -835,9 +839,9 @@ double temp1,temp2;
     if(igo==0){
      for(iboff=1,ibond=ibig;ibond <= iend; ++ibond,++iboff) {       
       ktemp = bond_j1_con[ibond];
-      clatoms_vx[ktemp] +=  intra_scr_fx1[iboff];
-      clatoms_vy[ktemp] +=  intra_scr_fy1[iboff];
-      clatoms_vz[ktemp] +=  intra_scr_fz1[iboff];
+      clatoms_vx[ktemp] +=  intra_scr_fx1[iboff]*roll_scf;
+      clatoms_vy[ktemp] +=  intra_scr_fy1[iboff]*roll_scf;
+      clatoms_vz[ktemp] +=  intra_scr_fz1[iboff]*roll_scf;
      }
     }else{
 #ifndef NO_PRAGMA
@@ -845,9 +849,9 @@ double temp1,temp2;
 #endif
      for(iboff=1,ibond=ibig;ibond <= iend; ++ibond,++iboff) {       
       ktemp = bond_j1_con[ibond];
-      clatoms_vx[ktemp] +=  intra_scr_fx1[iboff];
-      clatoms_vy[ktemp] +=  intra_scr_fy1[iboff];
-      clatoms_vz[ktemp] +=  intra_scr_fz1[iboff];
+      clatoms_vx[ktemp] +=  intra_scr_fx1[iboff]*roll_scf;
+      clatoms_vy[ktemp] +=  intra_scr_fy1[iboff]*roll_scf;
+      clatoms_vz[ktemp] +=  intra_scr_fz1[iboff]*roll_scf;
      }
     }/*endif*/
 
@@ -856,9 +860,9 @@ double temp1,temp2;
     if(igo==0){
      for(iboff=1,ibond=ibig;ibond <= iend; ++ibond,++iboff) {       
       ktemp = bond_j2_con[ibond];
-      clatoms_vx[ktemp] +=  intra_scr_fx2[iboff];
-      clatoms_vy[ktemp] +=  intra_scr_fy2[iboff];
-      clatoms_vz[ktemp] +=  intra_scr_fz2[iboff];
+      clatoms_vx[ktemp] +=  intra_scr_fx2[iboff]*roll_scf;
+      clatoms_vy[ktemp] +=  intra_scr_fy2[iboff]*roll_scf;
+      clatoms_vz[ktemp] +=  intra_scr_fz2[iboff]*roll_scf;
      }/*endfor*/
     }else{
 #ifndef NO_PRAGMA
@@ -866,9 +870,9 @@ double temp1,temp2;
 #endif
      for(iboff=1,ibond=ibig;ibond <= iend; ++ibond,++iboff) {       
       ktemp = bond_j2_con[ibond];
-      clatoms_vx[ktemp] +=  intra_scr_fx2[iboff];
-      clatoms_vy[ktemp] +=  intra_scr_fy2[iboff];
-      clatoms_vz[ktemp] +=  intra_scr_fz2[iboff];
+      clatoms_vx[ktemp] +=  intra_scr_fx2[iboff]*roll_scf;
+      clatoms_vy[ktemp] +=  intra_scr_fy2[iboff]*roll_scf;
+      clatoms_vz[ktemp] +=  intra_scr_fz2[iboff]*roll_scf;
      }/*endfor*/
     }/*endif*/
 

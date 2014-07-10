@@ -510,6 +510,7 @@ void rattle_control(BONDED *bonded,
               break;
      }/*switch*/
     }/*endif*/
+
     ifirst2 = 0;
     tol_whol = 0.0;
     for(i=1;i<=9;i++){
@@ -666,37 +667,12 @@ void recalc_pos_rolli(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
 /*==========================================================================*/
 /* I) Evolve the volume velocity            */
 
-  if(ifirst != 0){
+  if(ifirst == 1){
     ftemp   = (pvten_inc[1]+pvten_inc[5]+pvten_inc[9])
             - (pvten_inc_old[1]+pvten_inc_old[5]+pvten_inc_old[9]);
     (*f_lnv_p) += ftemp;
     (*v_lnv)   += 0.5*ftemp*(roll_scg)*dt/(mass_lnv);
   }/*endif*/
-
-/*==========================================================================*/
-/* II) Evolve atom positions */
-
-  aa   = exp( dt2*((*v_lnv)) );
-  aa2  = aa*aa;
-  arg2 = (((*v_lnv))*dt2)*(((*v_lnv))*dt2);
-  poly = (((e8*arg2+e6)*arg2+e4)*arg2+e2)*arg2+1.0;
-  bb   = aa*poly;
-  for(ipart=myatm_start;ipart<=(myatm_end);ipart++){
-    clatoms_x[ipart] = aa2*clatoms_xold[ipart] + bb*clatoms_vx[ipart]*dt;
-    clatoms_y[ipart] = aa2*clatoms_yold[ipart] + bb*clatoms_vy[ipart]*dt;
-    clatoms_z[ipart] = aa2*clatoms_zold[ipart] + bb*clatoms_vz[ipart]*dt;
-  }/*endfor*/
-  baro->roll_scv = bb;
-
-/*==========================================================================*/
-/* III) Evolve volume positions */
-
-  (*x_lnv) = (*x_lnv_o) + ((*v_lnv))*dt;
-  dlen     = exp( (*x_lnv)-(*x_lnv_o) );
-
-  for(i=1;i<=9;i++){hmat[i] = hmato[i]*dlen;}
-  gethinv(hmat,hmati,&(cell->vol),iperd);
-  baro->vol = cell->vol;
 
 /*--------------------------------------------------------------------------*/
    }/*end routine */
@@ -781,69 +757,7 @@ void recalc_pos_rollf(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
        fgmat_p[i] += ftemp;
        vgmat[i]   += (0.50*ftemp*roll_scg*dt/mass_hm);
     }/*endfor*/
-
-  }/*endfor*/
-
-/*=======================================================================*/
-/* II) Update the particles  */
-
-  for(i=1;i<=9;i++){vtemps[i]=vgmat[i];}
-  diag33(vtemps,veig,veigv,fv1,fv2);
-  for(i=1;i<=3;i++){
-    aa         = exp(dt2*veig[i]);
-    vexpdt[i]  = aa*aa;
-    arg2       = (veig[i]*dt2)*(veig[i]*dt2);
-    poly       = (((e8*arg2+e6)*arg2+e4)*arg2+e2)*arg2+1.0;
-    vsindt[i]  = aa*poly;
-  }/*endfor*/
-  for(i=1;i<=3;i++){
-    joff = (i-1)*3 ;
-    for(j=1;j<=3;j++){ 
-      vtempx[j+joff] = veigv[j+joff]*vexpdt[i];
-      vtempv[j+joff] = veigv[j+joff]*vsindt[i];
-    }/*endfor*/
-  }/*endfor*/
-  n = 3;
-  matmul_t2(veigv,vtempx,roll_mtx,n);
-  matmul_t2(veigv,vtempv,roll_mtv,n);
-  for(ipart=myatm_start;ipart<=myatm_end; ++ipart) {
-     tempx  =  clatoms_xold[ipart]*roll_mtx[1]
-              +clatoms_yold[ipart]*roll_mtx[2]
-              +clatoms_zold[ipart]*roll_mtx[3];
-     tempy  =  clatoms_xold[ipart]*roll_mtx[4]
-              +clatoms_yold[ipart]*roll_mtx[5]
-              +clatoms_zold[ipart]*roll_mtx[6];
-     tempz  =  clatoms_xold[ipart]*roll_mtx[7]
-              +clatoms_yold[ipart]*roll_mtx[8]
-              +clatoms_zold[ipart]*roll_mtx[9];
-     tempvx = clatoms_vx[ipart]*roll_mtv[1]
-             +clatoms_vy[ipart]*roll_mtv[2]
-             +clatoms_vz[ipart]*roll_mtv[3];
-     tempvy = clatoms_vx[ipart]*roll_mtv[4]
-             +clatoms_vy[ipart]*roll_mtv[5]
-             +clatoms_vz[ipart]*roll_mtv[6];
-     tempvz = clatoms_vx[ipart]*roll_mtv[7]
-             +clatoms_vy[ipart]*roll_mtv[8]
-             +clatoms_vz[ipart]*roll_mtv[9];
-     clatoms_x[ipart] = tempx+tempvx*dt;
-     clatoms_y[ipart] = tempy+tempvy*dt;
-     clatoms_z[ipart] = tempz+tempvz*dt;
-  }/*endfor*/
-
-/*----------------------------------------------------------------------*/
-/* B) get the new matrix of cell parameters and their inverse */
-
-   n = 3;
-   matmul_t(hmato,veigv,hmat_t,n);
-   for(i=1;i<=3;i++){
-     joff = (i-1)*3 ;
-     for(j=1;j<=3;j++){ 
-       hmat_t[j+joff] *=  vexpdt[j];
-     }/*endfor*/
-   }/*endfor*/
-   matmul_tt(hmat_t,veigv,cell->hmat,n);
-   gethinv(hmat,hmati,&(cell->vol),iperd);
-   par_rahman->vol = cell->vol;
+  }/*endif*/
 
 /*--------------------------------------------------------------------------*/
    }/*end routine */

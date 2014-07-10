@@ -213,8 +213,7 @@ void apply_NHCPI_par(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
 
     natm_tot = clatoms_info->natm_tot;
     num_nhc  = therm_info_class->num_nhc;
-    baro->roll_scg  = 0.0;
-    baro->roll_scg0 = 1.0;
+    baro->roll_scg  = 1.0;
     wght            = therm_info_class->wght;
     for(inhc=1;inhc<=num_nhc+1;inhc++){
       int_scr_atm_kin[inhc] = 0.0;
@@ -249,32 +248,22 @@ void apply_NHCPI_par(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
      /*endfor*/}
 
 /*==========================================================================*/
-/* III) Get the force on the first NHC in each chain and on the baro stat   */
-     temp = 0.0;
-    for(i=mytherm_start;i<=mytherm_end;i++){
-     temp += int_scr_atm_kin[i]*ditherm_nshare_i[i];
-    }/*endfor*/
-    if(np_forc > 1){
-     temp_now = temp;
-     Allreduce(&temp_now, &temp,1,MPI_DOUBLE,
-                   MPI_SUM,0,comm_forc);
-    }/*endif*/
+/* III) Get the force on the first NHC in each chain   */
 
+    len_nhc   = (therm_info_class->len_nhc);
+    len_nhcm1 = (therm_info_class->len_nhc)-1;
+    len_nhcp1 = (therm_info_class->len_nhc)+1;
+    
     for(inhc=mytherm_start;inhc<=mytherm_end;inhc++){
       therm_f_nhc[1][inhc] = (int_scr_atm_kin[inhc]-therm_gkt[1][inhc])
                              /therm_mass_nhc[1][inhc];
     /*endfor*/}
     baro_f_vol_nhc[1] = (baro->mass_lnv*baro->v_lnv*baro->v_lnv
                          -baro_gkt_vol[1])/baro_mass_vol_nhc[1];
-    baro->f_lnv_v  = (baro->c2_lnv*temp);
 
-  
 /*==========================================================================*/
 /* IV) Apply the nhc evolution operator using RESPA                         */
 
-    len_nhc   = (therm_info_class->len_nhc);
-    len_nhcm1 = (therm_info_class->len_nhc)-1;
-    len_nhcp1 = (therm_info_class->len_nhc)+1;
     for(iresn=1;iresn<=therm_info_class->nres_nhc;iresn++){
       for(iyosh=1;iyosh<=therm_info_class->nyosh_nhc;iyosh++){
 
@@ -285,7 +274,7 @@ void apply_NHCPI_par(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
                 therm_f_nhc[len_nhc][inhc]*therm_wdti4[iyosh]*wght;
         /*endfor*/}
         baro_v_vol_nhc[len_nhc] += 
-                            baro_f_vol_nhc[len_nhc]*therm_wdti4[iyosh];
+                            baro_f_vol_nhc[len_nhc]*therm_wdti4[iyosh]*wght;
 /*--------------------------------------------------------------------------*/
 /*  2) Evolve the last-1 to the first thermo velocitiy in each chain        */
         for(ichain=1;ichain<=len_nhcm1;ichain++){
@@ -297,33 +286,31 @@ void apply_NHCPI_par(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
                 therm_v_nhc[len_nhc-ichain][inhc]*aa*aa
               + therm_wdti4[iyosh]*therm_f_nhc[len_nhc-ichain][inhc]*aa*wght;
           /*endfor*/}
-          arg = -therm_wdti8[iyosh]*baro_v_vol_nhc[len_nhcp1-ichain];
+          arg = -therm_wdti8[iyosh]*wght*baro_v_vol_nhc[len_nhcp1-ichain];
           aa = exp(arg);
           baro_v_vol_nhc[len_nhc-ichain] = 
                      baro_v_vol_nhc[len_nhc-ichain]*aa*aa
-                   + therm_wdti4[iyosh]*baro_f_vol_nhc[len_nhc-ichain]*aa;
+                   + therm_wdti4[iyosh]*baro_f_vol_nhc[len_nhc-ichain]*aa*wght;
         /*endfor*/}
 /*--------------------------------------------------------------------------*/
 /* 3) Evolve the dlog(v)/dt                                                 */
-        arg = -therm_wdti8[iyosh]*baro_v_vol_nhc[1];
+        arg = -therm_wdti8[iyosh]*wght*baro_v_vol_nhc[1];
         aa = exp(arg);
         aa2 = aa*aa;
-        baro->roll_scg  = baro->roll_scg*aa2 + therm_wdti4[iyosh]*aa;
-        baro->roll_scg0 = baro->roll_scg0*aa2; 
-        baro->v_lnv = baro->v_lnv*aa2 + 
-                   therm_wdti4[iyosh]*
-                   (baro->f_lnv_v+baro->f_lnv_p)*aa/(baro->mass_lnv);
+        baro->roll_scg  = baro->roll_scg*aa2;
+        baro->v_lnv = baro->v_lnv*aa2;
 /*--------------------------------------------------------------------------*/
 /*  4) Evolve the particle velocities (by adding to the scaling factor)     */
         for(inhc=mytherm_start;inhc<=mytherm_end;inhc++){
           arg = -therm_wdti2[iyosh]*
-                 (therm_v_nhc[1][inhc]*wght+(baro->v_lnv)*(baro->c2_lnv));
+                 (therm_v_nhc[1][inhc]*wght);
           aa  = exp(arg);
           int_scr_sc[inhc]      *= aa;
           int_scr_atm_kin[inhc] *= aa*aa;
         /*endfor*/}
 
-         temp = 0.0;
+        //TANG: MPI need to test
+        temp = 0.0;
         for(i=mytherm_start;i<=mytherm_end;i++){
          temp += int_scr_atm_kin[i]*ditherm_nshare_i[i];
         }/*endfor*/
@@ -340,20 +327,15 @@ void apply_NHCPI_par(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
                        therm_v_nhc[ichain][inhc]*therm_wdti2[iyosh]*wght;
           /*endfor*/}
           baro_x_vol_nhc[ichain] += 
-                       baro_v_vol_nhc[ichain]*therm_wdti2[iyosh];
+                       baro_v_vol_nhc[ichain]*therm_wdti2[iyosh]*wght;
         /*endfor*/}
 /*--------------------------------------------------------------------------*/
 /*  6) Evolve the dlog(v)/dt                                                */
-
-        arg = -therm_wdti8[iyosh]*baro_v_vol_nhc[1];
+        arg = -therm_wdti8[iyosh]*wght*baro_v_vol_nhc[1];
         aa = exp(arg);
         aa2 = aa*aa;
-        baro->roll_scg  = baro->roll_scg*aa2 + aa*therm_wdti4[iyosh];
-        baro->roll_scg0 = baro->roll_scg0*aa2; 
-        baro->f_lnv_v  = (baro->c2_lnv*temp);
-        baro->v_lnv = baro->v_lnv*aa2 + 
-                   therm_wdti4[iyosh]*
-                   (baro->f_lnv_v+baro->f_lnv_p)*aa/baro->mass_lnv;
+        baro->roll_scg  = baro->roll_scg*aa2;
+        baro->v_lnv = baro->v_lnv*aa2;
 /*--------------------------------------------------------------------------*/
 /*  7) Evolve the 1 to last-1 therm velocity in each chain                  */
 /*     calculting therm forces as you go along                              */
@@ -371,10 +353,10 @@ void apply_NHCPI_par(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
             therm_v_nhc[ichain][inhc] = therm_v_nhc[ichain][inhc]*aa*aa
               + therm_wdti4[iyosh]*therm_f_nhc[ichain][inhc]*aa*wght;
           /*endfor*/}
-          arg = -therm_wdti8[iyosh]*baro_v_vol_nhc[ichain+1];
+          arg = -therm_wdti8[iyosh]*wght*baro_v_vol_nhc[ichain+1];
           aa = exp(arg);
           baro_v_vol_nhc[ichain] = baro_v_vol_nhc[ichain]*aa*aa
-                   + therm_wdti4[iyosh]*baro_f_vol_nhc[ichain]*aa;
+                   + therm_wdti4[iyosh]*baro_f_vol_nhc[ichain]*aa*wght;
           for(inhc=mytherm_start;inhc<=mytherm_end;inhc++){
             therm_f_nhc[ichain+1][inhc] = 
                  (therm_mass_nhc[ichain][inhc]*
@@ -394,7 +376,7 @@ void apply_NHCPI_par(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
                        therm_f_nhc[len_nhc][inhc]*therm_wdti4[iyosh]*wght;
         /*endfor*/}
         baro_v_vol_nhc[len_nhc] += 
-                baro_f_vol_nhc[len_nhc]*therm_wdti4[iyosh];
+                baro_f_vol_nhc[len_nhc]*therm_wdti4[iyosh]*wght;
 /*--------------------------------------------------------------------------*/
 /* 9) End Respa                                                             */
 
@@ -418,10 +400,8 @@ void apply_NHCPI_par(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
     /*endfor*/}
 /*==========================================================================*/
 /* VI) Save the present value of the barostat velocity                      */
-/*     Scale barostat roll_scg variable                                     */
 
-    baro->v_lnv_g   = baro->v_lnv;       
-    baro->roll_scg *= (2.0/(therm_info_class->dt_nhc));
+    baro->v_lnv_g   = baro->v_lnv; 
 
 /*--------------------------------------------------------------------------*/
 /*end routine*/}
@@ -606,6 +586,8 @@ void apply_NHCPI0_par(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
 
 
 
+
+
 /*==========================================================================*/
 /*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
 /*==========================================================================*/
@@ -684,6 +666,7 @@ void init_NHCPI_par(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
     baro->f_vol_nhc[1] = (baro->mass_lnv*baro->v_lnv*baro->v_lnv
                          -baro->gkt_vol[1])/baro->mass_vol_nhc[1];
 
+    // TANG: MPI need to test
     temp = 0.0;
     for(i=mytherm_start;i<=mytherm_end;i++){
       temp += int_scr->atm_kin[i]*ditherm_nshare_i[i];

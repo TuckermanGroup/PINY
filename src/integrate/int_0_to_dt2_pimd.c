@@ -598,11 +598,13 @@ void int_0_to_dt2_nptf_pimd(CLASS *class,BONDED *bonded,
      class_clatoms_vx   = class->clatoms_pos[1].vx;
      class_clatoms_vy   = class->clatoms_pos[1].vy;
      class_clatoms_vz   = class->clatoms_pos[1].vz;
-     move_pos_box_upper(class_clatoms_x,class_clatoms_y,class_clatoms_z,
+// the following code is based on new NPT integrator, for the purpose that the compiling can go through.
+// However, since PIMD other parts has not been updated to the new integrator, PIMD with NPT will not
+// correctly run. 
+     move_pos_box_upper(&(general_data->cell),&(general_data->par_rahman),
+                        class_clatoms_x,class_clatoms_y,class_clatoms_z,
                         class_clatoms_vx,class_clatoms_vy,class_clatoms_vz,
-                        general_data->cell.hmat,general_data->cell.hmati, 
-                        general_data->par_rahman.vgmat,dt,
-                        class->clatoms_info.natm_tot,myatm_start,myatm_end);
+                        dt,class->clatoms_info.natm_tot,myatm_start,myatm_end);
    }/*endif*/
 
    mode_energy_control(class,general_data);

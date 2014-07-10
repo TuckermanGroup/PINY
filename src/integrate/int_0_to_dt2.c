@@ -492,8 +492,9 @@ void int_0_to_dt2_npti(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
 #include "../typ_defs/typ_mask.h"
 
   int i,ipart,iflag,ifirst,ix_now;
-  double dt2,tol_glob,v_lnv,x_lnv,x_lnv_o;
+  double dt2,tol_glob,c2_lnv,v_lnv,x_lnv,x_lnv_o;
   double aa,aa2,arg2,poly,bb,dlen;
+  double temp,temp_now;
   double e2,e4,e6,e8;
   int iii;
 
@@ -514,6 +515,7 @@ void int_0_to_dt2_npti(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
   double *hmato              = general_data->baro.hmato;
   double *hmat               = general_data->cell.hmat;
   double *hmati              = general_data->cell.hmati;
+  double mass_lnv            = general_data->baro.mass_lnv;
   int    iperd               = general_data->cell.iperd;
   double tolshake            = bonded->constrnt.tolshake;
 
@@ -547,8 +549,29 @@ void int_0_to_dt2_npti(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
   }/*endfor*/
 
 /*==========================================================================*/
-/*  SHAKE/ROLL CONVERGENCE LOOP                                             */ 
+/* II) Evolve NHCs and velocities                                           */
+   
+  if( (int_res_ter==0) && (int_res_tra==0) ){
+    apply_NHCPI_par(&(class->clatoms_info),&(class->clatoms_pos[1]),
+                    &(class->therm_info_class),&(class->therm_class),
+                    &(general_data->baro),
+                    &(class->int_scr),&(class->class_comm_forc_pkg));
+  }else{
+    ix_now = 4;
+    if((ir_tra==1)){ix_now=3;}
+    if((ir_tra==1)&&(ir_tor==1)){ix_now=2;}
+    if((ir_tra==1)&&(ir_tor==1)&&(ir_ter==1)){ix_now=1;}
+    if(ix_respa>=ix_now){
+      apply_NHCPI_par(&(class->clatoms_info),&(class->clatoms_pos[1]),
+                      &(class->therm_info_class),&(class->therm_class),
+                      &(general_data->baro),
+                      &(class->int_scr),&(class->class_comm_forc_pkg));
+    }/*endif*/
+  }/*endif*/
 
+/*==========================================================================*/
+/*  SHAKE/ROLL CONVERGENCE LOOP                                             */
+  
   if(iconstrnt==1){
      iflag = 1;
      cpysys_NPT(&(class->clatoms_info),&(class->clatoms_pos[1]),
@@ -567,49 +590,54 @@ void int_0_to_dt2_npti(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
                  &(general_data->baro),
                  &(general_data->par_rahman),&(class->int_scr),iflag);
     }/*endif*/
-  
+
 /*==========================================================================*/
-/* II) Evolve NHCs and velocities                                           */
-   
-    if( (int_res_ter==0) && (int_res_tra==0) ){
-      apply_NHCPI_par(&(class->clatoms_info),&(class->clatoms_pos[1]),
-                      &(class->therm_info_class),&(class->therm_class),
-                      &(general_data->baro),
-                      &(class->int_scr),&(class->class_comm_forc_pkg));
-    }else{
-      ix_now = 4;
-      if(ir_tra==1) {ix_now=3;}
-      if((ir_tra==1) && (ir_tor==1)) {ix_now=2;}
-      if((ir_tra==1) && (ir_tor==1) && (ir_ter==1)) {ix_now=1;}
-      if(ix_respa>=ix_now) {
-        apply_NHCPI_par(&(class->clatoms_info),&(class->clatoms_pos[1]),
-                        &(class->therm_info_class),&(class->therm_class),
-                        &(general_data->baro),
-                        &(class->int_scr),&(class->class_comm_forc_pkg));
-      }else{
-        apply_NHCPI0_par(&(class->clatoms_info),&(class->clatoms_pos[1]),
-                         &(class->therm_info_class),&(class->therm_class),
-                         &(general_data->baro),
-                         &(class->int_scr),&(class->class_comm_forc_pkg));
-      }/*endif*/
-    }/*endif*/
- 
+/* III) Evolve velocities of "log volumn" (epsilon)                         */
+      v_lnv = general_data->baro.v_lnv;
+      c2_lnv = general_data->baro.c2_lnv;
+	    
+      temp = 0.0;
+      for(ipart=myatm_start;ipart<=myatm_end;ipart++){
+        temp += class_clatoms_mass[ipart]
+             *  class_clatoms_vx[ipart]*class_clatoms_vx[ipart];
+        temp += class_clatoms_mass[ipart]
+             *  class_clatoms_vy[ipart]*class_clatoms_vy[ipart];
+        temp += class_clatoms_mass[ipart]
+             *  class_clatoms_vz[ipart]*class_clatoms_vz[ipart];
+      }/*endfor*/
+      (general_data->baro.f_lnv_v)  = (c2_lnv*temp);
+      (general_data->baro.v_lnv) += 
+	      ((general_data->baro.f_lnv_v)+(general_data->baro.f_lnv_p))
+	      * dt2/mass_lnv;
+
 /*==========================================================================*/
 /* III) Evolve velocities                                                   */
-
+	
+    v_lnv = general_data->baro.v_lnv;
+	
+    aa   = exp(-0.5*dt2*v_lnv*(c2_lnv));
+    aa2  = aa*aa;
+    arg2 = (0.5*dt2*v_lnv*(c2_lnv))
+         * (0.5*dt2*v_lnv*(c2_lnv));
+    poly = (((e8*arg2+e6)*arg2+e4)*arg2+e2)*arg2+1.0;
+    bb   = poly*aa;
     for(ipart=myatm_start;ipart<=(myatm_end);ipart++){
-      class_clatoms_vx[ipart] += class_clatoms_fx[ipart]*dt2
-                                /class_clatoms_mass[ipart];
-      class_clatoms_vy[ipart] += class_clatoms_fy[ipart]*dt2
-                                /class_clatoms_mass[ipart];
-      class_clatoms_vz[ipart] += class_clatoms_fz[ipart]*dt2
-                                /class_clatoms_mass[ipart];
+      class_clatoms_vx[ipart] = class_clatoms_vx[ipart]*aa2
+                              + bb*class_clatoms_fx[ipart]*dt2
+                              / class_clatoms_mass[ipart];
+      class_clatoms_vy[ipart] = class_clatoms_vy[ipart]*aa2
+                              + bb*class_clatoms_fy[ipart]*dt2
+                              / class_clatoms_mass[ipart];
+      class_clatoms_vz[ipart] = class_clatoms_vz[ipart]*aa2
+                              + bb*class_clatoms_fz[ipart]*dt2
+                              / class_clatoms_mass[ipart];
     }/*endfor*/
-  
+
+    general_data->baro.roll_scvv = aa2;
+    general_data->baro.roll_scf = bb;
+
 /*==========================================================================*/
 /* IV) Evolve positions                                                     */
-
-    v_lnv = general_data->baro.v_lnv;
 
     aa   = exp(dt2*v_lnv);
     aa2  = aa*aa;
@@ -625,6 +653,7 @@ void int_0_to_dt2_npti(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
                              + class_clatoms_vz[ipart]*bb*dt;
      }/*endfor*/
 
+     general_data->baro.roll_scx = aa2;
      general_data->baro.roll_scv = bb;
   
 /*==========================================================================*/
@@ -635,13 +664,12 @@ void int_0_to_dt2_npti(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
      general_data->baro.x_lnv = x_lnv;
 
      dlen = exp(x_lnv-x_lnv_o);
-     for(i=1;i<=9;i++){hmat[i]*=dlen;}
+     for(i=1;i<=9;i++){hmat[i] = hmato[i]*dlen;}
      gethinv(hmat,hmati,&(general_data->cell.vol),iperd);
 
      (general_data->baro.vol)       = (general_data->cell.vol);
      (general_data->par_rahman.vol) = (general_data->cell.vol);
 
-  
 /*==========================================================================*/
 /* V) Shake/ROLL if necessary                                               */
 
@@ -713,8 +741,12 @@ void int_0_to_dt2_nptf(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
    int int_res_tra    = general_data->timeinfo.int_res_tra;
    int ix_respa       = general_data->timeinfo.ix_respa;
 
+   double *vgmat      = general_data->par_rahman.vgmat;
+   double *fgmat_v    = general_data->par_rahman.fgmat_v;
+   double *fgmat_p    = general_data->par_rahman.fgmat_p;
    double *hmato      = general_data->par_rahman.hmato;
    double *hmat       = general_data->cell.hmat;
+   double mass_hm     = general_data->par_rahman.mass_hm;
    double tolshake    = bonded->constrnt.tolshake;
    int hmat_int_typ   = general_data->cell.hmat_int_typ;
 
@@ -734,28 +766,7 @@ void int_0_to_dt2_nptf(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
   }/*endfor*/
 
 /*==========================================================================*/
-/*  SHAKE/ROLL CONVERGENCE LOOP                                             */ 
-
-  if(iconstrnt==1){
-    iflag = 2;
-    cpysys_NPT(&(class->clatoms_info),&(class->clatoms_pos[1]),
-               &(class->therm_info_class),&(class->therm_class),
-               &(general_data->baro),
-               &(general_data->par_rahman),&(class->int_scr),iflag);
-  }/*endif*/
-  tol_glob = tolshake+1.0;
-  ifirst  = 1;
-  while(tol_glob>=tolshake){
-     if(iconstrnt==1){
-        getsys_NPT(&(class->clatoms_info),&(class->clatoms_pos[1]),
-                   &(class->therm_info_class),&(class->therm_class),
-                   &(general_data->baro),
-                   &(general_data->par_rahman),&(class->int_scr),iflag);
-     }/*endif*/
-
-/*==========================================================================*/
-/* II) Evolve NHCs and velocities                                           */
-
+/* II) Evolve NHCs                                                          */
 
 #ifdef JUNK
       printf("before apply %d %d %d\n",ir_ter,ir_tor,ir_tra);
@@ -820,13 +831,6 @@ void int_0_to_dt2_nptf(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
                           &(general_data->par_rahman),
                           &(general_data->cell),&(class->int_scr),
                           &(class->class_comm_forc_pkg));
-        }else{
-          apply_NHCPF0_par(&(class->clatoms_info),&(class->clatoms_pos[1]),
-                           &(class->therm_info_class),&(class->therm_class),
-                           &(general_data->baro),
-                           &(general_data->par_rahman),
-                           &(general_data->cell),&(class->int_scr),
-                           &(class->class_comm_forc_pkg));
         }/*endif*/
      }/*endelse*/
 
@@ -872,17 +876,49 @@ void int_0_to_dt2_nptf(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
                                         general_data->cell.hmat[9]);
       scanf("%d",&iii);
 #endif
+
+/*==========================================================================*/
+/*  SHAKE/ROLL CONVERGENCE LOOP                                             */ 
+
+  if(iconstrnt==1){
+    iflag = 2;
+    cpysys_NPT(&(class->clatoms_info),&(class->clatoms_pos[1]),
+               &(class->therm_info_class),&(class->therm_class),
+               &(general_data->baro),
+               &(general_data->par_rahman),&(class->int_scr),iflag);
+  }/*endif*/
+  tol_glob = tolshake+1.0;
+  ifirst  = 1;
+  while(tol_glob>=tolshake){
+     if(iconstrnt==1){
+        getsys_NPT(&(class->clatoms_info),&(class->clatoms_pos[1]),
+                   &(class->therm_info_class),&(class->therm_class),
+                   &(general_data->baro),
+                   &(general_data->par_rahman),&(class->int_scr),iflag);
+     }/*endif*/
+
+/*==========================================================================*/
+/* II) Evolve vgmat(h-matix) velocity                                       */
+
+    get_fgmatv_par(&(class->clatoms_info),&(class->clatoms_pos[1]),
+                   &(general_data->par_rahman),&(general_data->cell),
+                   &(class->class_comm_forc_pkg));
+
+    for(i=1;i<=9;i++){
+      vgmat[i] += (fgmat_v[i] + fgmat_p[i])
+                * dt2/mass_hm;
+    }/*endfor*/
+
 /*==========================================================================*/
 /* III) Evolve velocities                                                   */
 
-     for(ipart=myatm_start;ipart<=myatm_end;ipart++){
-       class_clatoms_vx[ipart] += class_clatoms_fx[ipart]*dt2
-                                 /class_clatoms_mass[ipart];
-       class_clatoms_vy[ipart] += class_clatoms_fy[ipart]*dt2
-                                 /class_clatoms_mass[ipart];
-       class_clatoms_vz[ipart] += class_clatoms_fz[ipart]*dt2
-                                 /class_clatoms_mass[ipart];
-     }/*endfor*/
+   if(hmat_int_typ==0){
+      move_vel_vbox(&(class->clatoms_pos[1]),&(class->clatoms_info),
+                    &(general_data->cell),&(general_data->par_rahman),dt);
+   }else{
+      move_vel_vbox_upper(&(class->clatoms_pos[1]),&(class->clatoms_info),
+                    &(general_data->cell),&(general_data->par_rahman),dt);
+   }
 
 /*==========================================================================*/
 /* IV) Evolve positions and h-matrix                                        */
@@ -890,13 +926,13 @@ void int_0_to_dt2_nptf(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
      if(hmat_int_typ==0){
         move_pos_box(&(general_data->cell),&(general_data->par_rahman),
                      class_clatoms_x,class_clatoms_y,class_clatoms_z,
+                     class_clatoms_xold,class_clatoms_yold,class_clatoms_zold,
                      class_clatoms_vx,class_clatoms_vy,class_clatoms_vz,
                      dt,class->clatoms_info.natm_tot);
      }else{
-        move_pos_box_upper(class_clatoms_x,class_clatoms_y,class_clatoms_z,
+        move_pos_box_upper(&(general_data->cell),&(general_data->par_rahman),
+                           class_clatoms_x,class_clatoms_y,class_clatoms_z,
                            class_clatoms_vx,class_clatoms_vy,class_clatoms_vz,
-                           general_data->cell.hmat,general_data->cell.hmati, 
-                           general_data->par_rahman.vgmat, 
                            dt,class->clatoms_info.natm_tot,myatm_start,myatm_end);
      }/*endif : hmat_int_typ*/
 

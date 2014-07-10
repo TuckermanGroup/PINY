@@ -503,6 +503,8 @@ typedef struct intra_scr{
   double *fx2,*fy2,*fz2;
   double *fx3,*fy3,*fz3;
   double *fx4,*fy4,*fz4;      
+  double *fx5,*fy5,*fz5;
+  double *fx6,*fy6,*fz6;
   double *dx12,*dy12,*dz12;    /* Lst: Atm disp temp;       Lth: nlen */
   double *dx13,*dy13,*dz13;
   double *dx23,*dy23,*dz23;
