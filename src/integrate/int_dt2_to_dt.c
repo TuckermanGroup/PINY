@@ -550,9 +550,6 @@ void int_dt2_to_dt_npti(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
                           &(class->therm_info_class),&(class->therm_class),
                           &(general_data->baro),
                           &(class->int_scr),&(class->class_comm_forc_pkg));
-        }else{
-          printf("respa for NPT: not ready for this part!\n");
-          exit(1);
         }/*endif*/
      }/*endelse*/
 
@@ -732,9 +729,6 @@ void int_dt2_to_dt_nptf(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
                           &(general_data->baro),
                           &(general_data->par_rahman),&(general_data->cell),
                           &(class->int_scr),&(class->class_comm_forc_pkg));
-        }else{
-          printf("respa for NPT: this part is not ready!\n");
-          exit(1);
         }/*endif*/
       }/*endelse*/
 
