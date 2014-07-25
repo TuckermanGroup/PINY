@@ -398,6 +398,7 @@ void int_dt2_to_dt_npti(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
 {/*begin routine*/
 /*========================================================================*/
 /*             Local variable declarations                                */
+#include "../typ_defs/typ_mask.h"
 
   int i,ipart,iflag,ifirst,ix_now;
   double dt2,tol_glob;
@@ -426,6 +427,9 @@ void int_dt2_to_dt_npti(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
   int nres_tra               = general_data->timeinfo.nres_tra;
   int nres_tor               = general_data->timeinfo.nres_tor;
   int nres_ter               = general_data->timeinfo.nres_ter;
+
+  int np_forc        = class->communicate.np_forc;
+  MPI_Comm comm_forc = class->communicate.comm_forc;
 
         /* Careful because these values change */
   double v_lnv_g;
@@ -525,6 +529,13 @@ void int_dt2_to_dt_npti(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
         temp += class_clatoms_mass[ipart]
              *  class_clatoms_vz[ipart]*class_clatoms_vz[ipart];
       }/*endfor*/
+
+      if(np_forc > 1){
+        temp_now = temp;
+        Allreduce(&temp_now, &temp,1,MPI_DOUBLE,
+                      MPI_SUM,0,comm_forc);
+      }/*endif*/
+
       (general_data->baro.f_lnv_v)  = (general_data->baro.c2_lnv*temp);
       (general_data->baro.v_lnv) += 
                 (general_data->baro.f_lnv_v+general_data->baro.f_lnv_p)

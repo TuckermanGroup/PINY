@@ -605,6 +605,13 @@ void int_0_to_dt2_npti(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
         temp += class_clatoms_mass[ipart]
              *  class_clatoms_vz[ipart]*class_clatoms_vz[ipart];
       }/*endfor*/
+
+      if(np_forc > 1){
+        temp_now = temp;
+        Allreduce(&temp_now, &temp,1,MPI_DOUBLE,
+                     MPI_SUM,0,comm_forc);
+      }/*endif*/
+
       (general_data->baro.f_lnv_v)  = (c2_lnv*temp);
       (general_data->baro.v_lnv) += 
 	      ((general_data->baro.f_lnv_v)+(general_data->baro.f_lnv_p))

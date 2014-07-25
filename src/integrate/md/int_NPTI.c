@@ -250,10 +250,6 @@ void apply_NHCPI_par(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
 /*==========================================================================*/
 /* III) Get the force on the first NHC in each chain   */
 
-    len_nhc   = (therm_info_class->len_nhc);
-    len_nhcm1 = (therm_info_class->len_nhc)-1;
-    len_nhcp1 = (therm_info_class->len_nhc)+1;
-    
     for(inhc=mytherm_start;inhc<=mytherm_end;inhc++){
       therm_f_nhc[1][inhc] = (int_scr_atm_kin[inhc]-therm_gkt[1][inhc])
                              /therm_mass_nhc[1][inhc];
@@ -264,6 +260,9 @@ void apply_NHCPI_par(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
 /*==========================================================================*/
 /* IV) Apply the nhc evolution operator using RESPA                         */
 
+    len_nhc   = (therm_info_class->len_nhc);
+    len_nhcm1 = (therm_info_class->len_nhc)-1;
+    len_nhcp1 = (therm_info_class->len_nhc)+1;
     for(iresn=1;iresn<=therm_info_class->nres_nhc;iresn++){
       for(iyosh=1;iyosh<=therm_info_class->nyosh_nhc;iyosh++){
 
@@ -309,16 +308,6 @@ void apply_NHCPI_par(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
           int_scr_atm_kin[inhc] *= aa*aa;
         /*endfor*/}
 
-        //TANG: MPI need to test
-        temp = 0.0;
-        for(i=mytherm_start;i<=mytherm_end;i++){
-         temp += int_scr_atm_kin[i]*ditherm_nshare_i[i];
-        }/*endfor*/
-        if(np_forc > 1){
-         temp_now = temp;
-         Allreduce(&temp_now, &temp,1,MPI_DOUBLE,
-                   MPI_SUM,0,comm_forc);
-        }/*endif*/
 /*--------------------------------------------------------------------------*/
 /*  5) Evolve the therm positions                                           */
         for(ichain=1;ichain<=len_nhc;ichain++){
@@ -666,19 +655,6 @@ void init_NHCPI_par(CLATOMS_INFO *clatoms_info,CLATOMS_POS *clatoms_pos,
     baro->f_vol_nhc[1] = (baro->mass_lnv*baro->v_lnv*baro->v_lnv
                          -baro->gkt_vol[1])/baro->mass_vol_nhc[1];
 
-    // TANG: MPI need to test
-    temp = 0.0;
-    for(i=mytherm_start;i<=mytherm_end;i++){
-      temp += int_scr->atm_kin[i]*ditherm_nshare_i[i];
-    }/*endfor*/
-    if(np_forc > 1){
-     temp_now = temp;
-     Allreduce(&temp_now, &temp,1,MPI_DOUBLE,
-                  MPI_SUM,0,comm_forc);
-    }/*endif*/
-
-    baro->f_lnv_v  = (baro->c2_lnv*temp);
-  
 /*==========================================================================*/
 /* III) Get the force on the rest of the NHC in each chain                  */
 
