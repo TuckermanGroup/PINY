@@ -5,7 +5,12 @@ void control_md(CLASS *,BONDED *,GENERAL_DATA *,ANALYSIS *);
 
 void prelim_md(CLASS *,BONDED *,GENERAL_DATA *);
 
+/*---------------------------------------------------------------------*/
+/* md/control_min.c   */
+
 void control_min(CLASS *,BONDED *,GENERAL_DATA *,ANALYSIS *);
+
+void prelim_min(CLASS *,BONDED *,GENERAL_DATA *);
 
 /*---------------------------------------------------------------------*/
 /* pimd/control_pimd.c   */

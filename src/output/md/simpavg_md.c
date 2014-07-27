@@ -43,8 +43,8 @@ void simpavg_md(TIMEINFO *timeinfo,STAT_AVG *stat_avg,CELL *cell,
 /*========================================================================*/
 /* I) Zero the averages on the first time step */
 
- if(myid==0){
-  if((timeinfo->itime)==0){
+ if((timeinfo->itime)==0){
+  if(myid==0){
     stat_avg->econv         = 0.0;
     stat_avg->akinet        = 0.0;
     stat_avg->akinet_v      = 0.0;
@@ -97,10 +97,11 @@ void simpavg_md(TIMEINFO *timeinfo,STAT_AVG *stat_avg,CELL *cell,
     stat_avg->aipress_intra = 0.0;
     stat_avg->aipress_kin   = 0.0;
 
-    return;
+  }/*endif : myid=0*/
 
-  }/*endif*/
- }/*endif : myid=0*/
+  return;
+
+ }/*endif*/
 
 /*======================================================================*/
 /* II) Communicate stuff before calculating                             */

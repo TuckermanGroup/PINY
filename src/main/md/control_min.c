@@ -58,12 +58,17 @@ void control_min(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
   MPI_Comm world = class->communicate.world;
 
 /*======================================================================*/
+/* 0) preliminary MINIMIZE stuff                                        */
+
+  prelim_min(class,bonded,general_data);
+
+/*======================================================================*/
 /* I) Write to Screen                                                   */
 
   PRINT_LINE_STAR;
   printf("Running MINIMIZATION \n");
   PRINT_LINE_DASH;
-  
+
 /*======================================================================*/
 /* II) Loop over the specified number of time steps */
 
@@ -87,17 +92,22 @@ void control_min(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
   /*   5)Check magnitude of atomic forces */
       check_atm_grad_mag(class,general_data,&f_atm_mag,&ireset,&idone,
                          general_data->minopts.tol_atom);
+
       if(idone==1){
        printf("\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
        printf("Tolerance on atomic forces reached\n");
        printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
        iexit = 1;
       }
-      if(ireset==1){
-        printf("\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-        printf("Resetting Atomic Conjugate Gradient\n");
-        printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+
+      if (general_data->minopts.min_cg == 1) {
+        if (ireset == 1) {
+          printf("\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+          printf("Resetting Atomic Conjugate Gradient\n");
+          printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+        }
       }
+
   /*----------------------------------------------------------------------*/
   /*   6)Calculate some simple averages                                   */
     cputime(&(general_data->stat_avg.cpu2)); 
@@ -151,14 +161,111 @@ void control_min(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
 
 
 
+/*==========================================================================*/
+/*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
+/*==========================================================================*/
 
+void prelim_min(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
 
+/*=======================================================================*/
+/*            Begin subprogram:                                          */
+{   /*begin routine*/
+/*=======================================================================*/
+/*            Local variable declarations                                */
 
+#include "../typ_defs/typ_mask.h"
 
+  int i,j,k,m,iflag,iii;
 
+  int npairs_tmp             = 0;
+  int npairs_res_tmp         = 0;
+  int iflag_mass             = 1;
+  double kinet_temp          = 0.0;
+  double vintrat_temp        = 0.0;
+  double vintert_temp        = 0.0;
+  double vbondt_temp         = 0.0;
+  double vbendt_temp         = 0.0;
+  double vbend_bnd_bond_temp = 0.0;
+  double vbend_bnd_bend_temp = 0.0;
+  double vtorst_temp         = 0.0;
+  double vonfot_temp         = 0.0;
+  double vcoul_temp          = 0.0;
+  double vvdw_temp           = 0.0;
 
+  int myid                   = class->communicate.myid;
+  MPI_Comm comm_forc         = class->communicate.comm_forc;
+  int num_proc               = class->communicate.np;
+  int np_forc                = class->class_comm_forc_pkg.num_proc; 
 
+/*=======================================================================*/
+/* I) Write to Screen                                                  */
 
+  if(myid==0){
+    PRINT_LINE_STAR;
+    printf("Performing preliminary tasks for minimization\n");
+    PRINT_LINE_DASH;printf("\n");
+  }/*endif*/
 
+/*=======================================================================*/
+/*  II) Initialize In-output                                             */
 
+  general_data->stat_avg.updates   = 0.0;
+  general_data->stat_avg.acpu      = 0.0;
 
+/*=======================================================================*/
+/* III)Get Energy and particle Forces                                    */
+
+  if(bonded->constrnt.iconstrnt==1){
+     init_constraint(bonded,&(general_data->ptens));
+  }/*endif:init constraints, must be done before getting the energy*/
+
+  general_data->stat_avg.iter_shake   = 0;
+  general_data->stat_avg.iter_ratl    = 0;
+  general_data->stat_avg.iter_23    = 0;
+  general_data->stat_avg.iter_33    = 0;
+  general_data->stat_avg.iter_46    = 0;
+
+  (general_data->timeinfo.itime) = 0;
+  (class->energy_ctrl.itime)     = 0;
+  class->energy_ctrl.iget_full_inter = 1;
+  class->energy_ctrl.iget_res_inter  = 0;
+  if(general_data->timeinfo.int_res_ter==1){
+    class->energy_ctrl.iget_res_inter=1;
+  }
+  class->energy_ctrl.iget_full_intra = 1;
+  class->energy_ctrl.iget_res_intra  = 0;
+  if((general_data->timeinfo.int_res_tra)==1){
+    class->energy_ctrl.iget_res_intra=1;
+  }
+
+  if(myid==0){
+    printf("Getting initial energy\n");
+  }/*endif*/
+ 
+  energy_control(class,bonded,general_data);
+
+/*=======================================================================*/
+/*  VII) Write Energy to screen                                           */
+
+  general_data->filenames.ifile_open = 1;
+  general_data->timeinfo.itime       = 0;
+  output_min(class,general_data,bonded);
+
+/*=======================================================================*/
+/* VIII) Reinitailize update flag */
+
+  general_data->stat_avg.updates   = 0.0;
+
+/*=======================================================================*/
+/* IX) Write to Screen         */
+
+  if(myid==0){
+    printf("\n");
+    PRINT_LINE_DASH;
+    printf("Completed preliminary tasks for minimization\n");
+    PRINT_LINE_STAR;printf("\n");
+  }/*endif*/
+
+/*-----------------------------------------------------------------------*/
+  }/*end routine*/
+/*========================================================================*/
