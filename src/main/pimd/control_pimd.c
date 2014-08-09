@@ -91,6 +91,9 @@ if(error_check_on==1){
 
     cputime(&(general_data->stat_avg.cpu1)); 
     (general_data->timeinfo.itime) = itime;
+
+    // TODO: add NVE option for RPMD
+
   /*----------------------------------------------------------------------*/
   /*   1)Do NVT dynamics:                                                 */
     if((general_data->ensopts.nvt)==1){
@@ -320,6 +323,8 @@ void prelim_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
 
 /*=======================================================================*/
 /* IV)Get NHC Forces                                                     */
+
+  // TODO: add an NVE option in this section for RPMD
 
   if((general_data->ensopts.nvt)==1){
      iflag_mass = 1;
