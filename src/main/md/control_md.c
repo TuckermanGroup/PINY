@@ -90,13 +90,11 @@ void control_md(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
   }/*endif*/
 
   general_data->stat_avg.cpu_now = 0.0;
-#if 0  //the following function call ruins the parallel running of classical MD
   simpavg_md(&general_data->timeinfo, &general_data->stat_avg,
              &general_data->cell, &bonded->constrnt,
              &general_data->ensopts, &general_data->simopts,
              &general_data->ptens, &class->communicate,
              &class->nbr_list.verlist, &class->energy_ctrl);
-#endif
   output_md(class,general_data,bonded);
 
 /*======================================================================*/
