@@ -79,6 +79,7 @@ void close_intra_params(CLATOMS_INFO *clatoms_info,
   int nghost_old, nfreeze_old, ncomp_old;
   int pi_beads = clatoms_info->pi_beads;
   int pimd_freez_typ = atommaps->pimd_freez_typ;
+  int n_free_mol;
   int n_atom_ghost;
   int n_atom_free;
   int n_atom_frozen;
@@ -219,7 +220,14 @@ void close_intra_params(CLATOMS_INFO *clatoms_info,
   nchrg_mall = clatoms_info->nchrg;
   if ((nchrg_mall % 2) == 0) {nchrg_mall += 1;}
 
-  /* count the number of free, frozen and ghost atoms */
+  /* Count the number of classical degrees of freedom from molecular info,
+   * which accounts correctly for ghosts, freezing and constraints. */
+  n_free_mol = 0;
+  for(i=1; i<=atommaps->nmol_typ; i++) {
+    n_free_mol += atommaps->nfree_1mol_jmol_typ[i] * atommaps->nmol_jmol_typ[i];
+  }
+
+  /* Count the number of free, frozen and ghost atoms. */
   n_atom_ghost = 0;
   n_atom_free = 0;
   n_atom_frozen = 0;
@@ -234,25 +242,31 @@ void close_intra_params(CLATOMS_INFO *clatoms_info,
       }
     }
   }
-  #ifdef DEBUG
-  printf("  free atoms: % 5i\n", n_atom_free);
-  printf("frozen atoms: % 5i\n", n_atom_frozen);
-  printf(" ghost atoms: % 5i\n", n_atom_ghost);
-  #endif
 
-  /* use the above to determine the number of DOFs, both classical and PIMD */
-  clatoms_info->nfree = 3 * n_atom_free;
+  /* set the classical number of DOFs - easy */
+  clatoms_info->nfree = n_free_mol;
+
+  /* set the PIMD number of DOFs - more complicated */
   if (pimd_freez_typ == 2) {
-    /* freezing of all modes */
-    clatoms_info->nfree_pimd = 3 * n_atom_free * pi_beads;
+    /* Freezing of all modes. */
+    clatoms_info->nfree_pimd = n_free_mol * pi_beads;
   } else {
-    /* freezing of centroid only */
-    clatoms_info->nfree_pimd = 3 * (n_atom_free * pi_beads +
-                                    n_atom_frozen * (pi_beads-1));
+    /* Freezing of centroid only.
+     * Here we need to consider all the atoms for the non-centroid modes,
+     * without ghosts. */
+    clatoms_info->nfree_pimd = n_free_mol + (pi_beads-1) * 3 * n_atom_free;
   }
   printf("number of atomic degrees of freedom: % 6i\n", clatoms_info->nfree);
   printf("  number of PIMD degrees of freedom: % 6i\n", clatoms_info->nfree_pimd);
   printf("\n");
+
+  #ifdef DEBUG
+  printf("pimd_freez_typ: %d\n", pimd_freez_typ);
+  printf("    n_free_mol: % 5d\n", n_free_mol);
+  printf("    free atoms: % 5d\n", n_atom_free);
+  printf("  frozen atoms: % 5d\n", n_atom_frozen);
+  printf("   ghost atoms: % 5d\n", n_atom_ghost);
+  #endif
 
   now_memory = ((double)(((natm_mall)*sizeof(double)*13+sizeof(int)*4)+
 			 natm_typ_mall*(sizeof(double)*0+sizeof(int)*25))
