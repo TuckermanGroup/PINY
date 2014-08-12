@@ -3,7 +3,7 @@
 import piny
 
 
-sim = piny.PINYEmpirical('calc-source', 'calc', 'water.input', 'piny.out')
+sim = piny.PINYEmpirical('calc', 'water.input', 'piny.out', dir_source='calc-source')
 
 n_atoms = sim.get_n_atoms()
 m = sim.get_m()
