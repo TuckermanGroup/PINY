@@ -260,14 +260,12 @@ void close_intra_params(CLATOMS_INFO *clatoms_info,
   printf("  number of PIMD degrees of freedom: % 6i\n", clatoms_info->nfree_pimd);
   printf("\n");
 
-  #define DEBUG
   #ifdef DEBUG
   printf("pimd_freez_typ: %d\n", pimd_freez_typ);
   printf("    n_free_mol: % 5d\n", n_free_mol);
   printf("    free atoms: % 5d\n", n_atom_free);
   printf("  frozen atoms: % 5d\n", n_atom_frozen);
   printf("   ghost atoms: % 5d\n", n_atom_ghost);
-  exit(0);
   #endif
 
   now_memory = ((double)(((natm_mall)*sizeof(double)*13+sizeof(int)*4)+
