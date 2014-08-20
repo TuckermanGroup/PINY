@@ -112,17 +112,6 @@ void find_H2(CLASS* class) {
       exit(1);
     }
 
-    /* check that they are H H F - names and order */
-    n1 = atommaps->atm_typ[atommaps->iatm_atm_typ[*i_H2_start]];
-    n2 = atommaps->atm_typ[atommaps->iatm_atm_typ[*i_H2_start+1]];
-    n3 = atommaps->atm_typ[atommaps->iatm_atm_typ[*i_H2_start+2]];
-    if ((strcmp(n1, "H") != 0) ||
-        (strcmp(n2, "H") != 0) ||
-        (strcmp(n3, "F") != 0)) {
-      printf("Expected atom names H H F, found %s %s %s.\n", n1, n2, n3);
-      exit(1);
-    }
-
     /* print summary */
     printf("Found H2 molecule type.\n");
     printf("Number of molecules: %i\n", *N_H2);
