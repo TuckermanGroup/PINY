@@ -29,6 +29,7 @@ typedef struct {
   int natom, natom_pl, nbead;
   double *x, *y, *z;
   double *fx, *fy, *fz;
+  double *virial;
   double *mass, *q;
 
 } PlumedData;
@@ -128,6 +129,7 @@ Initialize the PLUMED global object with all data that is needed.
   plumed_data.fx = cmalloc(size_alloc);
   plumed_data.fy = cmalloc(size_alloc);
   plumed_data.fz = cmalloc(size_alloc);
+  plumed_data.virial = cmalloc(9 * sizeof(double));
 
   #if defined PLUMED_DEBUG
   {
@@ -237,8 +239,13 @@ probably needed.
   double *fx = plumed_data.fx;
   double *fy = plumed_data.fy;
   double *fz = plumed_data.fz;
+  double *virial = plumed_data.virial;
 
   TIMER_START("PLUMED");
+
+  for (i=0; i<9; ++i) {
+    virial[i] = 0.0;
+  }
 
   /* load data to local arrays */
   for (i=0; i<nbead; ++i) {
@@ -277,9 +284,19 @@ probably needed.
   plumed_gcmd("setForcesX", fx);
   plumed_gcmd("setForcesY", fy);
   plumed_gcmd("setForcesZ", fz);
+  plumed_gcmd("setVirial", virial);
 
   /* run PLUMED */
   plumed_gcmd("calc", NULL);
+
+  printf("DBG PLUMED |");
+  for (i=0; i<9; ++i)
+    printf(" %12.6f", hmat[i]);
+  printf("\n");
+  printf("DBG PLUMED |");
+  for (i=0; i<9; ++i)
+    printf(" %12.6f", virial[i]);
+  printf("\n\n");
 
   /* get bias energy and store it, for example in intermolecular */
   plumed_gcmd("getBias", &vbias);
