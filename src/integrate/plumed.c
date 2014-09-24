@@ -205,7 +205,6 @@ Initialize the PLUMED global object with all data that is needed.
   plumed_gcmd("setLogFile", &plumedLog);
   plumed_gcmd("setTimestep", &dt);
   plumed_gcmd("setNatoms", &natom_total_pl);
-  plumed_gcmd("setNoVirial", NULL);
   plumed_gcmd("init", NULL);
 
 }
