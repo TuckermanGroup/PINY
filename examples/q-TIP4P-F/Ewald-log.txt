@@ -1,0 +1,36 @@
+settings alpha = 10.0
+=> 1/alpha = 2.5 A
+with r_cut = 10 A
+
+PME off
+--------
+
+kmax = 13
+Checking ewald: alp = 0.4027061856 A^(-1)
+The recip energy is 8.721399599052; cputime 0.107812
+
+kmax = 26
+Checking ewald: alp = 0.4027061856 A^(-1)
+The recip energy is 8.721400121222; cputime 0.617691
+
+using kmax = 13
+
+
+PME on
+------
+
+order = 8
+
+kmax_pme = 17
+Checking ewald: alp = 0.4027061856 A^(-1)
+The recip energy is 8.721395400508; cputime 0.021848
+
+kmax_pme = 22
+Checking ewald: alp = 0.4027061856 A^(-1)
+The recip energy is 8.721398904468; cputime 0.02801
+
+kmax_pme = 25
+Checking ewald: alp = 0.4027061856 A^(-1)
+The recip energy is 8.721399505611; cputime 0.040087
+
+using kmax_pme = 25
