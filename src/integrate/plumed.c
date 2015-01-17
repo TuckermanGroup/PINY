@@ -293,6 +293,7 @@ probably needed.
   general_data->stat_avg.vintert += vbias;
 
   /* debug */
+  /*
   printf("DBG PLUMED |    box |");
   for (i=0; i<9; ++i)
     printf(" %12.6e", hmat[i]);
@@ -303,6 +304,7 @@ probably needed.
   printf("\n");
   printf("DBG PLUMED | %12.6f\n", vbias);
   printf("DBG PLUMED |\n");
+  */
 
   /* unload and add contributions on all forces */
   for (i=0; i<nbead; ++i) {
@@ -313,10 +315,10 @@ probably needed.
       clatoms_pos[ibead].fx[iatom] += fx[ipl];
       clatoms_pos[ibead].fy[iatom] += fy[ipl];
       clatoms_pos[ibead].fz[iatom] += fz[ipl];
-      printf("DBG PLUMED | force | bead % 4d | atom % 4d | %12.6e %12.6e %12.6e \n", i, j, fx[ipl], fy[ipl], fz[ipl]);
+      // printf("DBG PLUMED | force | bead % 4d | atom % 4d | %12.6e %12.6e %12.6e \n", i, j, fx[ipl], fy[ipl], fz[ipl]);
     }
   }
-  printf("DBG PLUMED |\n");
+  // printf("DBG PLUMED |\n");
 
   if (general_data->simopts.pimd) {
     for (i=0; i<nbead; ++i) {
