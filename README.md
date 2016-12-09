@@ -21,3 +21,7 @@ There are some Python tools that can help with preparing and post-processing a P
 The tools require the numpy library.
 
 Additionally, if you want to use the optional Python interface to PINY itself, you also need to have Cython. First, in one of the `compile` subdirectories, do `make libpiny` to link a shared library. Then, do `make` in the `python` directory to build the interface.
+
+Acknowledgments:
+----------------
+Funding for the development of PINY_MD has come from a variety of sources, most recently, from grants from the National Science Foundation CHE-1301314 and CHE-1566085 
