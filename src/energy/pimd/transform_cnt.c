@@ -167,6 +167,8 @@ void path_integral_init(
     }
   }
 
+  // TODO: add option to not modify masses below, for RPMD
+
   /*============================================================*/
   /* get centroid eigenvalues and use them to define the masses */
 
