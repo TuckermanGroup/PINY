@@ -31,6 +31,9 @@
 #include "../proto_defs/proto_intra_con_entry.h"
 #include "../proto_defs/proto_energy_ctrl_entry.h"
 #include "../proto_defs/proto_communicate_wrappers.h"
+#if defined PLUMED
+#include "../proto_defs/proto_plumed.h"
+#endif
 
 
 /*==========================================================================*/
@@ -459,7 +462,14 @@ void prelim_md(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
   general_data->stat_avg.updates   = 0.0;
 
 /*=======================================================================*/
-/* IX) Write to Screen         */
+/* IX) run PLUMED at step 0 */
+
+  #if defined PLUMED
+  plumed_piny_calc(general_data, class, 0);
+  #endif
+
+/*=======================================================================*/
+/* X) Write to Screen */
 
   if(myid==0){
     printf("\n");

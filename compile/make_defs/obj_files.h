@@ -67,7 +67,8 @@ INTEGRATE_MD_FILES    = int_NVE.o int_NVE_res.o int_NVT.o int_NVT_res.o \
                         int_NVT_ISOK.o int_NVT_ISOK_res.o \
                         int_NPTI.o int_NPTI_res.o int_NPTF.o int_NPTF_res.o \
                         int_utils.o min_STD.o min_CG.o move_pos_box.o \
-                        int_0_to_dt2.o int_dt2_to_dt.o move_vel_vbox.o
+                        int_0_to_dt2.o int_dt2_to_dt.o move_vel_vbox.o \
+                        plumed.o
 INTERFACE_FILES       = parse.o zero_class.o zero_bnd.o zero_par.o zero_cp.o \
                         interface_hand.o search_base_class.o \
                         data_base_handle.o \
@@ -109,7 +110,8 @@ INTERFACE_MOL_FILES   = control_mol_params.o control_set_mol_params.o \
                         set_mol_dict.o set_mol_params.o \
                         set_surf_params.o 
 MAIN_FILES            = main.o control_md.o control_pimd.o \
-                        control_debug.o control_debug_pimd.o control_min.o auto_exit.o
+                        control_debug.o control_debug_pimd.o control_min.o \
+                        auto_exit.o
 MAIN_CP_FILES         = control_cp.o control_cp_min.o control_debug_cp.o \
                         control_cp_pimd.o control_debug_cp_pimd.o \
                         control_cp_pimd_min.o 

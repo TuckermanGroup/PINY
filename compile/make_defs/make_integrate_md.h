@@ -157,3 +157,11 @@ move_vel_vbox.o : $(STANDARD) $(DEFINES)  $(TYP_CLASS) $(INT_PIMD_LOC)\
 	$(COBJ) $(CODE)/integrate/move_vel_vbox.c
 
 #==================================================================
+plumed.o: $(STANDARD) $(DEFINES) $(TYP_CLASS) $(TYP_GEN) \
+          $(TYP_STAT) \
+          $(CODE)/integrate/plumed.c
+	$(ECHO) $@
+	$(COBJ) $(CODE)/integrate/plumed.c
+
+#==================================================================
+

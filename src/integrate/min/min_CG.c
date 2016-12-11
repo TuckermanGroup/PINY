@@ -23,6 +23,9 @@
 #include "../proto_defs/proto_intra_con_entry.h"
 #include "../proto_defs/proto_energy_ctrl_entry.h"
 #include "../proto_defs/proto_friend_lib_entry.h"
+#if defined PLUMED
+#include "../proto_defs/proto_plumed.h"
+#endif
 
 /*==========================================================================*/
 /*cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc*/
@@ -108,6 +111,10 @@ void min_CG(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,int ireset)
     (class->energy_ctrl.iget_full_intra)= 1;
     (class->energy_ctrl.iget_res_intra) = 0;
     energy_control(class,bonded,general_data);
+
+    #if defined PLUMED
+    plumed_piny_calc(general_data, class, general_data->timeinfo.itime);
+    #endif
 
     if(min_atm_com_fix_opt==1){
        proj_com_out(class->clatoms_info.natm_tot,
@@ -250,6 +257,10 @@ void min_CG(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,int ireset)
     (class->energy_ctrl.iget_full_intra)= 1;
     (class->energy_ctrl.iget_res_intra) = 0;
     energy_control(class,bonded,general_data);
+
+    #if defined PLUMED
+    plumed_piny_calc(general_data, class, general_data->timeinfo.itime);
+    #endif
 
 
    cfree(&(zeta[1]));

@@ -68,7 +68,6 @@ void control_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data,
 /*=======================================================================*/
 /* 0) Preliminary MD stuff                                               */
 
-
   prelim_pimd(class,bonded,general_data);
   if(num_proc>1){Barrier(world);}
 
@@ -314,7 +313,7 @@ void prelim_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
     mode_energy_control(class,general_data);
     control_pimd_trans_pos(class,general_data);
 
-  energy_control_pimd(class,bonded,general_data);
+  energy_control_pimd(class, bonded, general_data, 0);
 
   get_tvten_pimd(class,general_data);
 
@@ -382,7 +381,7 @@ void prelim_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
   }/*endif*/
 
 /*========================================================================*/
-/* VI) Initialize free energy stuff                                       */
+/* V) Initialize free energy stuff                                        */
 
   if(bonded->bond_free.num != 0){
     for(i=1;i<= (bonded->bond_free.num);i++){
@@ -410,7 +409,7 @@ void prelim_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
 
 
 /*=======================================================================*/
-/*  IV) Write Energy to screen                                           */
+/* VI) Write Energy to screen                                            */
 /*=======================================================================*/
 
   general_data->filenames.ifile_open = 1;
@@ -492,7 +491,7 @@ void prelim_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
 
 
 /*=======================================================================*/
-/*   VII) Write to Screen         */
+/* VII) Write to Screen */
 
   if(error_check_on==1){
    printf("\n");
@@ -504,12 +503,4 @@ void prelim_pimd(CLASS *class,BONDED *bonded,GENERAL_DATA *general_data)
 /*-----------------------------------------------------------------------*/
    }/*end routine*/
 /*==========================================================================*/
-
-
-
-
-
-
-
-
 
